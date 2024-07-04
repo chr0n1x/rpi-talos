@@ -1,0 +1,87 @@
+# helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+# helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+# long-lived token so that we can have browser remember it
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/service-account.name: "admin-user"   
+type: kubernetes.io/service-account-token
+
+
+# try to mimic the recommended kubectl proxy cmd
+# kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-dashboard-svc
+  namespace: kubernetes-dashboard
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8443
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 8443
+  selector:
+    app.kubernetes.io/name: kong
+
+# https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md
+# token to login:
+#   kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # should be on by default...
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+
+    # not sure if this even works
+    nginx.org/ssl-services: "kubernetes-dashboard-svc"
+  name: dashboard-ingress
+  namespace: kubernetes-dashboard
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-dashboard-svc
+            port:
+              number: 8443

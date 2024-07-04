@@ -1,0 +1,24 @@
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/baremetal/deploy.yaml
+#
+
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+  name: default-nginx-ingress-class
+  namespace: ingress-nginx
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/ingress-nginx
+  parameters:
+    # The parameters for this IngressClass are specified in a
+    # ClusterIngressParameter (API group k8s.example.net) named
+    # "external-config-1". This definition tells Kubernetes to
+    # look for a cluster-scoped parameter resource.
+    scope: Cluster
+    apiGroup: k8s.example.net
+    kind: ClusterIngressParameter
+    name: external-config-1
