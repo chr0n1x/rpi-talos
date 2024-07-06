@@ -8,6 +8,7 @@ metadata:
   name: admin-user
   namespace: kubernetes-dashboard
 
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -22,7 +23,9 @@ subjects:
   name: admin-user
   namespace: kubernetes-dashboard
 
+
 # long-lived token so that we can have browser remember it
+# (cmd to fetch token for login below)
 ---
 apiVersion: v1
 kind: Secret
@@ -34,54 +37,48 @@ metadata:
 type: kubernetes.io/service-account-token
 
 
-# try to mimic the recommended kubectl proxy cmd
-# kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: kubernetes-dashboard-svc
-  namespace: kubernetes-dashboard
-spec:
-  type: NodePort
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 8443
-    - name: https
-      port: 443
-      protocol: TCP
-      targetPort: 8443
-  selector:
-    app.kubernetes.io/name: kong
-
-# https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md
+# opens an ingress to the same service that the demo/setup docs for the
+# dashboard proxies to:
+#
+#   kubectl -n kubernetes-dashboard port-forward \
+#     svc/kubernetes-dashboard-kong-proxy 8443:443
+#
+# allows you to go to
+#
+#   https://<any k8s node LAN IP>:<ingress-nginx HTTPS NodePort>
+#
+# to access the dashboard
+#
+# NOTE: home.k8s is present so nginx filters/serves based on domain name
+#       I created local DNS entries in pihole that point to all of my nodes to
+#       make this work I also patch the NodePort svc for the
+#       nginx-ingress-controller to ensure a static port on all setups
+#
 # token to login:
 #   kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
+#
+# for more info on the nginx annotations:
+#   https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    # should be on by default...
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-
-    # not sure if this even works
-    nginx.org/ssl-services: "kubernetes-dashboard-svc"
   name: dashboard-ingress
   namespace: kubernetes-dashboard
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - path: /dashboard
-        pathType: Prefix
-        backend:
-          service:
-            name: kubernetes-dashboard-svc
-            port:
-              number: 8443
+    - host: home.k8s
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: kubernetes-dashboard-kong-proxy
+              port:
+                name: kong-proxy-tls
