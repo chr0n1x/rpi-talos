@@ -45,13 +45,13 @@ type: kubernetes.io/service-account-token
 #
 # allows you to go to
 #
-#   https://<any k8s node LAN IP>:<ingress-nginx HTTPS NodePort>
+#   https://home.k8s:<ingress-nginx NodePort HTTPS port>
 #
 # to access the dashboard
 #
 # NOTE: home.k8s is present so nginx filters/serves based on domain name
 #       I created local DNS entries in pihole that point to all of my nodes to
-#       make this work I also patch the NodePort svc for the
+#       make this work. I also patch the NodePort svc for the
 #       nginx-ingress-controller to ensure a static port on all setups
 #
 # token to login:
