@@ -17,6 +17,10 @@ DISCLAIMER: also using this to learn K8s so things are going to look dumb.
 # RPi Card Setup
 
 - Running the `metal-arm64.raw.xz` image on RPi >= 3 model B. Downloaded from [here](https://github.com/siderolabs/talos/releases/tag/v1.7.5)
+    - AS OF WRITING THIS, IMAGE THAT WORKS VIA [THE DOCS](https://www.talos.dev/v1.7/talos-guides/install/single-board-computers/rpi_generic/):
+        ```
+        curl -LO https://factory.talos.dev/image/ee21ef4a5ef808a9b7484cc0dda0f25075021691c8c09a276591eedb638ea1f9/v1.7.0/metal-arm64.raw.xz
+        ```
 - [RPi Imager](https://www.raspberrypi.com/software/)
     - insert SD card into system
     - select your device
