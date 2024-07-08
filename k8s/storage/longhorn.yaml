@@ -1,0 +1,33 @@
+# namespace must be privileged
+#
+# kubectl label namespace longhorn-system pod-security.kubernetes.io/enforce=privileged
+#
+# also make sure to upgrade nodes to include the talos scsi & unix tools
+#
+# e.g.:
+# factory.talos.dev/installer/5cb0db574a129de7e83cf4362a543d0ab16b0d803993312f9c521de4f44f878f:v1.7.5
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  name: longhorn-ingress
+  namespace: longhorn-system
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: longhorn.home.k8s
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: longhorn-frontend
+              port:
+                number: 80

@@ -1,0 +1,65 @@
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/baremetal/deploy.yaml
+#
+
+# https://stackoverflow.com/questions/55907537/how-to-expose-kubernetes-service-on-prem-using-443-80
+# ---
+# kind: DaemonSet
+# apiVersion: apps/v1
+# metadata:
+#   name: nginx-ingress-controller
+# spec:
+#   selector:
+#     matchLabels:
+#       component: ingress-controller
+#   template:
+#     metadata:
+#       labels:
+#         component: ingress-controller
+#     spec:
+#       restartPolicy: Always
+#       hostNetwork: true
+#       containers:
+#         - name: nginx-ingress-lb
+#           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.21.0
+#           ports:
+#             - name: http
+#               hostPort: 80
+#               containerPort: 80
+#               protocol: TCP
+#             - name: https
+#               hostPort: 443
+#               containerPort: 443
+#               protocol: TCP
+#           env:
+#             - name: POD_NAMESPACE
+#               valueFrom:
+#                 fieldRef:
+#                   apiVersion: v1
+#                   fieldPath: metadata.namespace
+#           args:
+#             - /nginx-ingress-controller
+#             - '--default-backend-service=$(POD_NAMESPACE)/default-http-backend'
+
+
+# IMPORTANT: PATCH THIS
+# k -n ingress-nginx patch --patch-file nginx-ingress.yaml svc/ingress-nginx-controller
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+spec:
+  ports:
+  - appProtocol: http
+    name: http
+    nodePort: 30080
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - appProtocol: https
+    name: https
+    nodePort: 30443
+    port: 443
+    protocol: TCP
+    targetPort: https
