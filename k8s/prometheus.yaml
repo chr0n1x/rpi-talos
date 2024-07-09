@@ -1,0 +1,27 @@
+# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# helm repo update
+# helm install prometheus prometheus-community/prometheus --namespace prometheus --create-namespace
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  name: prometheus-ingress
+  namespace: prometheus
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: prometheus.home.k8s
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: prometheus-server
+              port:
+                number: 80

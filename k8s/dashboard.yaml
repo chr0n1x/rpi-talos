@@ -74,7 +74,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: home.k8s
+    - host: dashboard.home.k8s
       http:
         paths:
         - path: /
