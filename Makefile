@@ -30,3 +30,47 @@ talos-workers: talos/nodes-worker.csv
 	talosctl apply-config \
 	  --nodes $(WORKER_NODE_IPS) \
 	  --insecure --file worker.yaml
+
+
+# WARNING: this will NUKE AN ENTIRE DEVICE
+#          this is how I format external drives for use with longhorn
+#
+# in the worker-config that talosctl generates on cluster bootstrap:
+#
+# machine:
+#   type: worker
+#   # ...
+#   # ...
+#   # ...
+#   kubelet:
+#       # ...
+#       # ...
+#       # ...
+#       extraMounts:
+#         # separate reserved mount for longhorn itself
+#         - destination: /var/lib/longhorn
+#           type: bind
+#           source: /var/lib/longhorn
+#           options:
+#             - bind
+#             - rshared
+#             - rw
+
+#   # longhorn mount for hdd
+#   # look at machine/kubelet/extraMounts
+#   disks:
+#     # path fetched via
+#     # talosctl -n <node IP> disks
+#     - device: /dev/sda
+#       partitions:
+#         - mountpoint: /var/lib/longhorn
+#
+# Make sure to have an image that supports scsi:
+#   https://www.talos.dev/v1.7/kubernetes-guides/configuration/storage/#others-iscsi
+#
+format-disc:
+	# note that this will be the extra storage that you mount
+	lsblk | grep sda
+	mount /dev/sda /media/
+	chmod -R o+rwx /media/
+	umount /media
