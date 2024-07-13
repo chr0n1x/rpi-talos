@@ -1,3 +1,41 @@
+
+
+# NOTE: install things via snap, apt, yum, whatever
+#
+#       e.g.:
+#         snap install helm --classic
+#         snap install kubectl --classic
+#
+#       but there are a few exceptions here
+#
+# kustomize: do NOT install via snap, causes symlink issues in helmfile
+#   curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+#   mv kustomize ~/.local/bin/.
+#   wget https://github.com/helmfile/helmfile/releases/download/v1.0.0-rc.2/helmfile_1.0.0-rc.2_linux_amd64.tar.gz
+#
+# helmfile:
+#   tar -xzf helmfile_1.0.0-rc.2_linux_amd64.tar.gz helmfile
+#   mv helmfile ~/.local/bin/.
+#
+# talosctl:
+#   curl -sL https://talos.dev/install | sh
+validate-tools-installed:
+	@which helm $&> /dev/null
+	@echo "helm      ✅"
+
+	@which kustomize $&> /dev/null
+	@echo "kustomize ✅"
+
+	@which helmfile $&> /dev/null
+	@echo "helmfile  ✅"
+
+	@which kubectl $&> /dev/null
+	@echo "kubectl   ✅"
+
+	@which talosctl $&> /dev/null
+	@echo "All Set!  🚀🚀"
+
+
 # SEED_NODE_IPV4 is the local ip of the node that you have on and are actively
 # monitoring while you go through this process
 #
