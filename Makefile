@@ -20,19 +20,28 @@
 # talosctl:
 #   curl -sL https://talos.dev/install | sh
 validate-tools-installed:
-	@which helm $&> /dev/null
-	@echo "helm      ✅"
-
-	@which kustomize $&> /dev/null
-	@echo "kustomize ✅"
-
-	@which helmfile $&> /dev/null
-	@echo "helmfile  ✅"
-
-	@which kubectl $&> /dev/null
+	@which kubectl $&> /dev/null || \
+	  (echo "❌ Missing kubectl; sudo snap install kubectl --classic" && exit 1)
 	@echo "kubectl   ✅"
 
-	@which talosctl $&> /dev/null
+	@which helm $&> /dev/null || \
+	  (echo "❌ Missing helm; sudo snap install helm --classic" && exit 1)
+	@echo "helm      ✅"
+
+	@helm plugin list | grep "^x.*Kustomization.*" $&> /dev/null || \
+	  (echo "❌ Missing helm-x plugin; helm plugin install https://github.com/mumoshu/helm-x" && exit 1)
+	@echo "helm-x    ✅"
+
+	@which kustomize $&> /dev/null || \
+	  (echo "❌ Missing kustomize; run 'make install-kustomize'" && exit 1)
+	@echo "kustomize ✅"
+
+	@which helmfile $&> /dev/null || \
+	  (echo "❌ Missing helmfile; run 'make install-helmfile'" && exit 1)
+	@echo "helmfile  ✅"
+
+	@which talosctl $&> /dev/null || \
+	  (echo "❌ Missing talosctl; curl -sL https://talos.dev/install | sh" && exit 1)
 	@echo "All Set!  🚀🚀"
 
 

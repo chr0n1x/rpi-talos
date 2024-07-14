@@ -24,7 +24,7 @@ repositories:
 releases:
   - name: ingress-nginx
     namespace: ingress-nginx
-    chart: ./misc/ingress-nginx/deploy/static/provider/baremetal/
+    chart: ./kustomize/nginx
 
   # for more info on default installation:
   #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
