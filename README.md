@@ -3,11 +3,6 @@ Talos on RPi
 
 ![rpi k8s cluster via talos!](docs/img/rpi-talos-k8s.jpg?raw=true)
 
-Dumping ground for notes/scripts(?) for my RPi K8s cluster running on Talos.
-
-DISCLAIMER: also using this to learn K8s so things are going to look dumb.
-
-# Tools / Goals
 
 - Leveraging talos/k8s with the [pi.hole](https://pi-hole.net/) stack.
 - Playground for tinkering w/ on-prem bare-metal clusters; eventually want to start adding various node types for different workloads (e.g.: CUDA cores)
@@ -16,6 +11,8 @@ DISCLAIMER: also using this to learn K8s so things are going to look dumb.
 - Using cluster to run personal automations (plant waterer, ambient sounds via GitHub activity, etc)
 - Playground for moar app development, AI/ML/mining.
 - Pretending to be a 1337 dev rack operator with all the smex appeal.
+
+DISCLAIMER: also using this to learn K8s so things are going to look dumb.
 
 # Prerequisites
 
@@ -85,66 +82,65 @@ Steps:
     - at this point we're really just following [the guide](https://www.talos.dev/v1.7/introduction/getting-started/#define-the-kubernetes-endpoint) <- AT LEAST SKIM OVER THIS
     - `cd talos` -- so that everything generated ends up in this dir
     - define your VIP control endpoint. e.g.: `https://<VIP Node IP>:6443`
-    - figure out a name that you want to give this cluster. e.g.: `<cluster-name>
+    - figure out a name that you want to give this cluster. e.g.: `<cluster-name>`
     - `talosctl gen config <cluster-name> https://<VIP Node IP>:6443`
 
 1. update the install device on the node:
-```yaml
-# THIS IS APPLICABLE FOR BOTH worker.yaml AND controlplane.yaml !
-machine:
-    # ...
-    # the stuff from above
-    # ...
-    # this already exists
-    install:
-        disk: /dev/mmcblk0 # this should be your boot device. find it via `talosctl -n <node ip> disks`
-        image: ghcr.io/siderolabs/installer:v1.7.5
-        wipe: false
-```
+    ```yaml
+    # THIS IS APPLICABLE FOR BOTH worker.yaml AND controlplane.yaml !
+    machine:
+        # ...
+        # the stuff from above
+        # ...
+        # this already exists
+        install:
+            disk: /dev/mmcblk0 # this should be your boot device. find it via `talosctl -n <node ip> disks`
+            image: ghcr.io/siderolabs/installer:v1.7.5
+            wipe: false
+    ```
 
 1. OPTIONAL: for longhorn, update your generated worker config to include the required mounts (I recommened `cp worker.yaml worker-longhorn.yaml` for these kinds of changes)
-```yaml
-machine:
-    kubelet:
-        extraMounts:
-          # separate reserved mount for longhorn itself
-          # this will use the machine's local disk for longhorm PVs/PVCs
-          - destination: /var/lib/longhorn
-            type: bind
-            source: /var/lib/longhorn
-            options:
-              - bind
-              - rshared
-              - rw
-
-
-          # EVERYTHING BELOW IS OPTIONAL IF YOU HAVE AN EXTERNAL HDD
-          # and AGAIN - make sure it's formatted appropriately with something
-          # akin to the make.format-disc target
-          - destination: /mounts/storage
-            type: bind
-            source: /mount/storage
-            options:
-              - bind
-              - rshared
-              - rw
-    disks:
-      # path fetched via
-      # talosctl -n <node IP> disks
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /mount/storage
-```
+    ```yaml
+    machine:
+        kubelet:
+            extraMounts:
+              # separate reserved mount for longhorn itself
+              # this will use the machine's local disk for longhorm PVs/PVCs
+              - destination: /var/lib/longhorn
+                type: bind
+                source: /var/lib/longhorn
+                options:
+                  - bind
+                  - rshared
+                  - rw
+    
+    
+              # EVERYTHING BELOW IS OPTIONAL IF YOU HAVE AN EXTERNAL HDD
+              # and AGAIN - make sure it's formatted appropriately with something
+              # akin to the make.format-disc target
+              - destination: /mounts/storage
+                type: bind
+                source: /mount/storage
+                options:
+                  - bind
+                  - rshared
+                  - rw
+        disks:
+          # path fetched via
+          # talosctl -n <node IP> disks
+          - device: /dev/sda
+            partitions:
+              - mountpoint: /mount/storage
+    ```
 1. Bootstrap your first node:
-```sh
-talosctl apply-config --insecure \
-    --nodes <Node IP> \
-    --file controlplane.yaml
-
-talosctl bootstrap --nodes <Node IP> --endpoints <Node IP> \
-  --talosconfig=./talosconfig
-```
-
+    ```sh
+    talosctl apply-config --insecure \
+        --nodes <Node IP> \
+        --file controlplane.yaml
+    
+    talosctl bootstrap --nodes <Node IP> --endpoints <Node IP> \
+      --talosconfig=./talosconfig
+    ```
 1. Wait for your first control node to become healthy/ready in the `dmesg` logs (the screen)
 
 And at this point, you just have to apply the machine configs to the various machines!
@@ -157,11 +153,15 @@ talosctl --nodes <comma-delimeted list of WORKER node IPs> \
     apply-config -f worker.yaml --insecure
 ```
 
-and to play around with it, `talosctl kubeconfig --nodes <Node IP> --endpoints <Node IP>` to merge this cluster kubeconfig with your existing config. Instructions on how to generate a separate `kubeconfig.yaml` file in the docs [HERE](https://www.talos.dev/v1.7/introduction/getting-started/#kubernetes-bootstrap)
+and to play around with it, `talosctl kubeconfig --nodes <Node IP> --endpoints <Node IP>` to merge this cluster kubeconfig with your existing config.
+
+Instructions on how to generate a separate `kubeconfig.yaml` file in the docs [HERE](https://www.talos.dev/v1.7/introduction/getting-started/#kubernetes-bootstrap)
 
 ## Going Further
 
-I use `helmfile` to install a bunch of "essentials". The `make sync` and `make apply` targets will execute those respective `helmfile` operations via `k8s/helmfile.yaml`. Take a look, things should work out of the box.
+I use `helmfile` to install a bunch of "essentials". The `make sync` and `make apply` targets will execute those respective `helmfile` operations via `k8s/helmfile.yaml`.
+This is how I'll be adding more "core" services to the cluster in the future.
+Take a look, things should work out of the box (except those hostname caveats above).
 
 TODO: moar details to come.
 
