@@ -6,12 +6,13 @@ Talos on RPi
 _In image above: 7 RPis, 3 control, 3 workers, 1 dedicated pi-hole (on wifi lulz), zimablade x86 worker attached to a 10TB HDD_
 
 - Leveraging talos/k8s with the [pi.hole](https://pi-hole.net/) stack.
+- [Talos](https://www.talos.dev/v1.7/talos-guides/install/single-board-computers/rpi_generic/) is pretty cool.
+- Pretending to be a 1337 dev rack operator with all the smex appeal.
 - Playground for tinkering w/ on-prem bare-metal clusters; eventually want to start adding various node types for different workloads (e.g.: CUDA cores)
 - K8s playground because I'm bad.
-- [Talos](https://www.talos.dev/v1.7/talos-guides/install/single-board-computers/rpi_generic/) is pretty cool.
 - Using cluster to run personal automations (plant waterer, ambient sounds via GitHub activity, etc)
 - Playground for moar app development, AI/ML/mining.
-- Pretending to be a 1337 dev rack operator with all the smex appeal.
+- control & automate all installations of core services via `helmfile`
 
 DISCLAIMER: also using this to learn K8s so things are going to look dumb.
 
