@@ -1,4 +1,4 @@
-
+default: .validate-tools
 
 # NOTE: install things via snap, apt, yum, whatever
 #
@@ -19,7 +19,7 @@
 #
 # talosctl:
 #   curl -sL https://talos.dev/install | sh
-validate-tools-installed:
+.validate-tools:
 	@which kubectl $&> /dev/null || \
 	  (echo "❌ Missing kubectl; sudo snap install kubectl --classic" && exit 1)
 	@echo "kubectl   ✅"
@@ -32,9 +32,9 @@ validate-tools-installed:
 	  (echo "❌ Missing helm-x plugin; helm plugin install https://github.com/mumoshu/helm-x" && exit 1)
 	@echo "helm-x    ✅"
 
-	@helm plugin list | grep "^helm-git.*" $&> /dev/null || \
-	  (echo "❌ Missing helm-x plugin; helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0" && exit 1)
-	@echo "helm-git  ✅"
+	@helm plugin list | grep "^diff.*" $&> /dev/null || \
+      (echo "❌ Missing helm-diff plugin; helm plugin install https://github.com/databus23/helm-diff && exit 1")
+	@echo "helm-diff ✅"
 
 	@which kustomize $&> /dev/null || \
 	  (echo "❌ Missing kustomize; run 'make install-kustomize'" && exit 1)
@@ -46,6 +46,8 @@ validate-tools-installed:
 
 	@which talosctl $&> /dev/null || \
 	  (echo "❌ Missing talosctl; curl -sL https://talos.dev/install | sh" && exit 1)
+
+	@git rev-parse HEAD > .validate-tools
 	@echo "All Set!  🚀🚀"
 
 
@@ -60,8 +62,12 @@ install-kustomize:
 	wget https://github.com/helmfile/helmfile/releases/download/v1.0.0-rc.2/helmfile_1.0.0-rc.2_linux_amd64.tar.gz
 
 
-bootstrap-cluster:
+sync:
 	helmfile --file k8s/helmfile.yaml sync
+
+
+apply:
+	helmfile --file k8s/helmfile.yaml apply
 
 
 # SEED_NODE_IPV4 is the local ip of the node that you have on and are actively
