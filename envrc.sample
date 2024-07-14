@@ -1,4 +1,4 @@
-export TALOSCONFIG=
+export TALOSCONFIG=$(pwd)/talos/talosconfig
 export TALOS_NODES=
 export TALOS_CONTROL_NODES=
 export TALOS_WORKER_NODES=
