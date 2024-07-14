@@ -45,6 +45,17 @@ validate-tools-installed:
 	@echo "All Set!  🚀🚀"
 
 
+install-helmfile:
+	tar -xzf helmfile_1.0.0-rc.2_linux_amd64.tar.gz helmfile
+	mv helmfile ~/.local/bin/.
+
+
+install-kustomize:
+	curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+	mv kustomize ~/.local/bin/.
+	wget https://github.com/helmfile/helmfile/releases/download/v1.0.0-rc.2/helmfile_1.0.0-rc.2_linux_amd64.tar.gz
+
+
 # SEED_NODE_IPV4 is the local ip of the node that you have on and are actively
 # monitoring while you go through this process
 #
@@ -59,19 +70,24 @@ talosconfig:
 	talosctl bootstrap --nodes $$SEED_NODE_IPV4
 	talosctl kubeconfig
 
+
 talos/nodes-all.csv:
 	# ?
+
 
 talos/nodes-worker.csv: talos/nodes-all.csv
 	# ?
 
+
 talos/nodes-control.csv: talos/nodes-all.csv
 	# ?
+
 
 talos-control: talos/nodes-control.csv
 	talosctl apply-config \
 	  --nodes $(CONTROL_NODE_IPS) \
 	  --insecure --file controlplane.yaml
+
 
 talos-workers: talos/nodes-worker.csv
 	talosctl apply-config \
