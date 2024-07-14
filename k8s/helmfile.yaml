@@ -78,8 +78,23 @@ releases:
     values:
       - persistence:
         - storageClassName: longhorn
+          mountPath: /app/data/configs
+          enabled: true
+          accessMode: ReadWriteMany
+          name: homarr-config
+          size: 256Mi
         - storageClassName: longhorn
+          mountPath: /app/database
+          enabled: true
+          accessMode: ReadWriteMany
+          name: homarr-database
+          size: 256Mi
         - storageClassName: longhorn
+          mountPath: /app/public/icons
+          enabled: true
+          accessMode: ReadWriteMany
+          name: homarr-icons
+          size: 256Mi
       - env:
           TZ: America/New York
       - ingress:
