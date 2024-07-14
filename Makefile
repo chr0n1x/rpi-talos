@@ -33,7 +33,7 @@ default: .validate-tools
 	@echo "helm-x    ✅"
 
 	@helm plugin list | grep "^diff.*" $&> /dev/null || \
-      (echo "❌ Missing helm-diff plugin; helm plugin install https://github.com/databus23/helm-diff && exit 1")
+      (echo "❌ Missing helm-diff plugin; helm plugin install https://github.com/databus23/helm-diff" && exit 1)
 	@echo "helm-diff ✅"
 
 	@which kustomize $&> /dev/null || \
