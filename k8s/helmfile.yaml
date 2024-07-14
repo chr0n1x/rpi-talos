@@ -22,10 +22,6 @@ repositories:
     url: https://kubernetes-sigs.github.io/descheduler/
 
 releases:
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    chart: ./kustomize/nginx
-
   # for more info on default installation:
   #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
   - name: descheduler
@@ -51,7 +47,7 @@ releases:
     values:
       - persistence:
           enabled: true
-          storageClassName: pvc
+          storageClassName: longhorn
           # TODO: somehow find-or-create longhorn pvc?
           # existingClaim: grafana-pvc
       - datasources:
@@ -62,37 +58,17 @@ releases:
               type: prometheus
               url: http://prometheus-server
 
-  - name: monitoring-customizations
-    namespace: monitoring
-    chart: ./manifests/monitoring
-    needs:
-      - ingress-nginx/ingress-nginx
-      - monitoring/prometheus
-      - monitoring/grafana
-
   - name: longhorn
     namespace: longhorn-system
     createNamespace: true
     chart: longhorn/longhorn
     version: ~1.6.2
-  - name: longhorn-customizations
-    chart: ./manifests/longhorn
-    namespace: longhorn-system
-    needs:
-      - ingress-nginx/ingress-nginx
-      - longhorn-system/longhorn
 
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard
     createNamespace: true
     chart: k8s-dashboard/kubernetes-dashboard
     version: ~7.5.0
-  - name: k8s-dashboard-customizations
-    chart: ./manifests/k8s-dashboard
-    namespace: kubernetes-dashboard
-    needs:
-      - kubernetes-dashboard/kubernetes-dashboard
-      - ingress-nginx/ingress-nginx
 
   - name: homarr
     namespace: homarr
@@ -110,3 +86,16 @@ releases:
               paths:
                 - path: /
                   pathType: Prefix
+
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: kustomize/nginx
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - apply
+          - --recursive
+          - -f
+          - manifests

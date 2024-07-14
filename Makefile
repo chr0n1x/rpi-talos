@@ -32,6 +32,10 @@ validate-tools-installed:
 	  (echo "❌ Missing helm-x plugin; helm plugin install https://github.com/mumoshu/helm-x" && exit 1)
 	@echo "helm-x    ✅"
 
+	@helm plugin list | grep "^helm-git.*" $&> /dev/null || \
+	  (echo "❌ Missing helm-x plugin; helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0" && exit 1)
+	@echo "helm-git  ✅"
+
 	@which kustomize $&> /dev/null || \
 	  (echo "❌ Missing kustomize; run 'make install-kustomize'" && exit 1)
 	@echo "kustomize ✅"
@@ -54,6 +58,10 @@ install-kustomize:
 	curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 	mv kustomize ~/.local/bin/.
 	wget https://github.com/helmfile/helmfile/releases/download/v1.0.0-rc.2/helmfile_1.0.0-rc.2_linux_amd64.tar.gz
+
+
+bootstrap-cluster:
+	helmfile --file k8s/helmfile.yaml sync
 
 
 # SEED_NODE_IPV4 is the local ip of the node that you have on and are actively

@@ -1,7 +1,10 @@
+# NOTE: we use a submodule here because the dir itself does not _actually_ support
+# kustomize (e.g.: read the comments in kustomization.yaml in this dir)
 resources:
 - ./ingress-nginx/deploy/static/provider/baremetal/deploy.yaml
 
 patches:
-- path: ingress-patch.yaml
-  target:
+- target:
     kind: Service
+    name: ingress-nginx-controller
+  path: ./ingress-patch.yaml
