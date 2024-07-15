@@ -148,6 +148,8 @@ talos-workers: talos/nodes-worker.csv
 format-disc:
 	# note that this will be the extra storage that you mount
 	lsblk | grep sda
+	# THIS WILL NUKE THE ENTIRE DRIVE
+	mkfs.ext4 /dev/sda
 	mount /dev/sda /media/
 	chmod -R o+rwx /media/
 	umount /media
