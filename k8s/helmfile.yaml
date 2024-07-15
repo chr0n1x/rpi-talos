@@ -73,6 +73,7 @@ releases:
     namespace: homepage
     chart: kustomize/homepage
     createNamespace: true
+    # TODO: restart deployment if config-map updated?
 
   - name: ingress-nginx
     namespace: ingress-nginx

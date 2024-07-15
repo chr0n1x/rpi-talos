@@ -14,35 +14,42 @@ data:
   #         href: https://github.com/
   docker.yaml: ''
   kubernetes.yaml: |
-    mode: disable
+    mode: default
   services.yaml: |
     - HomeLab K8s:
       - K8s Dashboard:
+          icon: 'https://kubernetes.io/images/wheel.svg'
           description: K8s dashboard
           href: "https://dashboard.home.k8s:30443/#/workloads?namespace=_all"
       - Longhorn:
+          icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
           description: Longhorn Persistent Store Dashboard
           href: "https://longhorn.home.k8s:30443"
-      - Prometheus:
-          description: Prometheus Dashboard
-          href: "https://prometheus.home.k8s:30443"
       - Grafana:
+          icon: 'https://grafana.com/static/img/menu/grafana2.svg'
           description: Grafana Dashboard
           href: "https://grafana.home.k8s:30443"
-
+      - Prometheus:
+          icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
+          description: Prometheus Dashboard
+          href: "https://prometheus.home.k8s:30443"
     - HomeLab General:
       - Pi-Hole:
+          icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
           description: Pi-Hole, LocalDNS
           href: "http://pi.hole/admin/"
       - Talos Image Factory:
+          icon: 'https://www.talos.dev/images/logo.svg'
           description: Generate/Upgrade TalosOS Images
           href: "https://factory.talos.dev/"
 
     - Tools:
       - Oryx:
+          icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
           description: ZSA Configuration Tool
           href: "https://configure.zsa.io/voyager/layouts"
       - key.br:
+          icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
           href: "https://www.keybr.com/"
   widgets.yaml: |
