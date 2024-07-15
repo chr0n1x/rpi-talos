@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: homepage
+data:
+  $patch: replace
+  settings.yaml: ''
+  bookmarks.yaml: ''
+  # bookmarks.yaml: |
+  #   - Developer:
+  #     - Github:
+  #       - abbr: GH
+  #         href: https://github.com/
+  docker.yaml: ''
+  kubernetes.yaml: |
+    mode: disable
+  services.yaml: |
+    - HomeLab K8s:
+      - K8s Dashboard:
+          description: K8s dashboard
+          href: "https://dashboard.home.k8s:30443/#/workloads?namespace=_all"
+      - Longhorn:
+          description: Longhorn Persistent Store Dashboard
+          href: "https://longhorn.home.k8s:30443"
+      - Prometheus:
+          description: Prometheus Dashboard
+          href: "https://prometheus.home.k8s:30443"
+      - Grafana:
+          description: Grafana Dashboard
+          href: "https://grafana.home.k8s:30443"
+
+    - HomeLab General:
+      - Pi-Hole:
+          description: Pi-Hole, LocalDNS
+          href: "http://pi.hole/admin/"
+      - Talos Image Factory:
+          description: Generate/Upgrade TalosOS Images
+          href: "https://factory.talos.dev/"
+
+    - Tools:
+      - Oryx:
+          description: ZSA Configuration Tool
+          href: "https://configure.zsa.io/voyager/layouts"
+      - key.br:
+          description: Best typing training tool.
+          href: "https://www.keybr.com/"
+  widgets.yaml: |
+    - resources:
+        backend: resources
+        cpu: true
+        expanded: true
+        memory: true
+    - search:
+        provider: duckduckgo
+        target: _blank

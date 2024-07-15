@@ -14,12 +14,11 @@ repositories:
   - name: prometheus
     url: https://prometheus-community.github.io/helm-charts
 
-  - name: homarr-oci
-    url: ghcr.io/oben01/charts
-    oci: true
-
   - name: descheduler
     url: https://kubernetes-sigs.github.io/descheduler/
+
+  - name: homepage
+    url: https://jameswynn.github.io/helm-charts
 
 releases:
   # for more info on default installation:
@@ -70,41 +69,10 @@ releases:
     chart: k8s-dashboard/kubernetes-dashboard
     version: ~7.5.0
 
-  - name: homarr
-    namespace: homarr
+  - name: homepage
+    namespace: homepage
+    chart: kustomize/homepage
     createNamespace: true
-    chart: homarr-oci/homarr
-    version: ~1.2.5
-    values:
-      - persistence:
-        - storageClassName: longhorn
-          mountPath: /app/data/configs
-          enabled: true
-          accessMode: ReadWriteMany
-          name: homarr-config
-          size: 256Mi
-        - storageClassName: longhorn
-          mountPath: /app/database
-          enabled: true
-          accessMode: ReadWriteMany
-          name: homarr-database
-          size: 256Mi
-        - storageClassName: longhorn
-          mountPath: /app/public/icons
-          enabled: true
-          accessMode: ReadWriteMany
-          name: homarr-icons
-          size: 256Mi
-      - env:
-          TZ: America/New York
-      - ingress:
-          enabled: true
-          ingressClassName: nginx
-          hosts:
-            - host: home.k8s
-              paths:
-                - path: /
-                  pathType: Prefix
 
   - name: ingress-nginx
     namespace: ingress-nginx
@@ -117,4 +85,4 @@ releases:
           - apply
           - --recursive
           - -f
-          - manifests
+          - manifests/post-install-configurations

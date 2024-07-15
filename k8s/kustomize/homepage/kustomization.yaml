@@ -1,0 +1,26 @@
+namespace: homepage
+
+
+helmCharts:
+- name: homepage
+  includeCRDs: false
+  releaseName: homepage
+  namespace: homepage
+  repo: https://jameswynn.github.io/helm-charts
+  valuesInline:
+    image:
+      repository: ghcr.io/gethomepage/homepage
+      tag: latest
+
+
+resources:
+- ./ingress.yaml
+- ./sa.yaml
+- ./cluster-role-and-binding.yaml
+# - ./config-map.yaml
+
+patches:
+- path: ./config-map.yaml
+  target:
+    kind: ConfigMap
+    name: homepage
