@@ -32,9 +32,6 @@ releases:
     createNamespace: true
     chart: prometheus/prometheus
     version: ~v25.23.0
-    set:
-    - name: rbac.create
-      value: false
 
   - name: grafana
     chart: grafana/grafana
@@ -44,11 +41,16 @@ releases:
     needs:
       - monitoring/prometheus
     values:
+      # this just started to fail one day, no idea
+      - initChownData:
+          enabled: false
       - persistence:
           enabled: true
           storageClassName: longhorn
           # TODO: somehow find-or-create longhorn pvc?
           # existingClaim: grafana-pvc
+          accessModes:
+            - ReadWriteMany
       - datasources:
           datasources.yaml:
             apiVersion: 1
