@@ -42,7 +42,14 @@ data:
           icon: 'https://www.talos.dev/images/logo.svg'
           description: Generate/Upgrade TalosOS Images
           href: "https://factory.talos.dev/"
-
+      - OpenMediaVault:
+          icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
+          description: NAS Management
+          href: "http://nox-nas.lan/"
+      - OpenMediaVault File Browser:
+          icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
+          description: OMV Web-based Browser
+          href: "http://nox-nas.lan:3670/"
     - Tools:
       - Oryx:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
