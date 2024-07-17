@@ -75,7 +75,17 @@ releases:
     namespace: homepage
     chart: kustomize/homepage
     createNamespace: true
-    # TODO: restart deployment if config-map updated?
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - --namespace
+          - homepage
+          - rollout
+          - restart
+          - deployment
+          - homepage
 
   - name: ingress-nginx
     namespace: ingress-nginx
