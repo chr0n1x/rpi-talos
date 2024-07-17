@@ -31,7 +31,20 @@ releases:
     namespace: monitoring
     createNamespace: true
     chart: prometheus/prometheus
-    version: ~v25.23.0
+    values:
+      - prometheus-node-exporter:
+          rbac:
+            create: true
+    # required for node-exporter metrics
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - label
+          - namespace
+          - monitoring
+          - pod-security.kubernetes.io/enforce=privileged
 
   - name: grafana
     chart: grafana/grafana
@@ -64,6 +77,15 @@ releases:
     createNamespace: true
     chart: longhorn/longhorn
     version: ~1.6.2
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - label
+          - namespace
+          - longhorn-system
+          - pod-security.kubernetes.io/enforce=privileged
 
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard
@@ -86,6 +108,11 @@ releases:
           - restart
           - deployment
           - homepage
+
+  - name: keycloak
+    namespace: keycloak
+    chart: kustomize/keycloak
+    createNamespace: true
 
   - name: ingress-nginx
     namespace: ingress-nginx
