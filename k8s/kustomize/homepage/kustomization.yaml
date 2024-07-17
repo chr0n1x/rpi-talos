@@ -17,7 +17,6 @@ resources:
 - ./ingress.yaml
 - ./sa.yaml
 - ./cluster-role-and-binding.yaml
-# - ./config-map.yaml
 
 patches:
 - path: ./config-map.yaml

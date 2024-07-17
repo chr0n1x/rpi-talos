@@ -5,16 +5,20 @@ metadata:
   namespace: homepage
 data:
   $patch: replace
+
   settings.yaml: ''
-  bookmarks.yaml: ''
-  # bookmarks.yaml: |
-  #   - Developer:
-  #     - Github:
-  #       - abbr: GH
-  #         href: https://github.com/
   docker.yaml: ''
+
+  bookmarks.yaml: |
+    - References:
+      - Talos Machine Config API:
+        - abbr: TA
+          href: https://www.talos.dev/v1.7/reference/configuration/v1alpha1/config/
+          icon: 'https://www.talos.dev/images/logo.svg'
+
   kubernetes.yaml: |
-    mode: default
+    mode: disabled
+
   services.yaml: |
     - HomeLab K8s:
       - K8s Dashboard:
@@ -33,6 +37,7 @@ data:
           icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
           description: Prometheus Dashboard
           href: "https://prometheus.home.k8s:30443"
+
     - HomeLab General:
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
@@ -50,6 +55,7 @@ data:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "http://nox-nas.lan:3670/"
+
     - Tools:
       - Oryx:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
