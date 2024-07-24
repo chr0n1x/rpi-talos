@@ -32,11 +32,28 @@ releases:
     createNamespace: true
     chart: prometheus/prometheus
     values:
+      - persistence:
+          enabled: true
+          storageClassName: longhorn
+          # TODO: somehow find-or-create longhorn pvc?
+          # existingClaim: prometheus-pvc
+          accessModes:
+            - ReadWriteMany
       - prometheus-node-exporter:
           rbac:
             create: true
-    # required for node-exporter metrics
     hooks:
+      # required for node-exporter metrics
+      - events:
+          - presync
+        command: kubectl
+        args:
+          - delete
+          - --namespace
+          - monitoring
+          - deployment
+          - prometheus-server
+      # required for node-exporter metrics
       - events:
           - cleanup
         command: kubectl
