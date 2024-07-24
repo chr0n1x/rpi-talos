@@ -20,6 +20,8 @@ DISCLAIMER: also using this to learn K8s so things are going to look dumb.
 
 ## Acknowledge Caveats
 
+**DO NOT EXPOSE THIS SETUP TO THE WWW**
+
 I currently have some DNS names that are hard-coded in the ingresses for the bootstrapped services in this setup.
 
 Specifically:
@@ -34,6 +36,17 @@ Specifically:
     - etc
 
 this doesn't sit will with me either so stay tuned for an actual solution that's...close to fully automated. Maybe.
+
+That being said, if you're just starting out and/or have your own vLAN and way of isolating cluster instances/machines, everything should work out of the box here if you have the local DNS setup described above. So specifically, your DNSMasq rules should be something like:
+```conf
+cname=longhorn.home.k8s,home.k8s
+cname=dashboard.home.k8s,home.k8s
+cname=prometheus.home.k8s,home.k8s
+cname=grafana.home.k8s,home.k8s
+cname=docker.home.k8s,home.k8s
+```
+
+and `home.k8s` is an A-record to your control-node IPs. This can easily be setup via Pi.hole and its built-in `local DNS` settings/feature.
 
 ## Hardware
 
@@ -164,6 +177,13 @@ Instructions on how to generate a separate `kubeconfig.yaml` file in the docs [H
 I use `helmfile` to install a bunch of "essentials". The `make sync` and `make apply` targets will execute those respective `helmfile` operations via `k8s/helmfile.yaml`.
 This is how I'll be adding more "core" services to the cluster in the future.
 Take a look, things should work out of the box (except those hostname caveats above).
+
+If you want to try out _specific_ features/application setups, you can install them via:
+```sh
+helmfile sync --selector name=docker-registry
+```
+
+and `name=` can be replaced with any service in the `helmfile.yaml` that you would like to test out.
 
 TODO: moar details to come.
 
