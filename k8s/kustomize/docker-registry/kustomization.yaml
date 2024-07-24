@@ -1,0 +1,21 @@
+# manifests copied/based on:
+#   https://rpi4cluster.com/k3s-docker-registry/
+#
+# registry container docs:
+#   https://distribution.github.io/distribution/about/
+#
+# to use, you must edit docker config to include this top-level attribute
+#
+# {
+#    "insecure-registries" : [ "hostname.cloudapp.net:5000" ]
+# }
+#
+# have the hostname point to the ingress
+namespace: docker-registry
+
+
+resources:
+- ./pvc.yaml
+- ./svc.yaml
+- ./deployment.yaml
+- ./ingress.yaml

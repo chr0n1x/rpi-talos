@@ -126,3 +126,7 @@ releases:
           - --recursive
           - -f
           - manifests/post-install-configurations
+
+  - name: docker-registry
+    namespace: docker-registry
+    chart: kustomize/docker-registry
