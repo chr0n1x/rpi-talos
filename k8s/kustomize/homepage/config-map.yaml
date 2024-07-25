@@ -10,11 +10,22 @@ data:
   docker.yaml: ''
 
   bookmarks.yaml: |
-    - References:
-      - Talos Machine Config API:
+    - Talos Linux:
+      - Machine Config API:
         - abbr: TA
           href: https://www.talos.dev/v1.7/reference/configuration/v1alpha1/config/
           icon: 'https://www.talos.dev/images/logo.svg'
+      - Image Factory:
+        - icon: 'https://www.talos.dev/images/logo.svg'
+          href: "https://factory.talos.dev/"
+          abbr: IF
+
+    - K8s:
+      - Reference Homepage:
+        - abbr: K8
+          href: https://kubernetes.io/docs/reference/
+          icon: 'https://kubernetes.io/images/wheel.svg'
+
 
   kubernetes.yaml: |
     mode: disabled
@@ -41,15 +52,12 @@ data:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
           href: "https://docker.home.k8s:30443/"
+
     - HomeLab General:
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
           description: Pi-Hole, LocalDNS
           href: "http://pi.hole/admin/"
-      - Talos Image Factory:
-          icon: 'https://www.talos.dev/images/logo.svg'
-          description: Generate/Upgrade TalosOS Images
-          href: "https://factory.talos.dev/"
       - OpenMediaVault:
           icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
           description: NAS Management
