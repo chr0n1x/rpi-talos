@@ -11,11 +11,38 @@
 # }
 #
 # have the hostname point to the ingress
+
 namespace: docker-registry
 
+helmCharts:
+- name: docker-registry-ui
+  includeCRDs: false
+  releaseName: docker-registry
+  namespace: docker-registry
+  repo: https://helm.joxit.dev
+  version: ~1
+  valuesInline:
+    registry:
+      enabled: true
+      dataVolume:
+        persistentVolumeClaim:
+          claimName: longhorn-docker-registry-pvc
+      ingress:
+        enabled: true
+        host: docker.home.k8s
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    ui:
+      ingress:
+          enabled: true
+          # automatically has a prefix of /v2
+          host: docker.home.k8s
+          annotations:
+            nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+            nginx.ingress.kubernetes.io/ssl-passthrough: "false"
 
 resources:
 - ./pvc.yaml
-- ./svc.yaml
-- ./deployment.yaml
-- ./ingress.yaml
