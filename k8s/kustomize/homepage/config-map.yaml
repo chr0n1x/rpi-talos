@@ -37,7 +37,10 @@ data:
           icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
           description: Prometheus Dashboard
           href: "https://prometheus.home.k8s:30443"
-
+      - Docker Registry:
+          icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
+          description: Internal LAN Docker Container Registry
+          href: "https://docker.home.k8s:30443/"
     - HomeLab General:
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
