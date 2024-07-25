@@ -109,6 +109,16 @@ releases:
     createNamespace: true
     chart: k8s-dashboard/kubernetes-dashboard
     version: ~7.5.0
+    # if you're not running too many things comment this out
+    values:
+      - api:
+          role: api
+          containers:
+            resources:
+              requests:
+                memory: 1Gi
+              limits:
+                memory: 2Gi
 
   - name: homepage
     namespace: homepage
