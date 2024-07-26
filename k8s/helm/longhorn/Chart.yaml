@@ -1,0 +1,21 @@
+# namespace must be privileged
+#
+# kubectl label namespace longhorn-system pod-security.kubernetes.io/enforce=privileged
+#
+# the above is done as an event hook in helmfile
+#
+# also make sure to upgrade nodes to include the talos scsi & unix tools
+#
+# e.g.:
+# factory.talos.dev/installer/5cb0db574a129de7e83cf4362a543d0ab16b0d803993312f9c521de4f44f878f:v1.7.5
+
+apiVersion: 1.0.0
+name: longhorn
+version: 1.0.0
+description: longhorn wrapper chart w/ CIFS support
+type: application
+
+dependencies:
+  - name: longhorn
+    version: ~1.6.2
+    repository: https://charts.longhorn.io

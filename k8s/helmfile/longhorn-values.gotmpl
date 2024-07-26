@@ -1,0 +1,6 @@
+backupTarget:
+  cifs:
+    enabled: true
+    host: {{ requiredEnv "CIFS_HOST_SHARE" }}
+    username: {{ requiredEnv "CIFS_USERNAME" }}
+    password: {{ requiredEnv "CIFS_PASSWORD" }}

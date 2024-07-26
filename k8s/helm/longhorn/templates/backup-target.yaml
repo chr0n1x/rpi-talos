@@ -1,0 +1,28 @@
+{{- if .Values.backupTarget.cifs.enabled -}}
+---
+apiVersion: longhorn.io/v1beta2
+kind: Setting
+metadata:
+  name: backup-target
+  namespace: {{ .Values.longhorn.namespaceOverride | default .Release.Namespace }}
+value: {{ .Values.backupTarget.cifs.host }}
+
+---
+apiVersion: longhorn.io/v1beta2
+kind: Setting
+metadata:
+  namespace: {{ .Values.longhorn.namespaceOverride | default .Release.Namespace }}
+  name: backup-target-credential-secret
+value: cif-backup-target-creds
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cif-backup-target-creds
+  namespace: {{ .Values.longhorn.namespaceOverride | default .Release.Namespace }}
+type: Opaque
+data:
+  CIFS_USERNAME: {{ .Values.backupTarget.cifs.username | b64enc }}
+  CIFS_PASSWORD: {{ .Values.backupTarget.cifs.password | b64enc }}
+{{- end -}}

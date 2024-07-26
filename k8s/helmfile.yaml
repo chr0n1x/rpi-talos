@@ -5,9 +5,6 @@ repositories:
   - name: k8s-dashboard
     url: https://kubernetes.github.io/dashboard/
 
-  - name: longhorn
-    url: https://charts.longhorn.io
-
   - name: grafana
     url: https://grafana.github.io/helm-charts
 
@@ -21,6 +18,22 @@ repositories:
     url: https://jameswynn.github.io/helm-charts
 
 releases:
+  - name: longhorn
+    namespace: longhorn-system
+    createNamespace: true
+    chart: ./helm/longhorn
+    values:
+      - helmfile/longhorn-values.gotmpl
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - label
+          - namespace
+          - longhorn-system
+          - pod-security.kubernetes.io/enforce=privileged
+
   # for more info on default installation:
   #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
   - name: descheduler
@@ -88,21 +101,6 @@ releases:
             - name: Prometheus
               type: prometheus
               url: http://prometheus-server
-
-  - name: longhorn
-    namespace: longhorn-system
-    createNamespace: true
-    chart: longhorn/longhorn
-    version: ~1.6.2
-    hooks:
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - label
-          - namespace
-          - longhorn-system
-          - pod-security.kubernetes.io/enforce=privileged
 
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard

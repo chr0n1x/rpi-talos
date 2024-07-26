@@ -2,3 +2,10 @@ export TALOSCONFIG=$(pwd)/talos/talosconfig
 export TALOS_NODES=
 export TALOS_CONTROL_NODES=
 export TALOS_WORKER_NODES=
+
+# required for longhorn
+# e.g. usage: create user/password in OMV web UI, paste them here
+export CIFS_PASSWORD=REPLACEME
+export CIFS_USERNAME=REPLACEME
+# then create a share in OMV web UI, put hostname in here
+export CIFS_HOST_SHARE=cifs://myomvinstance.lan/nox-nas-10tb-disc

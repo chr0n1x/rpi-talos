@@ -1,0 +1,7 @@
+# set in helmfile.yaml
+backupTarget:
+  cifs:
+    enabled: false
+    username: "REPLACE"
+    password: "REPLACE"
+    host: "REPLACE"
