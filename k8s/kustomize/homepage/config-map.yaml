@@ -26,6 +26,11 @@ data:
           href: https://kubernetes.io/docs/reference/
           icon: 'https://kubernetes.io/images/wheel.svg'
 
+    - General:
+      - OSI Networking Model:
+        - abbr: OM
+          href: https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/
+          icon: https://www.cloudflare.com/favicon.ico
 
   kubernetes.yaml: |
     mode: disabled
