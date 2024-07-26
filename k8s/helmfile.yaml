@@ -73,17 +73,18 @@ releases:
       - prometheus-node-exporter:
           rbac:
             create: true
+      - rbac:
+          create: true
+          podSecurityPolicy:
+            enabled: true
     hooks:
       # required for node-exporter metrics
       - events:
           - presync
-        command: kubectl
+        command: bash
         args:
-          - delete
-          - --namespace
-          - monitoring
-          - deployment
-          - prometheus-server
+          - -c
+          - "kubectl delete --namespace monitoring deployment prometheus-server || echo 'No prometheus-server found'"
       # required for node-exporter metrics
       - events:
           - cleanup
