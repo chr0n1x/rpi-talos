@@ -18,10 +18,25 @@ repositories:
     url: https://jameswynn.github.io/helm-charts
 
 releases:
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: kustomize/nginx
+    hooks:
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - apply
+          - --recursive
+          - -f
+          - manifests/post-install-configurations
+
   - name: longhorn
     namespace: longhorn-system
     createNamespace: true
     chart: ./helm/longhorn
+    needs:
+      - ingress-nginx/ingress-nginx
     values:
       - helmfile/longhorn-values.gotmpl
     hooks:
@@ -44,6 +59,9 @@ releases:
     namespace: monitoring
     createNamespace: true
     chart: prometheus/prometheus
+    needs:
+      - longhorn-system/longhorn
+      - ingress-nginx/ingress-nginx
     values:
       - persistence:
           enabled: true
@@ -83,6 +101,8 @@ releases:
     createNamespace: true
     needs:
       - monitoring/prometheus
+      - longhorn-system/longhorn
+      - ingress-nginx/ingress-nginx
     values:
       # this just started to fail one day, no idea
       - initChownData:
@@ -134,24 +154,9 @@ releases:
           - deployment
           - homepage
 
-  - name: keycloak
-    namespace: keycloak
-    chart: kustomize/keycloak
-    createNamespace: true
-
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    chart: kustomize/nginx
-    hooks:
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - apply
-          - --recursive
-          - -f
-          - manifests/post-install-configurations
-
   - name: docker-registry
     namespace: docker-registry
     chart: kustomize/docker-registry
+    needs:
+      - longhorn-system/longhorn
+      - ingress-nginx/ingress-nginx
