@@ -1,0 +1,4 @@
+smb:
+  host: mysmbhost/share-name
+  username: mysbuser
+  password: mysmbuser-pw

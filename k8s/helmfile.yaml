@@ -1,7 +1,4 @@
 repositories:
-  - name: prometheus
-    url: https://prometheus-community.github.io/helm-charts
-
   - name: k8s-dashboard
     url: https://kubernetes.github.io/dashboard/
 
@@ -30,6 +27,25 @@ releases:
           - --recursive
           - -f
           - manifests/post-install-configurations
+
+  - name: smb-csi
+    namespace: kube-system
+    chart: ./helm/smb-csi
+    values:
+      - helmfile/smb-csi.gotmpl
+    hooks:
+      # https://github.com/helm/helm/issues/8036
+      - events:
+          - prepare
+        command: rm
+        args:
+          - helm/smb-csi/Chart.lock
+      - events:
+          - presync
+        command: bash
+        args:
+          - -c
+          - "kubectl delete StorageClass smb || echo 'no smb StorageClass found'"
 
   - name: longhorn
     namespace: longhorn-system

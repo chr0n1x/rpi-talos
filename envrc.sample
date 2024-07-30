@@ -3,9 +3,15 @@ export TALOS_NODES=
 export TALOS_CONTROL_NODES=
 export TALOS_WORKER_NODES=
 
-# required for longhorn
+# required for SMB CSI
 # e.g. usage: create user/password in OMV web UI, paste them here
-export CIFS_PASSWORD=REPLACEME
-export CIFS_USERNAME=REPLACEME
+export SMB_PASSWORD=REPLACEME
+export SMB_USERNAME=REPLACEME
+# make sure this dir actually exists
+export SMB_HOST_SHARE=//myomvinstance.lan/my-share-name/dir-for-smb-csi-pvclaims
+
+# required for longhorn backups
+export CIFS_PASSWORD=$SMB_PASSWORD
+export CIFS_USERNAME=$SMB_USERNAME
 # then create a share in OMV web UI, put hostname in here
-export CIFS_HOST_SHARE=cifs://myomvinstance.lan/nox-nas-10tb-disc
+export CIFS_HOST_SHARE=cifs:${SMB_HOST_SHARE}/k8s-longhorn-sys

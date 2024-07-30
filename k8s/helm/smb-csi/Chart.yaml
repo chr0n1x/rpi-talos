@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: smb-csi
+version: 1.0.0
+description: smb-csi wrapper chart
+type: application
+
+dependencies:
+  - name: csi-driver-smb
+    version: ~1.9
+    repository: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts

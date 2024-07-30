@@ -1,0 +1,20 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: smb
+  namespace: {{ .Release.Namespace }}
+provisioner: smb.csi.k8s.io
+parameters:
+  source: {{ .Values.smb.host }}
+  csi.storage.k8s.io/provisioner-secret-name: {{ .Values.smb.credsName | default "smbcreds" }}
+  csi.storage.k8s.io/provisioner-secret-namespace: {{ .Release.Namespace }}
+  csi.storage.k8s.io/node-stage-secret-name: {{ .Values.smb.credsName | default "smbcreds" }}
+  csi.storage.k8s.io/node-stage-secret-namespace: {{ .Release.Namespace }}
+reclaimPolicy: Retain # available values: Delete, Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=1001
+  - gid=1001
