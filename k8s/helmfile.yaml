@@ -64,6 +64,14 @@ releases:
           - namespace
           - longhorn-system
           - pod-security.kubernetes.io/enforce=privileged
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - label
+          - StorageClass
+          - longhorn
+          - storageclass.kubernetes.io/is-default-class=true
 
   # for more info on default installation:
   #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
