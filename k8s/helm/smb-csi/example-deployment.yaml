@@ -18,6 +18,9 @@ spec:
     requests:
       storage: 50Mi
   storageClassName: smb
+  # uncomment and use this if you're using the same PV across
+  # deployments/debug-sessions
+  # volumeName: generated-smb-pv-name
 
 ---
 apiVersion: apps/v1
