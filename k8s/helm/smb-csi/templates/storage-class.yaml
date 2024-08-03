@@ -17,5 +17,11 @@ volumeBindingMode: Immediate
 mountOptions:
   - dir_mode=0777
   - file_mode=0777
+  # specifically for db locks
+  - nobrl
+  - cache=none
+  - noperm
+  - mfsymlinks
+  # I...dont know how I feel about this right now
   - uid=1001
   - gid=1001
