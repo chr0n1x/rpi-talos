@@ -28,6 +28,19 @@ releases:
           - -f
           - manifests/post-install-configurations
 
+  - name: oauth2-proxy
+    namespace: oauth2-proxy
+    chart: ./helm/oauth2-proxy
+    createNamespace: true
+    values:
+      - helmfile/oauth2-proxy.gotmpl
+    hooks:
+      - events:
+          - prepare
+        command: rm
+        args:
+          - helm/oauth2-proxy/Chart.lock
+
   - name: smb-csi
     namespace: kube-system
     chart: ./helm/smb-csi

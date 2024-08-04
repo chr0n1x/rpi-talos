@@ -15,3 +15,10 @@ export CIFS_PASSWORD=$SMB_PASSWORD
 export CIFS_USERNAME=$SMB_USERNAME
 # then create a share in OMV web UI, put hostname in here
 export CIFS_HOST_SHARE=cifs:${SMB_HOST_SHARE}/k8s-longhorn-sys
+
+# oidc w/ github as the idp
+# generate these here: https://github.com/settings/applications/new
+export GITHUB_APP_ID=
+export GITHUB_APP_SECRET=
+# comman-delimited list of usernames
+export GITHUB_ALLOWED_USERS=

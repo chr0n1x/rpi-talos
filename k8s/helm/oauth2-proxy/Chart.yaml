@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: oauth2-proxy
+version: 1.0.0
+description: oauth2-proxy wrapper chart
+type: application
+
+dependencies:
+  - name: oauth2-proxy
+    version: ~7
+    repository: https://oauth2-proxy.github.io/manifests
