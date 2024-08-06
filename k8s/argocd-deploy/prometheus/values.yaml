@@ -1,3 +1,8 @@
+# NOTE: at some point I did a
+#
+#  kubectl label namespace monitoring pod-security.kubernetes.io/enforce=privileged
+#
+# not sure if possible in argocd land
 prometheus:
   persistence:
     enabled: true

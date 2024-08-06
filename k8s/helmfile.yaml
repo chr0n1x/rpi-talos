@@ -5,9 +5,6 @@ repositories:
   - name: grafana
     url: https://grafana.github.io/helm-charts
 
-  - name: prometheus
-    url: https://prometheus-community.github.io/helm-charts
-
   - name: homepage
     url: https://jameswynn.github.io/helm-charts
 
@@ -97,46 +94,6 @@ releases:
           - 'rm helm/argocd/Chart.lock || :'
     values:
       - helmfile/argocd.gotmpl
-
-  - name: prometheus
-    namespace: monitoring
-    createNamespace: true
-    chart: prometheus/prometheus
-    needs:
-      - longhorn-system/longhorn
-      - ingress-nginx/ingress-nginx
-    values:
-      - persistence:
-          enabled: true
-          storageClassName: longhorn
-          # TODO: somehow find-or-create longhorn pvc?
-          # existingClaim: prometheus-pvc
-          accessModes:
-            - ReadWriteMany
-      - prometheus-node-exporter:
-          rbac:
-            create: true
-      - rbac:
-          create: true
-          podSecurityPolicy:
-            enabled: true
-    hooks:
-      # required for node-exporter metrics
-      - events:
-          - presync
-        command: bash
-        args:
-          - -c
-          - "kubectl delete --namespace monitoring deployment prometheus-server || echo 'No prometheus-server found'"
-      # required for node-exporter metrics
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - label
-          - namespace
-          - monitoring
-          - pod-security.kubernetes.io/enforce=privileged
 
   - name: grafana
     chart: grafana/grafana
