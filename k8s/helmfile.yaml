@@ -104,10 +104,3 @@ releases:
                 memory: 1Gi
               limits:
                 memory: 2Gi
-
-  - name: docker-registry
-    namespace: docker-registry
-    chart: kustomize/docker-registry
-    needs:
-      - longhorn-system/longhorn
-      - ingress-nginx/ingress-nginx
