@@ -17,16 +17,17 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kubernetes-dashboard
 
+
+  ignoreDifferences:
+    - kind: Secret
+      name: k8s-dashboard-kubernetes-dashboard-csrf
+      jsonPointers:
+        - /data/private.key
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1config
+
   syncPolicy:
     automated:
       selfHeal: true
-
-  ignoreDifferences:
-  - kind: Secret
-    name: k8s-dashboard-kubernetes-dashboard-csrf
-    jsonPointers:
-      - /data/private.key
-
-  - kind: Deployment
-    jsonPointers:
-      - /spec/template/metadata/annotations/checksum~1config
