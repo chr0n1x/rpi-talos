@@ -1,0 +1,5 @@
+apiVersion: 1.0.0
+name: core-argocd-applications
+version: 1.0.0
+description: chart containing all argocd apps for "core" cluster services
+type: application
