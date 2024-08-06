@@ -21,4 +21,4 @@ spec:
         - /data/password
   syncPolicy:
     automated:
-      autoHeal: true
+      selfHeal: true
