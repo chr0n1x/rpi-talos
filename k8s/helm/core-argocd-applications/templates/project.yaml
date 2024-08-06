@@ -8,4 +8,8 @@ metadata:
 spec:
   description: Project with all "core" cluster services that are NOT a part of bootstrap.
   sourceRepos:
-  - {{ .Values.repo.url }}
+    - {{ .Values.repo.url }}
+
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
