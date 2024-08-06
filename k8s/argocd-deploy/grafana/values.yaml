@@ -19,6 +19,7 @@ grafana:
         type: prometheus
         url: http://prometheus-server
 
+  # kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
   ingress:
     enabled: true
     hosts:
