@@ -1,13 +1,13 @@
 # repo metadata for THIS repo (e.g.: your fork)
 repo:
-  name: replace
-  url: replace
+  name: chr0n1x-rpi-talos.git
+  url: https://github.com/chr0n1x/rpi-talos.git
   token: replace
-  username: replace
+  username: chr0n-B07
 
 
 global:
-  domain: replaceme
+  domain: argocd.home.k8s
 
 argo-cd:
   configs:
