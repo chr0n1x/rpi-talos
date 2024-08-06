@@ -5,11 +5,10 @@ repo:
   token: replace
   username: chr0n-B07
 
-
-global:
-  domain: argocd.home.k8s
-
 argo-cd:
+  global:
+    domain: argocd.home.k8s
+
   configs:
     params:
       server.insecure: true

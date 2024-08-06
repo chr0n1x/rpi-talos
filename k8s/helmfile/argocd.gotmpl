@@ -4,10 +4,10 @@ repo:
   token: {{ requiredEnv "ARGOCD_GITHUB_TOKEN" }}
   username: {{ requiredEnv "ARGOCD_GITHUB_USER" }}
 
-global:
-  domain: argocd.{{ requiredEnv "HOMELAB_DOMAIN" }}
-
 argo-cd:
+  global:
+    domain: argocd.{{ requiredEnv "HOMELAB_DOMAIN" }}
+
   configs:
     params:
       server.insecure: true
