@@ -27,7 +27,6 @@ spec:
     jsonPointers:
       - /data/private.key
 
-  - kind: '*'
-    name: '*'
+  - kind: Deployment
     jsonPointers:
-      - /metadata/annotations/checksum~1config
+      - /spec/template/metadata/annotations/checksum~1config
