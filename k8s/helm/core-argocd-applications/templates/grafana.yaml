@@ -19,5 +19,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: monitoring
   syncPolicy:
+    # secret is flapping wtf
     automated:
-      selfHeal: true
