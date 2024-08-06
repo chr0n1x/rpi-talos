@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: {{ .Values.argocd.project.name }}
+  project: default
   source:
     repoURL: {{ .Values.repo.url }}
     path: k8s/argocd-deploy/descheduler

@@ -1,7 +1,5 @@
 argocd:
   namespace: argocd
-  project:
-    name: core-services
 
 # note: needs to match the repo that's provisioned in
 # ../helm/argocd/templates/this-repo.yaml
