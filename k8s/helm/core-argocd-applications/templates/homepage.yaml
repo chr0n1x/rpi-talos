@@ -11,6 +11,8 @@ spec:
     repoURL: {{ .Values.repo.url }}
     path: k8s/argocd-deploy/homepage
     targetRevision: HEAD
+    kustomize:
+      buildOptions: --enable-helm
   destination:
     server: https://kubernetes.default.svc
     namespace: homepage
