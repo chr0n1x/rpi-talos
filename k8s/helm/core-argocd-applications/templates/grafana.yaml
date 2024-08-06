@@ -19,5 +19,8 @@ spec:
     server: https://kubernetes.default.svc
     namespace: monitoring
   syncPolicy:
-    # secret is flapping wtf
     automated:
+      # secret flaps, which then causes RS to flap...?
+      prune: false
+      selfHeal: true
+      allowEmpty: true
