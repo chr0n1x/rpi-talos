@@ -24,4 +24,5 @@ spec:
   ignoreDifferences:
   - kind: Secret
     name: k8s-dashboard-kubernetes-dashboard-csrf
-    jsonPointers: /data/private.key
+    jsonPointers:
+      - /data/private.key
