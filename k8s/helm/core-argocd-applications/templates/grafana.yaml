@@ -18,9 +18,17 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
+
+  ignoreDifferences:
+    - kind: Secret
+      group: "*"
+      jsonPointers:
+        - /data/admin-password
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1secret
+
   syncPolicy:
     automated:
-      # secret flaps, which then causes RS to flap...?
-      prune: false
-      selfHeal: false
-      allowEmpty: true
+      selfHeal: true
