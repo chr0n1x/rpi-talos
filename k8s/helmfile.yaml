@@ -88,6 +88,19 @@ releases:
           - longhorn
           - storageclass.kubernetes.io/is-default-class=true
 
+  - name: argocd
+    namespace: argocd
+    chart: ./helm/argocd
+    hooks:
+      - events:
+          - prepare
+        command: bash
+        args:
+          - -c
+          - 'rm helm/argocd/Chart.lock || :'
+    values:
+      - helmfile/argocd.gotmpl
+
   # for more info on default installation:
   #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
   - name: descheduler
