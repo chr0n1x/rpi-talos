@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kustomize-build-with-helm
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
 data:
-  plugin.yaml: |
-    apiVersion: argoproj.io/v1alpha1
-    kind: ConfigManagementPlugin
-    metadata:
-      name: kustomize-build-with-helm
-    spec:
-      generate:
-        command: [ "sh", "-c" ]
-        args: [ "kustomize build --enable-helm" ]
+    kustomize.buildOptions: --enable-helm
