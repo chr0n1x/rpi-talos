@@ -26,3 +26,8 @@ spec:
     name: k8s-dashboard-kubernetes-dashboard-csrf
     jsonPointers:
       - /data/private.key
+
+  - kind: '*'
+    name: '*'
+    jsonPointers:
+      - /metadata/annotations/checksum~1config
