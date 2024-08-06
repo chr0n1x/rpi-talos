@@ -21,7 +21,8 @@ grafana:
 
   ingress:
     enabled: true
-    host: grafana.home.k8s
+    hosts:
+    - grafana.home.k8s
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
