@@ -15,4 +15,5 @@ spec:
     namespace: {{ .Release.Namespace }}
   syncPolicy:
     automated:
-      selfHeal: true
+      # TODO: leaving this off until I get a secret store up
+      selfHeal: false
