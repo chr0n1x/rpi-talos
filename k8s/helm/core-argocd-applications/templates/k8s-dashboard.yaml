@@ -16,4 +16,4 @@ spec:
     namespace: kubernetes-dashboard
   syncPolicy:
     automated:
-      selfHeal: true
+      selfHeal: false
