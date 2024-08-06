@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: grafana
+version: 1.0.0
+description: grafana wrapper chart
+type: application
+
+dependencies:
+  - name: grafana
+    version: ~8.3.2
+    repository: https://grafana.github.io/helm-charts

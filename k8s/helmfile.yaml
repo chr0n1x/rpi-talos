@@ -2,9 +2,6 @@ repositories:
   - name: k8s-dashboard
     url: https://kubernetes.github.io/dashboard/
 
-  - name: grafana
-    url: https://grafana.github.io/helm-charts
-
   - name: homepage
     url: https://jameswynn.github.io/helm-charts
 
@@ -94,34 +91,6 @@ releases:
           - 'rm helm/argocd/Chart.lock || :'
     values:
       - helmfile/argocd.gotmpl
-
-  - name: grafana
-    chart: grafana/grafana
-    version: ~8.3.2
-    namespace: monitoring
-    createNamespace: true
-    needs:
-      - monitoring/prometheus
-      - longhorn-system/longhorn
-      - ingress-nginx/ingress-nginx
-    values:
-      # this just started to fail one day, no idea
-      - initChownData:
-          enabled: false
-      - persistence:
-          enabled: true
-          storageClassName: longhorn
-          # TODO: somehow find-or-create longhorn pvc?
-          # existingClaim: grafana-pvc
-          accessModes:
-            - ReadWriteMany
-      - datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-            - name: Prometheus
-              type: prometheus
-              url: http://prometheus-server
 
   - name: kubernetes-dashboard
     namespace: kubernetes-dashboard

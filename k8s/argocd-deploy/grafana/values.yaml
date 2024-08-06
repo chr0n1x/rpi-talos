@@ -1,0 +1,20 @@
+grafana:
+  # this just started to fail one day, no idea
+  initChownData:
+    enabled: false
+
+  persistence:
+    enabled: true
+    storageClassName: longhorn
+    # TODO: somehow find-or-create longhorn pvc?
+    # existingClaim: grafana-pvc
+    accessModes:
+      - ReadWriteMany
+
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server
