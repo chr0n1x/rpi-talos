@@ -1,7 +1,3 @@
-repositories:
-  - name: k8s-dashboard
-    url: https://kubernetes.github.io/dashboard/
-
 releases:
   - name: ingress-nginx
     namespace: ingress-nginx
@@ -88,19 +84,3 @@ releases:
           - 'rm helm/argocd/Chart.lock || :'
     values:
       - helmfile/argocd.gotmpl
-
-  - name: kubernetes-dashboard
-    namespace: kubernetes-dashboard
-    createNamespace: true
-    chart: k8s-dashboard/kubernetes-dashboard
-    version: ~7.5.0
-    # if you're not running too many things comment this out
-    values:
-      - api:
-          role: api
-          containers:
-            resources:
-              requests:
-                memory: 1Gi
-              limits:
-                memory: 2Gi
