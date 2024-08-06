@@ -2,15 +2,6 @@ releases:
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: kustomize/nginx
-    hooks:
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - apply
-          - --recursive
-          - -f
-          - manifests/post-install-configurations
 
   - name: oauth2-proxy
     namespace: oauth2-proxy
