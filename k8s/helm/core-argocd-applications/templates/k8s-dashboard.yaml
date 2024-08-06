@@ -7,13 +7,21 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+
   source:
     repoURL: {{ .Values.repo.url }}
     path: k8s/argocd-deploy/k8s-dashboard
     targetRevision: HEAD
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kubernetes-dashboard
+
   syncPolicy:
     automated:
-      selfHeal: false
+      selfHeal: true
+
+  ignoreDifferences:
+  - kind: Secret
+    name: k8s-dashboard-kubernetes-dashboard-csrf
+    jsonPointers: /data/private.key
