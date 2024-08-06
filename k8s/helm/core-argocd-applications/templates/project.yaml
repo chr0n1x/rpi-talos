@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.argocd.project.name }}
+  namespace: {{ .Values.argocd.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Project with all "core" cluster services that are NOT a part of bootstrap.
+  sourceRepos:
+  - {{ .Values.repo.url }}
