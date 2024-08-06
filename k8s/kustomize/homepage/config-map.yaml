@@ -58,6 +58,11 @@ data:
           description: Internal LAN Docker Container Registry
           href: "https://docker.home.k8s:30443/"
 
+      - ArgoCD:
+          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+          description: ArgoCD!
+          href: "https://argocd.home.k8s:30443/applications"
+
     - HomeLab General:
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
