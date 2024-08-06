@@ -1,0 +1,17 @@
+prometheus:
+  persistence:
+    enabled: true
+    storageClassName: longhorn
+    # TODO: somehow find-or-create longhorn pvc?
+    # existingClaim: prometheus-pvc
+    accessModes:
+      - ReadWriteMany
+
+  prometheus-node-exporter:
+    rbac:
+      create: true
+
+  rbac:
+    create: true
+    podSecurityPolicy:
+      enabled: true

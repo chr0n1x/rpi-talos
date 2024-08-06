@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: prometheus
+version: 1.0.0
+description: prometheus wrapper chart
+type: application
+
+dependencies:
+  - name: prometheus
+    version: ~25.25
+    repository: https://prometheus-community.github.io/helm-charts
