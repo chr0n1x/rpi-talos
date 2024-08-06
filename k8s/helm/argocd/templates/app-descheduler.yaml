@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: {{ .Values.repo.url }}
-    path: k8s/kustomize/descheduler
+    path: k8s/helm/descheduler
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: descheduler
+version: 1.0.0
+description: descheduler wrapper chart w/ policies
+type: application
+
+dependencies:
+  - name: descheduler
+    version: ~0.30
+    repository: https://kubernetes-sigs.github.io/descheduler/

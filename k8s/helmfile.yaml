@@ -8,9 +8,6 @@ repositories:
   - name: prometheus
     url: https://prometheus-community.github.io/helm-charts
 
-  - name: descheduler
-    url: https://kubernetes-sigs.github.io/descheduler/
-
   - name: homepage
     url: https://jameswynn.github.io/helm-charts
 
@@ -100,12 +97,6 @@ releases:
           - 'rm helm/argocd/Chart.lock || :'
     values:
       - helmfile/argocd.gotmpl
-
-  # for more info on default installation:
-  #   https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/README.md
-  - name: descheduler
-    namespace: kube-system
-    chart: descheduler/descheduler
 
   - name: prometheus
     namespace: monitoring
