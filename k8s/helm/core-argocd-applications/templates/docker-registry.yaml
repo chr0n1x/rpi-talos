@@ -11,10 +11,6 @@ spec:
     repoURL: {{ .Values.repo.url }}
     path: k8s/argocd-deploy/docker-registry
     targetRevision: HEAD
-    helm:
-      valueFiles:
-        - ../values.yaml
-        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: docker-registry
