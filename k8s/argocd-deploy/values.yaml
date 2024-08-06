@@ -1,0 +1,4 @@
+# global values that all deployed apps might want to know about
+# TODO: re-evaluate, something still does not sit right with this
+argocd:
+  namespace: argocd

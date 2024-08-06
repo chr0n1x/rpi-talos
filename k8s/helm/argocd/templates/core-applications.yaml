@@ -1,18 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: descheduler
+  name: core-applications
+  namespace: {{ .Release.Namespace }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: {{ .Values.repo.url }}
-    path: k8s/helm/descheduler
+    path: k8s/helm/core-argocd-applications
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: {{ .Release.Namespace }}
   syncPolicy:
     automated:
       selfHeal: true

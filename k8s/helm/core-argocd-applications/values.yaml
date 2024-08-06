@@ -1,0 +1,9 @@
+argocd:
+  namespace: argocd
+
+# note: needs to match the repo that's provisioned in
+# ../helm/argocd/templates/this-repo.yaml
+#
+# TODO: not quite sure how I want to do this yet, this feels weird
+repo:
+  url: https://github.com/chr0n1x/rpi-talos.git
