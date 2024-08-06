@@ -14,12 +14,11 @@ spec:
     server: https://kubernetes.default.svc
     namespace: {{ .Release.Namespace }}
 
+  # TODO: leaving this off until I get a secret store up
   ignoreDifferences:
     - kind: Secret
       jsonPointers:
         - /data/password
-
   syncPolicy:
-    # equivalent of NULL
-    # TODO: leaving this off until I get a secret store up
     automated:
+      autoHeal: true
