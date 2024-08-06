@@ -22,5 +22,5 @@ spec:
     automated:
       # secret flaps, which then causes RS to flap...?
       prune: false
-      selfHeal: true
+      selfHeal: false
       allowEmpty: true
