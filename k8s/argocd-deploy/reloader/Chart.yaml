@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: reloader
+version: 1.0.0
+description: reloader wrapper chart
+type: application
+
+dependencies:
+  - name: reloader
+    version: ~1
+    repository: https://stakater.github.io/stakater-charts
