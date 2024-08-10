@@ -72,10 +72,17 @@ data:
           icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
           description: NAS Management
           href: "http://nas.lan/"
+
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "http://nas.lan:3670/"
+
+      - ProxmoxVE:
+          icon: 'https://www.proxmox.com/favicon.svg'
+          description: Proxmox VE
+          href: "https://proxmox.lan:8006/"
+
 
     - Tools:
       - Oryx:
