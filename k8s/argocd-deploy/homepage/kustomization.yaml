@@ -12,7 +12,6 @@ helmCharts:
       repository: ghcr.io/gethomepage/homepage
       tag: latest
 
-
 resources:
 - ./ingress.yaml
 - ./sa.yaml
@@ -23,3 +22,13 @@ patches:
   target:
     kind: ConfigMap
     name: homepage
+
+- patch: |-
+    - op: add
+      path: /metadata/annotations
+      value:
+        configmap.reloader.stakater.com/reload: "homepage"
+  target:
+      kind: Deployment
+      name: homepage
+
