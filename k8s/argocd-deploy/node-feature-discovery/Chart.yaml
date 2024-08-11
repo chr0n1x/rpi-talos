@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: nfs
+version: 1.0.0
+description: node-feature-discovery utils wrapper chart
+type: application
+
+dependencies:
+  - name: node-feature-discovery
+    version: ~0.14
+    repository: https://kubernetes-sigs.github.io/node-feature-discovery/charts
