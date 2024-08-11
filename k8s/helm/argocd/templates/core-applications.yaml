@@ -16,5 +16,5 @@ spec:
     namespace: {{ .Release.Namespace }}
   syncPolicy:
     automated:
-      selfHeal: true
-      prune: true
+      - SelfHeal=true
+      - PruneLast=true
