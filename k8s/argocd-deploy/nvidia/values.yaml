@@ -1,0 +1,2 @@
+nvidia-device-plugin:
+  namespaceOverride: nvidia

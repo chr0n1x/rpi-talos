@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: nvidia
+version: 1.0.0
+description: nvidia utils wrapper chart
+type: application
+
+dependencies:
+  - name: nvidia-device-plugin
+    version: ~0.16
+    repository: https://nvidia.github.io/k8s-device-plugin

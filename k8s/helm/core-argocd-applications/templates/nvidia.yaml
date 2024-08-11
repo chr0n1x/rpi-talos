@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nvidia
+  namespace: {{ .Values.argocd.namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: {{ .Values.repo.url }}
+    path: k8s/argocd-deploy/nvidia
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nvidia
+  syncPolicy:
+    automated:
+      selfHeal: true
