@@ -26,6 +26,11 @@ data:
           href: https://kubernetes.io/docs/reference/
           icon: 'https://kubernetes.io/images/wheel.svg'
 
+      - Awesome K8s:
+        - abbr: AK
+          href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
+          icon: 'https://octodex.github.com/images/adventure-cat.png'
+
     - General:
       - OSI Networking Model:
         - abbr: OM
