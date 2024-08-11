@@ -1,3 +1,43 @@
+# For proxmox VMs - BIOS settings here:
+#
+#   https://pve.proxmox.com/wiki/NVIDIA_vGPU_on_Proxmox_VE
+#
+# After that in proxmox (8.x as of writing this):
+#
+#   Datacenter -> Resource Mappings -> PCI Devices -> Add
+#   Add a mapping for your nvidia gpu
+#
+#   Datacenter -> proxmox (instance [host] name) -> System -> network
+#   create a bridge to your ethernet port (talos requires an eth port)
+#     create -> linux bridge -> put the name of your eth port in "Bridge ports"
+#
+# When using talos, use the official docs and ignore the driver installation
+# things in the proxmox docs after BIOS/hardware preparation, go through this
+# doc instead:
+#
+#   https://www.talos.dev/v1.7/talos-guides/configuration/nvidia-gpu/
+#
+# After configuring and obtaining an image via the talos doc above:
+#   1. upload talos ISO to proxmox
+#   2. create new VM/template in proxmox
+#      (Datacenter -> proxmox -> local (storage) -> ISO images)
+#   3. make sure that you've created and configured your network devices appropriately
+#      (i.e.: make sure that your eth0 or whatever is working, and that after
+#      you've configured a bridge in the proxmox UI that
+#      /etc/network/interfaces is updated after a reboot)
+#   4. in your VM -> Hardware -> Add your nvidia card PCI mapping created above
+#   5. Under VM -> Options: make sure to make your SCSI HDD the initial
+#      bootdisk, ISO second. uncheck net if you don't have it setup (will cause
+#      BIOS load screen to stallllll)
+#   6. Start your VM. It'll take you to the BIOS screen.
+#      If you change the boot order (in the BIOS) to use the ISO, save and
+#      continue, but nothing happens, you may have to turn off SecureBoot
+#      (also an option in the BIOS)
+#
+# After all of that, check out this helm repo to auto-detect hardware on your
+# nodes, add label capabilities (values below leverage this chart)
+#
+#   https://github.com/NVIDIA/k8s-device-plugin/tree/main/docs/gpu-feature-discovery
 nvidia-device-plugin:
   namespaceOverride: nvidia
   runtimeClassName: nvidia
