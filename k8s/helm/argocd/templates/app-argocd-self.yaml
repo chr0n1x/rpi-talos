@@ -21,4 +21,5 @@ spec:
         - /data/password
   syncPolicy:
     automated:
-      selfHeal: true
+      selfHeal: false
+      prune: false
