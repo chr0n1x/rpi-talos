@@ -1,13 +1,6 @@
 open-webui:
-  affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: nvidia.com/gpu.count
-              operator: Gt
-              values:
-              - 0
+  nodeSelector:
+    nvidia.com/gpu.family: pascal
 
   ingress:
     class: nginx
