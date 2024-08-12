@@ -1,8 +1,8 @@
-persistence:
+# persistence:
   # changes depending on what you're doing with CSI
   # in my case I have a default longhorn CSI config so this is dynamically
   # created for me
-  volumeName: pvc-7bedf8a1-5966-4448-9902-e42dc7011cd7 
+  # volumeName: pvc-7bedf8a1-5966-4448-9902-e42dc7011cd7 
 
 docker-registry-ui:
   registry:
@@ -10,6 +10,7 @@ docker-registry-ui:
     dataVolume:
       persistentVolumeClaim:
         claimName: longhorn-docker-registry-pvc
+        storageClassName: smb
     ingress:
       enabled: true
       host: docker.home.k8s

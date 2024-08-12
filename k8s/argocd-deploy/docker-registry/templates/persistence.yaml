@@ -11,4 +11,6 @@ spec:
   resources:
     requests:
       storage: 30Gi
+  {{- if .Values.persistence.volumeName -}}
   volumeName: {{ .Values.persistence.volumeName }}
+  {{- end -}}
