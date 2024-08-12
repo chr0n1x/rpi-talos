@@ -9,8 +9,16 @@ open-webui:
   nodeSelector:
     nvidia.com/gpu.family: pascal
 
+  # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
+    runtimeClassName: nvidia
     enabled: true
+    ollama:
+      gpu:
+        enabled: true
+        number: 1
+        type: nvidia
+
 
   ingress:
     class: nginx
