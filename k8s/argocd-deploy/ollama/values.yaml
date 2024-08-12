@@ -1,11 +1,14 @@
+ollama:
+  # all defaults work with my nvidia setup so 🤷‍♂️
+  gpu:
+    enabled: true
+
+  models:
+    - gemma2
+
 open-webui:
   nodeSelector:
     nvidia.com/gpu.family: pascal
-
-  ollama:
-    # all defaults work with my nvidia setup so 🤷‍♂️
-    gpu:
-      enabled: true
 
   ingress:
     class: nginx
