@@ -4,13 +4,15 @@
   # created for me
   # volumeName: pvc-7bedf8a1-5966-4448-9902-e42dc7011cd7 
 
+persistence:
+  class: smb
+
 docker-registry-ui:
   registry:
     enabled: true
     dataVolume:
       persistentVolumeClaim:
         claimName: longhorn-docker-registry-pvc
-        storageClassName: smb
     ingress:
       enabled: true
       host: docker.home.k8s
