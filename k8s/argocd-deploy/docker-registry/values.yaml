@@ -4,7 +4,7 @@ persistence:
   # created for me
   volumeName: pvc-7bedf8a1-5966-4448-9902-e42dc7011cd7 
 
-docker-registry:
+docker-registry-ui:
   registry:
     enabled: true
     dataVolume:

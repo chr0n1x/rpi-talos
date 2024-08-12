@@ -19,6 +19,6 @@ type: application
 # have the hostname point to the ingress
 
 dependencies:
-  - name: docker-registry
+  - name: docker-registry-ui
     version: ~1
     repository: https://helm.joxit.dev
