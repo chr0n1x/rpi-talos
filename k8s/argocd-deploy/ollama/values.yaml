@@ -9,6 +9,7 @@ open-webui:
             values:
             - 0
   ingress:
+    ingressClass: nginx
     enabled: true
     host: ollama.home.k8s
     annotations:
