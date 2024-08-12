@@ -31,6 +31,23 @@ data:
           href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
           icon: 'https://octodex.github.com/images/adventure-cat.png'
 
+    - AI / Ollama:
+
+      - Ollama:
+        - abbr: Ol
+          href: https://ollama.com/search
+          icon: 'https://ollama.com/public/ollama.png'
+
+      - Hugging Face:
+        - abbr: HF
+          href: https://huggingface.co/
+          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+
+      - PapersWithCode:
+        - abbr: PC
+          href: https://paperswithcode.com/
+          icon: 'https://production-assets.paperswithcode.com/static/logo_192.png'
+
     - General:
       - OSI Networking Model:
         - abbr: OM
@@ -67,6 +84,11 @@ data:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
           href: "https://argocd.home.k8s:30443/applications"
+
+      - Ollama:
+          icon: 'https://ollama.com/public/ollama.png'
+          description: Ollama in-cluster via open-webui
+          href:  https://ollama.home.k8s:30443/"
 
     - HomeLab General:
       - Pi-Hole:
