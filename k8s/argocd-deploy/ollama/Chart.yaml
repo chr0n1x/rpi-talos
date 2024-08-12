@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: ollama
+version: 1.0.0
+description: open-webui and ollama wrapper chart
+type: application
+
+dependencies:
+  - name: open-webui
+    version: ~3
+    repository: https://helm.openwebui.com/
