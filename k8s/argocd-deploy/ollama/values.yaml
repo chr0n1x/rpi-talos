@@ -1,13 +1,14 @@
 open-webui:
   affinity:
       nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: nvidia.com/gpu.count
-            operator: Gt
-            values:
-            - 0
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: nvidia.com/gpu.count
+              operator: Gt
+              values:
+              - 0
+
   ingress:
     class: nginx
     enabled: true
