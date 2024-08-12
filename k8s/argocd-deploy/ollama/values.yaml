@@ -2,6 +2,11 @@ open-webui:
   nodeSelector:
     nvidia.com/gpu.family: pascal
 
+  ollama:
+    # all defaults work with my nvidia setup so 🤷‍♂️
+    gpu:
+      enabled: true
+
   ingress:
     class: nginx
     enabled: true
@@ -10,4 +15,3 @@ open-webui:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-
