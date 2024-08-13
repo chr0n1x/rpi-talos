@@ -10,6 +10,30 @@ data:
   docker.yaml: ''
 
   bookmarks.yaml: |
+    - AI / Ollama:
+      - Ollama:
+        - abbr: Ol
+          href: https://ollama.com/search
+          icon: 'https://ollama.com/public/ollama.png'
+      - Hugging Face:
+        - abbr: HF
+          href: https://huggingface.co/
+          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+      - PapersWithCode:
+        - abbr: PC
+          href: https://paperswithcode.com/
+          icon: 'https://production-assets.paperswithcode.com/static/logo_192.png'
+
+    - K8s:
+      - Reference Homepage:
+        - abbr: K8
+          href: https://kubernetes.io/docs/reference/
+          icon: 'https://kubernetes.io/images/wheel.svg'
+      - Awesome K8s:
+        - abbr: AK
+          href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
+          icon: 'https://octodex.github.com/images/adventure-cat.png'
+
     - Talos Linux:
       - Machine Config API:
         - abbr: TA
@@ -19,34 +43,6 @@ data:
         - icon: 'https://www.talos.dev/images/logo.svg'
           href: "https://factory.talos.dev/"
           abbr: IF
-
-    - K8s:
-      - Reference Homepage:
-        - abbr: K8
-          href: https://kubernetes.io/docs/reference/
-          icon: 'https://kubernetes.io/images/wheel.svg'
-
-      - Awesome K8s:
-        - abbr: AK
-          href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
-          icon: 'https://octodex.github.com/images/adventure-cat.png'
-
-    - AI / Ollama:
-
-      - Ollama:
-        - abbr: Ol
-          href: https://ollama.com/search
-          icon: 'https://ollama.com/public/ollama.png'
-
-      - Hugging Face:
-        - abbr: HF
-          href: https://huggingface.co/
-          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
-
-      - PapersWithCode:
-        - abbr: PC
-          href: https://paperswithcode.com/
-          icon: 'https://production-assets.paperswithcode.com/static/logo_192.png'
 
     - General:
       - OSI Networking Model:
@@ -79,12 +75,10 @@ data:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
           href: "https://docker.home.k8s:30443/"
-
       - ArgoCD:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
           href: "https://argocd.home.k8s:30443/applications"
-
       - Ollama:
           icon: 'https://ollama.com/public/ollama.png'
           description: Ollama in-cluster via open-webui
@@ -99,17 +93,14 @@ data:
           icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
           description: NAS Management
           href: "http://nas.lan/"
-
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "http://nas.lan:3670/"
-
       - ProxmoxVE:
           icon: 'https://www.proxmox.com/favicon.svg'
           description: Proxmox VE
           href: "https://proxmox.lan:8006/"
-
 
     - Tools:
       - Oryx:
