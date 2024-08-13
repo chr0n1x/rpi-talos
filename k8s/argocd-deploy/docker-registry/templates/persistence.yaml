@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-docker-registry-pvc
+  name: docker-registry-pvc
   namespace: docker-registry
 spec:
   accessModes:
