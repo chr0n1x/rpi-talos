@@ -8,13 +8,13 @@ spec:
   accessModes:
     - ReadWriteMany
 
-  {{- if (.Values.persistence).class -}}
+  {{- if (.Values.persistence).class }}
   storageClassName: {{ .Values.persistence.class }}
-  {{- end -}}
+  {{- end }}
 
   resources:
     requests:
-      storage: 30Gi
+      storage: 128Gi
   {{- if (.Values.persistence).volumeName -}}
   volumeName: {{ .Values.persistence.volumeName }}
   {{- end -}}
