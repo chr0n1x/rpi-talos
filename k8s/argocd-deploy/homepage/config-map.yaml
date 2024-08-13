@@ -88,7 +88,7 @@ data:
       - Ollama:
           icon: 'https://ollama.com/public/ollama.png'
           description: Ollama in-cluster via open-webui
-          href:  https://ollama.home.k8s:30443/"
+          href: https://ollama.home.k8s:30443/
 
     - HomeLab General:
       - Pi-Hole:
