@@ -14,7 +14,8 @@ spec:
 
   resources:
     requests:
-      storage: 128Gi
-  {{- if (.Values.persistence).volumeName -}}
+      storage: {{ (.Values.persistence).size | default "128Gi" }}
+
+  {{- if (.Values.persistence).volumeName }}
   volumeName: {{ .Values.persistence.volumeName }}
   {{- end -}}
