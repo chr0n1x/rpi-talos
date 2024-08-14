@@ -1,0 +1,29 @@
+# talosctl -n <node ip> patch mc --patch @talos/config-longhorn.patch.yaml
+machine:
+  kubelet:
+    extraMounts:
+      # longhorn requires an explicit mount
+      # this is straight to the boot disc
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+
+      # any other mounts; make sure that the dirs are all the same;
+      # it's just easier to debug
+      - destination: /var/mnt/sda/longhorn
+        type: bind
+        source: /var/mnt/sda/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+
+    # get/add these by identifying your devices via `lsblk`
+    disks:
+        - device: /dev/sda # The name of the disk to use.
+          partitions:
+            - mountpoint: /var/mnt/sda/longhorn
