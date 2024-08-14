@@ -4,7 +4,7 @@ persistence:
   #
   # if reclaiming remember to do this if pvc is stuck in PENDING
   # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
-  volumeName: pvc-f2f46f9b-f4fe-4aad-ab31-e426d51f7017
+  # volumeName: pvc-f2f46f9b-f4fe-4aad-ab31-e426d51f7017
   size: 128Gi
 
 docker-registry-ui:
