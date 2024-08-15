@@ -81,7 +81,7 @@ apply:
 # TODO: account for TALOSCONFIG env var
 talosconfig:
 	talosctl gen config $$SEED_NODE_IPV4 --role controlplane --insecure
-	talosctl bootstrap --nodes $$SEED_NODE_IPV4
+	talosctl bootstrap --nodes $$SEED_NODE_IPV4 --endpoints $$SEED_NODE_IPV4
 	talosctl kubeconfig
 
 
