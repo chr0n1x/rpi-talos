@@ -1,6 +1,11 @@
+# https://github.com/longhorn/longhorn/blob/master/chart/templates/default-setting.yaml
+longhorn:
+  defaultSettings:
+    backupTarget: {{ requiredEnv "CIFS_HOST_SHARE" }}
+    backupTargetCredentialSecret: cifs-backup-target-creds
+
 backupTarget:
   cifs:
     enabled: true
-    host: {{ requiredEnv "CIFS_HOST_SHARE" }}
     username: {{ requiredEnv "CIFS_USERNAME" }}
     password: {{ requiredEnv "CIFS_PASSWORD" }}
