@@ -65,6 +65,7 @@ releases:
 
   - name: argocd
     namespace: argocd
+    disableValidationOnInstall: true # to avoid errs w/ CRDs not existing
     chart: ./helm/argocd
     hooks:
       - events:
