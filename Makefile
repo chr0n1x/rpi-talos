@@ -70,19 +70,41 @@ apply:
 	helmfile --file k8s/helmfile.yaml apply
 
 
-# SEED_NODE_IPV4 is the local ip of the node that you have on and are actively
-# monitoring while you go through this process
 #
-# TODO: dynamic IPs?
-
+# INITIAL NODE BOOTSTRAPPING TARGETS - WORKS AS OF TALOS 1.7.6
+#
+# CLUSTER_NAME   whatever you want to call this cluster
+# SEED_NODE_IPV4 the local ip of the node that you have on and are actively
+#                monitoring while you go through this process
+#
 # generates a fresh set of configs
 #   - a talosconfig, which defines creds & spinup configs for your cluster
 #   - worker & controlplane configs to be applied to the respective nodes
-# TODO: account for TALOSCONFIG env var
-talosconfig:
-	talosctl gen config $$SEED_NODE_IPV4 --role controlplane --insecure
-	talosctl bootstrap --nodes $$SEED_NODE_IPV4 --endpoints $$SEED_NODE_IPV4
-	talosctl kubeconfig
+#   - kubeconfig
+#
+# ex command:
+#
+# 	CLUSTER_NAME=px-experimental SEED_NODE_IPV4=192.168.86.34 make init-node-0
+#
+# TODO / NOTE: these targets need to be run in order. I have no automated the
+# 			   sequence & monitoring of events yet
+init-node-0:
+	talosctl gen config $$CLUSTER_NAME https://$$SEED_NODE_IPV4:6443
+	yq -i ".contexts.px-experimental.endpoints = [\"$$SEED_NODE_IPV4\"]" talosconfig
+	yq -i ".contexts.px-experimental.nodes = [\"$$SEED_NODE_IPV4\"]" talosconfig
+	talosctl --talosconfig talosconfig apply-config --nodes $$SEED_NODE_IPV4 --file controlplane.yaml --insecure
+# after the above, first control node will reboot; wait for it to come up before running this
+prep-node-0:
+	talosctl --talosconfig talosconfig apply-config --nodes $$SEED_NODE_IPV4 --file controlplane.yaml --insecure
+# after second apply above, node will ask to bootstrap
+bootstrap:
+	talosctl --talosconfig talosconfig bootstrap --nodes $$SEED_NODE_IPV4
+	talosctl --talosconfig talosconfig kubeconfig ./kubeconfig
+	talosctl --talosconfig talosconfig -n $$SEED_NODE_IPV4 health
+# after all of this, you'll have all configs ready to go
+# convenience; dangerous, don't use unless you know what you're doing and/or have backed up yo shiiiii
+clean:
+	rm -f controlplane.yaml worker.yaml talosconfig kubeconfig
 
 
 talos/nodes-all.csv:
