@@ -1,0 +1,14 @@
+apiVersion: v1
+name: rpi-talos-crds
+version: 1.0.0
+description: wrapper chart to bootstrap CRDs
+type: application
+
+dependencies:
+  - name: longhorn
+    version: ~1.6.2
+    repository: https://charts.longhorn.io
+
+  - name: argo-cd
+    version: ~7
+    repository: https://argoproj.github.io/argo-helm
