@@ -103,7 +103,9 @@ bootstrap:
 	talosctl --talosconfig talosconfig bootstrap --nodes $$SEED_NODE_IPV4
 	talosctl --talosconfig talosconfig kubeconfig ./kubeconfig
 	talosctl --talosconfig talosconfig -n $$SEED_NODE_IPV4 health
-	@echo "Ready; you can now - talosctl --talosconfig talosconfig -n <worker IP> worker.yaml --insecure"
+	@echo "Ready; you can now run"
+	@echo "  talosctl --talosconfig talosconfig -n <worker IP> worker.yaml --insecure"
+	@echo "...twice. Once to configure the machine, another time to join the cluster."
 # after all of this, you'll have all configs ready to go
 # convenience; dangerous, don't use unless you know what you're doing and/or have backed up yo shiiiii
 clean:
