@@ -93,14 +93,17 @@ init-node-0:
 	yq -i ".contexts.px-experimental.endpoints = [\"$$SEED_NODE_IPV4\"]" talosconfig
 	yq -i ".contexts.px-experimental.nodes = [\"$$SEED_NODE_IPV4\"]" talosconfig
 	talosctl --talosconfig talosconfig apply-config --nodes $$SEED_NODE_IPV4 --file controlplane.yaml --insecure
+	@echo "Next command after node reboots: SEED_NODE_IPV4=$$SEED_NODE_IPV4 make prep-node-0"
 # after the above, first control node will reboot; wait for it to come up before running this
 prep-node-0:
 	talosctl --talosconfig talosconfig apply-config --nodes $$SEED_NODE_IPV4 --file controlplane.yaml --insecure
+	@echo "Once kubelet goes healthy: SEED_NODE_IPV4=$$SEED_NODE_IPV4 make bootstrap"
 # after second apply above, node will ask to bootstrap
 bootstrap:
 	talosctl --talosconfig talosconfig bootstrap --nodes $$SEED_NODE_IPV4
 	talosctl --talosconfig talosconfig kubeconfig ./kubeconfig
 	talosctl --talosconfig talosconfig -n $$SEED_NODE_IPV4 health
+	@echo "Ready; you can now - talosctl --talosconfig talosconfig -n <worker IP> worker.yaml --insecure"
 # after all of this, you'll have all configs ready to go
 # convenience; dangerous, don't use unless you know what you're doing and/or have backed up yo shiiiii
 clean:
