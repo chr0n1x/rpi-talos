@@ -1,2 +1,2 @@
-argocd-deploy/**/charts/
-argocd-deploy/**/Chart.lock
+**/**/charts/
+**/**/Chart.lock
