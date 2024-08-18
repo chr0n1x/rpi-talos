@@ -2,23 +2,15 @@ releases:
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: kustomize/nginx
+    # post validation hooks can sometimes be slow
+    disableValidationOnInstall: true
     createNamespace: true
     hooks:
       - events:
           - prepare
         command: bash
         args:
-          - -c
-          - 'kubectl create ns ingress-nginx || :'
-      - events:
-          - prepare
-        command: bash
-        args:
-          - -c
-          - |
-            kubectl annotate --overwrite=true ns ingress-nginx meta.helm.sh/release-name=ingress-nginx && \
-            kubectl annotate --overwrite=true ns ingress-nginx meta.helm.sh/release-namespace=ingress-nginx && \
-            kubectl label ns ingress-nginx app.kubernetes.io/managed-by=Helm
+          - ./scripts/ingress-nginx-prep.sh
       - events:
           - cleanup
         command: kubectl
@@ -37,8 +29,6 @@ releases:
     disableValidationOnInstall: true
     values:
       - helmfile/oauth2-proxy.gotmpl
-    needs:
-      - ingress-nginx/ingress-nginx
     hooks:
       - events:
           - prepare
@@ -72,8 +62,6 @@ releases:
     createNamespace: true
     disableValidationOnInstall: true
     chart: ./helm/longhorn
-    needs:
-      - ingress-nginx/ingress-nginx
     values:
       - helmfile/longhorn-values.gotmpl
     hooks:
