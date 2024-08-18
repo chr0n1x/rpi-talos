@@ -1,7 +1,16 @@
-# set in helmfile.yaml
+# set in helmfile.yaml, required to create secret
 backupTarget:
   cifs:
     enabled: false
     username: "REPLACE"
     password: "REPLACE"
     host: "REPLACE"
+
+# https://github.com/longhorn/longhorn/blob/master/chart/templates/default-setting.yaml
+longhorn:
+  defaultSettings:
+    # set in helmfile.yaml, required to create secret
+    backupTarget: REPLACE
+    # literal name; TODO: allow for name override
+    backupTargetCredentialSecret: cifs-backup-target-creds
+  # https://longhorn.io/docs/1.6.2/deploy/important-notes/#pod-security-policies-disabled--pod-security-admission-introduction

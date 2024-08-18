@@ -2,9 +2,10 @@ releases:
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: kustomize/nginx
-    # post validation hooks can sometimes be slow
-    disableValidationOnInstall: true
     createNamespace: true
+    # post validation hooks can sometimes be slow
+    # use script below to validate
+    disableValidationOnInstall: true
     hooks:
       - events:
           - prepare
@@ -13,14 +14,9 @@ releases:
           - ./scripts/ingress-nginx-prep.sh
       - events:
           - cleanup
-        command: kubectl
+        command: bash
         args:
-          - -n
-          - ingress-nginx
-          - wait
-          - --for=condition=available
-          - deployment
-          - ingress-nginx-controller
+          - ./scripts/ingress-nginx-wait.sh
 
   - name: oauth2-proxy
     namespace: oauth2-proxy
@@ -59,22 +55,25 @@ releases:
 
   - name: longhorn
     namespace: longhorn-system
-    createNamespace: true
-    disableValidationOnInstall: true
     chart: ./helm/longhorn
+    disableValidationOnInstall: true
     values:
       - helmfile/longhorn-values.gotmpl
+    # namespace has separate template for specific labels
+    createNamespace: false
     hooks:
       - events:
-          - cleanup
+          - presync
         command: bash
         args:
-          - -c
-          - ./scripts/complete-longhorn.sh
+          - ./scripts/prepare-longhorn.sh
+
 
   - name: argocd
     namespace: argocd
     chart: ./helm/argocd
+    # ingress validation hooks fail on experimental clusters
+    disableValidationOnInstall: true
     values:
       - helmfile/argocd.gotmpl
     hooks:
@@ -84,3 +83,16 @@ releases:
         args:
           - -c
           - ./scripts/prepare-argocd.sh
+
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - -n
+          - argocd
+          - patch
+          - -p
+          - '{"data": { "kustomize.buildOptions": "--enable-helm" } }'
+          - --type=merge
+          - configmap
+          - argocd-cm
