@@ -2,6 +2,33 @@ releases:
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: kustomize/nginx
+    createNamespace: true
+    hooks:
+      - events:
+          - prepare
+        command: bash
+        args:
+          - -c
+          - 'kubectl create ns ingress-nginx || :'
+      - events:
+          - prepare
+        command: bash
+        args:
+          - -c
+          - |
+            kubectl annotate --overwrite=true ns ingress-nginx meta.helm.sh/release-name=ingress-nginx && \
+            kubectl annotate --overwrite=true ns ingress-nginx meta.helm.sh/release-namespace=ingress-nginx && \
+            kubectl label ns ingress-nginx app.kubernetes.io/managed-by=Helm
+      - events:
+          - cleanup
+        command: kubectl
+        args:
+          - -n
+          - ingress-nginx
+          - wait
+          - --for=condition=available
+          - deployment
+          - ingress-nginx-controller
 
   - name: oauth2-proxy
     namespace: oauth2-proxy
@@ -9,6 +36,8 @@ releases:
     createNamespace: true
     values:
       - helmfile/oauth2-proxy.gotmpl
+    needs:
+      - ingress-nginx/ingress-nginx
     hooks:
       - events:
           - prepare
@@ -48,31 +77,22 @@ releases:
     hooks:
       - events:
           - cleanup
-        command: kubectl
+        command: bash
         args:
-          - label
-          - namespace
-          - longhorn-system
-          - pod-security.kubernetes.io/enforce=privileged
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - label
-          - StorageClass
-          - longhorn
-          - storageclass.kubernetes.io/is-default-class=true
+          - -c
+          - ./scripts/complete-longhorn.sh
 
   - name: argocd
     namespace: argocd
-    disableValidationOnInstall: true # to avoid errs w/ CRDs not existing
     chart: ./helm/argocd
+    values:
+      - helmfile/argocd.gotmpl
+    needs:
+      - ingress-nginx/ingress-nginx
     hooks:
       - events:
           - prepare
         command: bash
         args:
           - -c
-          - 'rm helm/argocd/Chart.lock || :'
-    values:
-      - helmfile/argocd.gotmpl
+          - ./scripts/prepare-argocd.sh
