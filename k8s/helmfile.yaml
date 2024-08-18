@@ -34,6 +34,7 @@ releases:
     namespace: oauth2-proxy
     chart: ./helm/oauth2-proxy
     createNamespace: true
+    disableValidationOnInstall: true
     values:
       - helmfile/oauth2-proxy.gotmpl
     needs:
@@ -69,6 +70,7 @@ releases:
   - name: longhorn
     namespace: longhorn-system
     createNamespace: true
+    disableValidationOnInstall: true
     chart: ./helm/longhorn
     needs:
       - ingress-nginx/ingress-nginx
@@ -87,8 +89,6 @@ releases:
     chart: ./helm/argocd
     values:
       - helmfile/argocd.gotmpl
-    needs:
-      - ingress-nginx/ingress-nginx
     hooks:
       - events:
           - prepare
