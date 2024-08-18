@@ -20,6 +20,7 @@ spec:
       jsonPointers:
         - /data/password
   syncPolicy:
-    automated:
-      selfHeal: false
-      prune: false
+    # disable this for now
+    automated: {}
+      # selfHeal: false
+      # prune: false
