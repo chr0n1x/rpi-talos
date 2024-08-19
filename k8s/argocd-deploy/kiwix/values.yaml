@@ -6,10 +6,16 @@ deployment:
   zimPaths:
     - /data/*.zim
     - /data/stackexchange/*.zim
+
+  # tweak these if you have too much/little data
   resources:
     cpu:
-      limit: 800m
-      request: 500m
+      limit: 500m
+      request: 100m
     mem:
-      limit: 8Gi
-      request: 4Gi
+      limit: 4Gi
+      request: 1Gi
+  livenessProbe:
+    initialDelaySeconds: 180
+    timeoutSeconds: 180
+    periodSeconds: 60

@@ -52,11 +52,11 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 8080
-          initialDelaySeconds: 180
-          timeoutSeconds: 180
+          initialDelaySeconds: {{ .Values.deployment.livenessProbe.initialDelaySeconds | default 180 }}
+          timeoutSeconds: {{ .Values.deployment.livenessProbe.timeoutSeconds | default 180 }}
           successThreshold: 1
-          failureThreshold: 8
-          periodSeconds: 60
+          failureThreshold: 8 
+          periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds | default 60 }}
         readinessProbe:
           httpGet:
             path: /
