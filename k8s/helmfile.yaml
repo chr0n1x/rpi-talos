@@ -66,14 +66,11 @@ releases:
           - presync
         command: bash
         args:
-          - ./scripts/prepare-longhorn.sh
-
+          - ./scripts/longhorn-prepare.sh
 
   - name: argocd
     namespace: argocd
     chart: ./helm/argocd
-    # ingress validation hooks fail on experimental clusters
-    disableValidationOnInstall: true
     values:
       - helmfile/argocd.gotmpl
     hooks:
@@ -82,17 +79,10 @@ releases:
         command: bash
         args:
           - -c
-          - ./scripts/prepare-argocd.sh
-
+          - ./scripts/argocd-prepare.sh
       - events:
           - cleanup
-        command: kubectl
+        command: bash
         args:
-          - -n
-          - argocd
-          - patch
-          - -p
-          - '{"data": { "kustomize.buildOptions": "--enable-helm" } }'
-          - --type=merge
-          - configmap
-          - argocd-cm
+          - -c
+          - ./scripts/argocd-complete.sh

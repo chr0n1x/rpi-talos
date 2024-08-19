@@ -16,3 +16,6 @@ kubectl label -n argocd crd applicationsets.argoproj.io app.kubernetes.io/manage
 kubectl annotate --overwrite=true -n argocd crd appprojects.argoproj.io meta.helm.sh/release-name=argocd
 kubectl annotate --overwrite=true -n argocd crd appprojects.argoproj.io meta.helm.sh/release-namespace=argocd
 kubectl label -n argocd crd appprojects.argoproj.io app.kubernetes.io/managed-by=Helm
+
+# HACK: cannot track down the damn nginx validation webhook error
+kubectl -n argocd delete ingress --all
