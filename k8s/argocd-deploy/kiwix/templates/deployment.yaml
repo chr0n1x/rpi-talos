@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiwix-serve
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: kiwix-serve
+    app.kubernetes.io/instance: kiwix-serve
+    app.kubernetes.io/name: kiwix-serve
+spec:
+  selector:
+    matchLabels:
+      app: kiwix-serve
+      app.kubernetes.io/instance: kiwix-serve
+      app.kubernetes.io/name: kiwix-serve
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container:  kiwix-serve
+      labels:
+        app: kiwix-serve
+        app.kubernetes.io/instance: kiwix-serve
+        app.kubernetes.io/name: kiwix-serve
+    spec:
+      containers:
+      - name: kiwix-serve
+        image: ghcr.io/kiwix/kiwix-serve:3.7.0@sha256:9bd81257180e2d5328df1a139c3af76de453d6f2c475235035645c92054a168f
+        imagePullPolicy: IfNotPresent
+        args: ['/data/*.zim']
+        resources:
+          requests:
+            cpu: {{ .Values.deployment.resources.cpu.request | default "100m" }}
+            memory: {{ .Values.deployment.resources.mem.request | default "1Gi" }}
+          limits:
+            cpu: {{ .Values.deployment.resources.cpu.limit | default "500m" }}
+            memory: {{ .Values.deployment.resources.mem.limit | default "2Gi" }}
+
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: kiwix-pvc
+      restartPolicy: Always

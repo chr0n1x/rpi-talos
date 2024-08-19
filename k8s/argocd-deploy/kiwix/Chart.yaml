@@ -1,0 +1,11 @@
+apiVersion: 1.0.0
+name: kiwix
+version: 1.0.0
+description: kiwix server w/ SMB integration
+type: application
+
+# truly. fuck truecharts.
+# dependencies:
+#   - name: kiwix-serve
+#     version: ~10
+#     repository: oci://tccr.io/truecharts

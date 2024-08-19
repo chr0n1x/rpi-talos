@@ -1,0 +1,12 @@
+persistence:
+  # auto-created via SMB
+  volumeName: pvc-1780b073-7e94-40f9-b005-db27fbe6d912
+
+deployment:
+  resources:
+    cpu:
+      limit: 500m
+      request: 100m
+    mem:
+      limit: 2Gi
+      request: 1Gi
