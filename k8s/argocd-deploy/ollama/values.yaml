@@ -10,7 +10,7 @@ open-webui:
       enabled: true
       size: 128Gi
       storageClass: smb
-      # existingClaim: open-webui-ollama
+      volumeName: pvc-aef41080-0255-4de2-96fe-473d0fc3a3fa
     ollama:
       models:
         - gemma2
