@@ -3,6 +3,9 @@ persistence:
   volumeName: pvc-1780b073-7e94-40f9-b005-db27fbe6d912
 
 deployment:
+  zimPaths:
+    - /data/*.zim
+    - /data/stackexchange/a*.zim
   resources:
     cpu:
       limit: 500m
