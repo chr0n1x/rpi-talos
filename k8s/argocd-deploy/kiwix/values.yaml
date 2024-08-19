@@ -8,8 +8,8 @@ deployment:
     - /data/stackexchange/*.zim
   resources:
     cpu:
-      limit: 500m
-      request: 100m
+      limit: 800m
+      request: 500m
     mem:
       limit: 8Gi
-      request: 2Gi
+      request: 4Gi
