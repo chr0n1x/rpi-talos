@@ -5,11 +5,11 @@ persistence:
 deployment:
   zimPaths:
     - /data/*.zim
-    - /data/stackexchange/a*.zim
+    - /data/stackexchange/*.zim
   resources:
     cpu:
       limit: 500m
       request: 100m
     mem:
-      limit: 2Gi
-      request: 1Gi
+      limit: 8Gi
+      request: 2Gi
