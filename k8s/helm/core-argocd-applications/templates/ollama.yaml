@@ -15,8 +15,11 @@ spec:
     server: https://kubernetes.default.svc
     namespace: ollama
   syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true
+    # prevent autosync for now
+    # waiting on something like this:
+    #   https://github.com/otwld/ollama-helm/pull/89
+    automated: {}
+      # selfHeal: true
+      # prune: true
     syncOptions:
       - CreateNamespace=true
