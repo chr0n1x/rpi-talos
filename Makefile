@@ -180,3 +180,26 @@ format-disc:
 	mount /dev/sda /media/
 	chmod -R o+rwx /media/
 	umount /media
+
+
+# TODO: uhhhh iunno probably just use arp-scan
+ips:
+	arp -a
+
+install-authentik:
+	helm repo add authentik https://charts.goauthentik.io
+	helm repo update
+	helm upgrade --install authentik authentik/authentik \
+	  --namespace authentik \
+	  --create-namespace \
+	  -f authentik/values.yaml
+
+
+# https://github.com/cri-o/packaging/blob/main/README.md#usage
+# TODO: not sure what to do with this yet - adding non-talos node to talos
+#       cluster
+install-kubeadm:
+	CRIO_VERSION=v1.30
+	KUBERNETES_VERSION_VERSION=v1.30
+	  run through doc above
+	kubeadm token create --print-join-command

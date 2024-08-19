@@ -10,7 +10,7 @@ open-webui:
       enabled: true
       size: 128Gi
       storageClass: smb
-      existingClaim: open-webui-ollama
+      # existingClaim: open-webui-ollama
     ollama:
       models:
         - gemma2
