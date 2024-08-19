@@ -79,10 +79,16 @@ data:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
           href: "https://argocd.home.k8s:30443/applications"
+
+    - HomeLab K8s Hosted:
       - Ollama:
           icon: 'https://ollama.com/public/ollama.png'
           description: Ollama in-cluster via open-webui
           href: https://ollama.home.k8s:30443/
+      - Kiwix:
+          icon: 'https://kiwix.org/android-chrome-512x512.png'
+          description: Kiwix self-hosted wiki, backed by Samba/NAS
+          href: https://wiki.home.k8s:30443/
 
     - HomeLab General:
       - Pi-Hole:
