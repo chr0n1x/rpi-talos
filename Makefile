@@ -111,6 +111,10 @@ bootstrap:
 clean:
 	rm -f controlplane.yaml worker.yaml talosconfig kubeconfig
 
+# REFERENCE
+patch:
+	talosctl --talosconfig talosconfig -n $$SEED_NODE_IPV4 patch mc --patch @talos/config-nvidia.patch.yaml
+
 
 talos/nodes-all.csv:
 	# ?
