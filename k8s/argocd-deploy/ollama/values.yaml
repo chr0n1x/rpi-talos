@@ -2,6 +2,11 @@ open-webui:
   nodeSelector:
     nvidia.com/gpu.family: pascal
 
+  persistence:
+    enabled: true
+    size: 8Gi
+    storageClass: smb
+
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
     runtimeClassName: nvidia
@@ -18,6 +23,12 @@ open-webui:
         enabled: true
         number: 1
         type: nvidia
+
+  pipelines:
+    persistence:
+      enabled: true
+      size: 2Gi
+      storageClass: smb
 
   ingress:
     class: nginx
