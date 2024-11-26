@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  finalizers:
+    - kubernetes.io/pvc-protection
+  labels:
+    app.kubernetes.io/component: open-webui
+    app.kubernetes.io/instance: ollama
+    argocd.argoproj.io/instance: ollama
+  name: open-webui
+  # uid: 13995942-31d1-4320-89a0-4bbf78a39567
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: smb
+  volumeMode: Filesystem
+  # TODO: inject via values
+  volumeName: pvc-13995942-31d1-4320-89a0-4bbf78a39567
