@@ -1,0 +1,25 @@
+{{- if .Values.server.ingress.enabled -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: argocd-server-ingress
+  annotations:
+    {{ .Values.server.ingress.annotations | toYaml }}
+spec:
+  ingressClassName: {{ .Values.server.ingress.class | default "nginx" }}
+  rules:
+    - host: {{ .Values.server.ingress.host }}
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: argo-cd-argocd-server
+                port:
+                  number: 80
+{{- end -}}
