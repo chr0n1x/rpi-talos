@@ -17,5 +17,5 @@ type: application
 
 dependencies:
   - name: longhorn
-    version: ~1.7.0
+    version: ~1
     repository: https://charts.longhorn.io
