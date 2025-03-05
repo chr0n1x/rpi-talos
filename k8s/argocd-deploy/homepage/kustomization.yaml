@@ -10,7 +10,7 @@ helmCharts:
   valuesInline:
     image:
       repository: ghcr.io/gethomepage/homepage
-      tag: latest
+      tag: homepage-2.0.1
 
 resources:
 - ./ingress.yaml
