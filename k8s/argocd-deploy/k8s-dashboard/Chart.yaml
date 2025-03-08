@@ -6,5 +6,5 @@ type: application
 
 dependencies:
   - name: kubernetes-dashboard
-    version: ~7
+    version: ~7.11
     repository: https://kubernetes.github.io/dashboard/
