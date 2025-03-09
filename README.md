@@ -201,3 +201,11 @@ TODO: moar details to come.
 
 
 Rest of the setup is pretty much in [the guide](https://www.talos.dev/v1.7/talos-guides/install/single-board-computers/rpi_generic/). I'm keeping extensive notes and util scripts in `Makefile` though to record what's been working for me. The guides are still a bit messy to follow.
+
+# Proxmox Specific Things
+
+I run a proxmox linux PC with a left over Nvidia GPU. This let's me have a VM farm to play with. With that, I'm also able to generate talosOS images to test/play within the cluster _VERY_ quickly.
+
+For Nvidia cards you should follow the [official proxmox docs for IOMMU here](https://pve.proxmox.com/wiki/PCI(e)_Passthrough). Pay special attention to ALL sections; different motherboards & their manufacturers may have _DIFFERENT_ names for equivalent technologies. This will also dictate what kind of hardware you are able to use, and consequently what you should buy.
+
+After making sure your hardware is capable of PCIe passthrough, you can start configuring your VM images. No instructions on this yet because I found most of this to be intuitive, or easy to find directly in the proxmox UI. But for your own sanity I recommend saving VMs off into templates after you get them configured properly.
