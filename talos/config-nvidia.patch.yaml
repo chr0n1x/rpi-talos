@@ -1,5 +1,7 @@
 # talosctl -n <node ip> patch mc --patch @talos/config-nvidia.patch.yaml
 machine:
+    # 550x proprietary
+    image: factory.talos.dev/installer/c35d5bd14fd96abc839f9f44f5effd00c48f654edb8a42648f4b2eb6051d1dd6:v1.9.4
   kernel:
     modules:
       - name: nvidia
