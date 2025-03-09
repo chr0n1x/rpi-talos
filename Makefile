@@ -111,9 +111,24 @@ bootstrap:
 clean:
 	rm -f controlplane.yaml worker.yaml talosconfig kubeconfig
 
-# REFERENCE
-patch:
+# REFERENCES BELOW
+# REFERENCES BELOW
+# REFERENCES BELOW
+# REFERENCES BELOW
+# REFERENCES BELOW
+# REFERENCES BELOW
+
+talos-patch:
 	talosctl --talosconfig talosconfig -n $$SEED_NODE_IPV4 patch mc --patch @talos/config-nvidia.patch.yaml
+
+# use this after you have bootstrapped your cluster above and have talosctl
+# automatically picking up your generated talosconfig
+talos-new-node-join-existing-cluster:
+	talosctl --nodes "<new-worker-ip>" apply-config --insecure -f config-worker-longhorn.yaml
+
+reset-talos-node:
+	talosctl reset --system-labels-to-wipe STATE --system-labels-to-wipe \
+		EPHEMERAL --system-labels-to-wipe META -n "<worker-ip>"
 
 
 talos/nodes-all.csv:
