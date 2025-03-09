@@ -34,7 +34,8 @@ open-webui:
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     resources:
-      limits: {}
+      limits:
+        nvidia.com/gpu: 1
     ollama:
       pull:
         - gemma2
