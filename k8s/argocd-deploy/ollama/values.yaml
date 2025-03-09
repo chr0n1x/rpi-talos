@@ -33,8 +33,9 @@ open-webui:
       class: nginx
       hosts:
         - host: ollama-api.home.k8s
-          path: /
-          pathType: Prefix
+          paths:
+            path: /
+            pathType: Prefix
       # no nginx auth/termination required; API uses JWT
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
