@@ -29,6 +29,7 @@ open-webui:
         enabled: true
         number: 1
         type: nvidia
+        nvidiaResource: nvidia.com/gpu.count
 
   pipelines:
     persistence:
