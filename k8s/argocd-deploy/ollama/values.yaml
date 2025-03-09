@@ -33,6 +33,8 @@ open-webui:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    resources:
+      limits: {}
     ollama:
       pull:
         - gemma2
