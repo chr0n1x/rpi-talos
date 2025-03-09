@@ -27,7 +27,6 @@ open-webui:
         - gemma2
       gpu:
         enabled: true
-        number: 1
         type: nvidia
         nvidiaResource: nvidia.com/gpu.count
 
