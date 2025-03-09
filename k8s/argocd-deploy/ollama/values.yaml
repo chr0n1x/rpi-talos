@@ -28,6 +28,18 @@ open-webui:
       gpu:
         enabled: true
         type: nvidia
+    ingress:
+      enabled: true
+      class: nginx
+      hosts:
+        - host: ollama-api.home.k8s
+          path: /
+          pathType: Prefix
+      # no nginx auth/termination required; API uses JWT
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 
   pipelines:
     persistence:
