@@ -22,6 +22,7 @@ open-webui:
       gpu:
         enabled: true
         type: nvidia
+        nvidiaResource: "nvidia.com/gpu"
         number: 1
     persistentVolume:
       enabled: true
