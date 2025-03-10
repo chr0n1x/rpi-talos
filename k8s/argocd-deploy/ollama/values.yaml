@@ -1,8 +1,6 @@
 # if PVCs get stuck in Progressing state:
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
-  nodeSelector:
-    nvidia.com/gpu.family: pascal
 
   persistence:
     enabled: true
@@ -40,9 +38,9 @@ open-webui:
         nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     ollama:
       pull:
-        - gemma2
+        - gemma2:9B
       run:
-        - gemma2
+        - gemma2:9B
       gpu:
         enabled: true
         type: nvidia
