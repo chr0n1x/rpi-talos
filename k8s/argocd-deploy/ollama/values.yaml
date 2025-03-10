@@ -1,3 +1,5 @@
+# if PVCs get stuck in Progressing state:
+# https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
   nodeSelector:
     nvidia.com/gpu.family: pascal
@@ -12,6 +14,8 @@ open-webui:
 
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
+    selectorLabels:
+      nvidia.com/cuda.runtime-version.major: 12
     runtimeClassName: nvidia
     enabled: true
     persistentVolume:
