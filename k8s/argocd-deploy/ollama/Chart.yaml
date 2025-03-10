@@ -9,6 +9,6 @@ dependencies:
     version: ~5
     repository: https://helm.openwebui.com/
 
-  - name: ollama
-    repository: https://otwld.github.io/ollama-helm/
-    version: ~1.8
+  # - name: ollama
+  #   repository: https://otwld.github.io/ollama-helm/
+  #   version: ~1.8
