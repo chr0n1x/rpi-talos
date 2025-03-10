@@ -1,3 +1,5 @@
+{{ $chartName := .Chart.Name }}
+
 {{- with index .Values "open-webui" }}
 {{- with .ollama.persistentVolume }}
 {{- if .enabled }}
@@ -10,8 +12,8 @@ metadata:
     - kubernetes.io/pvc-protection
   labels:
     app.kubernetes.io/component: {{ .existingClaim }}
-    app.kubernetes.io/instance: {{ .Chart.Name }}
-    argocd.argoproj.io/instance: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ $chartName }}
+    argocd.argoproj.io/instance: {{ $chartName }}
   name: {{ .existingClaim }}
   # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
 spec:
