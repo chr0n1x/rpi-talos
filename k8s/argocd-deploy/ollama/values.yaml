@@ -10,6 +10,7 @@ open-webui:
     existingClaim: open-webui
     volumeName: pvc-be195e50-a8fb-489c-a27e-4c07ff140aab
 
+  # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
     enabled: true
