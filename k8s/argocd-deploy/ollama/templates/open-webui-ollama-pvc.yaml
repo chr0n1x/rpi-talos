@@ -10,8 +10,8 @@ metadata:
     - kubernetes.io/pvc-protection
   labels:
     app.kubernetes.io/component: {{ .existingClaim }}
-    app.kubernetes.io/instance: {{ .Chart.name }}
-    argocd.argoproj.io/instance: {{ .Chart.name }}
+    app.kubernetes.io/instance: {{ .Chart.Name }}
+    argocd.argoproj.io/instance: {{ .Chart.Name }}
   name: {{ .existingClaim }}
   # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
 spec:
