@@ -12,8 +12,17 @@ open-webui:
 
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
-    runtimeClassName: nvidia
     enabled: true
+    runtimeClassName: nvidia
+    ollama:
+      pull:
+        - gemma2:9B
+      run:
+        - gemma2:9B
+      gpu:
+        enabled: true
+        type: nvidia
+        number: 1
     persistentVolume:
       enabled: true
       size: 128Gi
@@ -34,14 +43,6 @@ open-webui:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    ollama:
-      pull:
-        - gemma2:9B
-      run:
-        - gemma2:9B
-      gpu:
-        enabled: true
-        type: nvidia
 
   pipelines:
      persistence:
