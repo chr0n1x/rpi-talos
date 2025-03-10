@@ -41,7 +41,6 @@ open-webui:
       gpu:
         enabled: true
         type: nvidia
-        nvidiaResource: nvidia.com/gpu
 
   pipelines:
     persistence:
