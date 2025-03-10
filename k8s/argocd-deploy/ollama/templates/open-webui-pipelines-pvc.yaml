@@ -1,21 +1,28 @@
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   finalizers:
-#     - kubernetes.io/pvc-protection
-#   labels:
-#     app.kubernetes.io/component: open-webui-pipelines
-#     app.kubernetes.io/instance: ollama
-#     argocd.argoproj.io/instance: ollama
-#   name: open-webui-pipelines
-#   # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 2Gi
-#   storageClassName: smb
-#   volumeMode: Filesystem
-#   # TODO: inject via values
-#   volumeName: pvc-9108f24f-5220-488c-a91a-9bd88f584ed9
+{{- with index .Values "open-webui" }}
+{{- if .pipelines.persistence.enabled }}
+{{- if .pipelines.persistence.existingClaim }}
+{{- if .pipelines.persistence.volumeName }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  finalizers:
+    - kubernetes.io/pvc-protection
+  labels:
+    app.kubernetes.io/component: {{ .pipelines.persistence.existingClaim }}
+    app.kubernetes.io/instance: {{ .Release.name }}
+    argocd.argoproj.io/instance: {{ .Release.name }}
+  name: {{ .pipelines.persistence.existingClaim }}
+  # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .pipelines.persistence.size }}
+  storageClassName: {{ .pipelines.persistence.storageClass }}
+  volumeMode: Filesystem
+  volumeName: {{ .pipelines.persistence.volumeName }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

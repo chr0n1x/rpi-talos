@@ -1,27 +1,29 @@
 {{- with index .Values "open-webui" }}
-{{- if .persistence.enabled }}
-{{- if .persistence.existingClaim }}
-{{- if .persistence.volumeName }}
+{{- with .ollama.persistentVolume }}
+{{- if .enabled }}
+{{- if .existingClaim }}
+{{- if .volumeName }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   finalizers:
     - kubernetes.io/pvc-protection
   labels:
-    app.kubernetes.io/component: {{ .persistence.existingClaim }}
+    app.kubernetes.io/component: {{ .existingClaim }}
     app.kubernetes.io/instance: {{ .Release.name }}
     argocd.argoproj.io/instance: {{ .Release.name }}
-  name: {{ .persistence.existingClaim }}
+  name: {{ .existingClaim }}
   # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .persistence.size }}
-  storageClassName: {{ .persistence.storageClass }}
+      storage: {{ .size }}
+  storageClassName: {{ .storageClass }}
   volumeMode: Filesystem
-  volumeName: {{ .persistence.volumeName }}
+  volumeName: {{ .volumeName }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
