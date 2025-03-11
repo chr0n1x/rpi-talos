@@ -73,14 +73,14 @@ data:
           href: "https://prometheus.home.k8s:30443"
 
     - HomeLab K8s Hosted:
-      - Docker Registry:
-          icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
-          description: Internal LAN Docker Container Registry
-          href: "https://docker.home.k8s:30443/"
       - ArgoCD:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
           href: "https://argocd.home.k8s:30443/applications"
+      - Docker Registry:
+          icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
+          description: Internal LAN Docker Container Registry
+          href: "https://docker.home.k8s:30443/"
       - Ollama:
           icon: 'https://ollama.com/public/ollama.png'
           description: Ollama in-cluster via open-webui
