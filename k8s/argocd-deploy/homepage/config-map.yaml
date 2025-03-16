@@ -89,6 +89,11 @@ data:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
           href: https://wiki.home.k8s:30443/
+      - Pinchflat:
+          icon: 'https://private-user-images.githubusercontent.com/787317/314519144-da823aef-0f8d-4b71-ba2d-75fdf923b0c6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDIwODgwMjQsIm5iZiI6MTc0MjA4NzcyNCwicGF0aCI6Ii83ODczMTcvMzE0NTE5MTQ0LWRhODIzYWVmLTBmOGQtNGI3MS1iYTJkLTc1ZmRmOTIzYjBjNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMzE2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDMxNlQwMTE1MjRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZGZkZTRhOWYwNDhlZGEwN2Q2NDlhYjUzMmNjZTgxMzEyM2Q1NmNlODExYjI3MmRlNzIxMzlmZTRlNThmZGIwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.MF-mVawKhdrsugRfxWK8Xq2BDgyerW6wMTGbbKOdSv4'
+          description: Media/Youtube Downloader
+          href: https://pinchflat.home.k8s:30443/
+
 
     - HomeLab General:
       - Pi-Hole:
