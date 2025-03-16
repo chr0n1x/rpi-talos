@@ -11,6 +11,8 @@ helmCharts:
     image:
       repository: ghcr.io/gethomepage/homepage
       tag: latest
+    env:
+      HOMEPAGE_ALLOWED_HOSTS: home.k8s:30443,home.k8s:30080
 
 resources:
 - ./ingress.yaml
@@ -28,11 +30,6 @@ patches:
       path: /metadata/annotations
       value:
         configmap.reloader.stakater.com/reload: "homepage"
-    - op: add
-      path: "/spec/template/spec/containers/0/env/-"
-      value:
-        name: HOMEPAGE_ALLOWED_HOSTS
-        value: home.k8s:30443,home.k8s:30080
   target:
       kind: Deployment
       name: homepage
