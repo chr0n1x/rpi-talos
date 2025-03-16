@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: pinchflat
+version: 0.0.1
+description: simple pinchflat installation
+type: application
+
+dependencies:
+  - name: pinchflat
+    repository: https://chr0n1x.github.io/pinchflat-helm-chart
+    version: ~0.1.0

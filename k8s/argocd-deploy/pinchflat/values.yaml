@@ -1,0 +1,34 @@
+pinchflat:
+  namespace: pinchflat
+
+  service:
+    type: NodePort
+
+  deployment:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    env:
+      TZ: America/New_York
+
+  persistence:
+    enabled: true
+    size: 256Gi
+    storageClass: smb
+    # for the CSI driver SMB - this chart will create a PVC
+    # which will then trigger the driver to create the PV itself
+    # after your first install, fill in this field with the created PV name
+    existingVolumeName: pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2
+
+  ingress:
+    enabled: true
+    class: nginx
+    host: pinchflat.home.k8s
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+
+      nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
+      # don't feel too good about this; ideally should be $server_port, but
+      # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
+      nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
+      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
