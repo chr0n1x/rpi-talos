@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: descheduler
+  name: pinchflat
   namespace: {{ .Values.argocd.namespace }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
