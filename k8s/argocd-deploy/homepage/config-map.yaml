@@ -81,19 +81,18 @@ data:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
           href: "https://docker.home.k8s:30443/"
-      - Ollama:
-          icon: 'https://ollama.com/public/ollama.png'
-          description: Ollama in-cluster via open-webui
-          href: https://ollama.home.k8s:30443/
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
           href: https://wiki.home.k8s:30443/
+      - Ollama:
+          icon: 'https://ollama.com/public/ollama.png'
+          description: Ollama in-cluster via open-webui
+          href: https://ollama.home.k8s:30443/
       - Pinchflat:
           icon: 'https://i.imgur.com/8WTIZWn.png'
           description: Media/Youtube Downloader
           href: https://pinchflat.home.k8s:30443/
-
 
     - HomeLab General:
       - Pi-Hole:
