@@ -29,7 +29,7 @@ patches:
       value:
         configmap.reloader.stakater.com/reload: "homepage"
     - op: add
-      path: "/spec/template/spec/0/env/-"
+      path: "/spec/template/spec/containers/0/env/-"
       value:
         name: HOMEPAGE_ALLOWED_HOSTS
         value: home.k8s:30443,home.k8s:30080
