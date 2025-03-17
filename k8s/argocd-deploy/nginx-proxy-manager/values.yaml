@@ -1,0 +1,7 @@
+nginx-proxy-manager:
+  persistence:
+    data:
+      storageClass: longhorn
+    letsEncrypt:
+      storageClass: smb
+
