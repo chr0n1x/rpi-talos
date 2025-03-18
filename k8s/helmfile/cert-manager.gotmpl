@@ -1,7 +1,8 @@
 cert-manager:
   crds:
     enabled: true
-  # extraArgs: "{--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}"
+  extraArgs:
+    - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53}"
 
 cert-manager-webhook-duckdns:
   duckdns:
