@@ -4,16 +4,6 @@ cert-manager:
   extraArgs:
     - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53}"
 
-cert-manager-webhook-duckdns:
-  duckdns:
-    token: {{ requiredEnv "DUCKDNS_TOKEN" }}
-  clusterIssuer:
-    email: {{ requiredEnv "CERT_MANAGER_ISSUER_EMAIL" }}
-    production:
-      create: true
-    staging:
-      create: true
-
 cert-manager-duckdns-webhook:
   token:
     value: {{ requiredEnv "DUCKDNS_TOKEN" }}
