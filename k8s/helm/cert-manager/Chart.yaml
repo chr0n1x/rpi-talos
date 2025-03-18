@@ -1,0 +1,15 @@
+apiVersion: 1.0.0
+name: cert-manager
+version: 1.0.0
+description: wrapper chart for cert-manager
+type: application
+
+dependencies:
+  # TODO: values
+  # https://artifacthub.io/packages/helm/cert-manager/cert-manager
+
+  # installation & uninstallation instructions:
+  # https://cert-manager.io/docs/installation/helm/#installing-with-helm 
+  - name: cert-manager
+    version: ~1.17
+    repository: https://charts.jetstack.io

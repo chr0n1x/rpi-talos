@@ -1,4 +1,35 @@
 releases:
+  - name: cert-manager
+    namespace: cert-manager
+    chart: ./helm/cert-manager
+    createNamespace: true
+    values:
+      - helmfile/cert-manager.gotmpl
+    hooks:
+      - events:
+          - prepare
+        command: bash
+        args:
+          - -c
+          - 'rm helm/cert-manager/Chart.lock || :'
+
+  - name: cert-manager-duckdns-hook
+    namespace: cert-manager
+    chart: ./helm/cert-manager-duckdns
+    createNamespace: false
+    values:
+      - helmfile/cert-manager.gotmpl
+    disableValidationOnInstall: true
+    needs:
+      - cert-manager
+    hooks:
+      - events:
+          - prepare
+        command: bash
+        args:
+          - -c
+          - 'rm helm/cert-manager-duckdns/Chart.lock || :'
+
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: kustomize/nginx

@@ -28,3 +28,6 @@ export ARGOCD_REPO_URL=$(echo $ARGOCD_REPO_SSH_URL | sed 's/:/\//g' | sed 's/git
 export ARGOCD_REPO_NAME=$(echo $ARGOCD_REPO_SSH_URL | cut -d: -f2 | sed 's/\//-/g')
 export ARGOCD_GITHUB_USER=
 export ARGOCD_GITHUB_TOKEN=
+
+export DUCKDNS_TOKEN=
+export CERT_MANAGER_ISSUER_EMAIL=
