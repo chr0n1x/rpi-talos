@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: nginx-proxy-manager
     repository: https://chr0n1x.github.io/nginx-proxy-manager-on-kubernetes
-    version: ">= 0.0.2"
+    version: ">= 0.0.3"
