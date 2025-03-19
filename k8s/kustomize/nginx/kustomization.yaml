@@ -8,3 +8,7 @@ patches:
     kind: Service
     name: ingress-nginx-controller
   path: ./ingress-patch.yaml
+- target:
+    kind: deployment
+    name: ingress-nginx-controller
+  path: ./deployment-patch.yaml
