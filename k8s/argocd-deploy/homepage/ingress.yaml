@@ -7,6 +7,8 @@ metadata:
   labels:
     app.kubernetes.io/name: homepage
   annotations:
+    cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
@@ -18,8 +20,23 @@ metadata:
     gethomepage.dev/name: Homepage
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+      - noxz.duckdns.org
+      - rannet.duckdns.org
+      secretName: homepage-cert
   rules:
     - host: home.k8s
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage
+                port:
+                  number: 3000
+    - host: rannet.duckdns.org
       http:
         paths:
           - path: "/"
