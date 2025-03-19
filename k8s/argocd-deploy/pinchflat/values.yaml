@@ -26,7 +26,6 @@ pinchflat:
       - hosts:
           - pinchflat.rannet.duckdns.org
         secretName: pinchflat-cert
-
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
