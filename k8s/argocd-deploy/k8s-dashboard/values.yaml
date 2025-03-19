@@ -43,8 +43,10 @@ kubernetes-dashboard:
         - k8s.dashboard.rannet.duckdns.org
       pathType: Prefix
       useDefaultAnnotations: true
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+      issuer:
+        scope: cluster
+        name: duckdns-letsencrypt-prod
+      # annotations:
       #   nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
       #   # don't feel too good about this; ideally should be $server_port, but
       #   # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
