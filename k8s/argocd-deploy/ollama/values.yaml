@@ -45,7 +45,7 @@ open-webui:
   ingress:
     class: nginx
     enabled: true
-    host: ollama.home.k8s
+    host: ollama.rannet.duckdns.org
     tls: true
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
