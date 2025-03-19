@@ -58,41 +58,41 @@ data:
       - K8s Dashboard:
           icon: 'https://kubernetes.io/images/wheel.svg'
           description: K8s dashboard
-          href: "https://dashboard.home.k8s:30443/#/workloads?namespace=_all"
+          href: "https://k8s.dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
       - Longhorn:
           icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
           description: Longhorn Persistent Store Dashboard
-          href: "https://longhorn.home.k8s:30443"
+          href: "https://longhorn.rannet.duckdns.org"
       - Grafana:
           icon: 'https://grafana.com/static/img/menu/grafana2.svg'
           description: Grafana Dashboard
-          href: "https://grafana.home.k8s:30443"
+          href: "https://grafana.rannet.duckdns.org"
       - Prometheus:
           icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
           description: Prometheus Dashboard
-          href: "https://prometheus.home.k8s:30443"
+          href: "https://prometheus.rannet.duckdns.org"
 
     - HomeLab K8s Hosted:
       - ArgoCD:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
-          href: "https://argocd.home.k8s:30443/applications"
+          href: "https://argocd.rannet.duckdns.org/applications"
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
-          href: "https://docker.home.k8s:30443/"
+          href: "https://docker-registry.rannet.duckdns.org"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
-          href: https://wiki.home.k8s:30443/
+          href: https://wiki.rannet.duckdns.org
       - Ollama:
           icon: 'https://ollama.com/public/ollama.png'
           description: Ollama in-cluster via open-webui
-          href: https://ollama.home.k8s:30443/
+          href: https://ollama.rannet.duckdns.org
       - Pinchflat:
           icon: 'https://i.imgur.com/8WTIZWn.png'
           description: Media/Youtube Downloader
-          href: https://pinchflat.home.k8s:30443/
+          href: https://pinchflat.rannet.duckdns.org
 
     - HomeLab General:
       - Pi-Hole:
