@@ -4,8 +4,19 @@ oauth2-proxy:
     className: nginx
     path: /
     pathType: Prefix
+    annotations:
+      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+    tls:
+      - hosts:
+        - oauth2.rannet.duckdns.org
+        - oauth2.noxz.duckdns.org
+        - oauth2.dundundun.duckdns.org
+        secretName: oauth2-cert
     hosts:
       - oauth2-proxy.home.k8s
+      - oauth2.rannet.duckdns.org
+      - oauth2.noxz.duckdns.org
+      - oauth2.dundundun.duckdns.org
 
   extraArgs:
     # TODO: parameterize the ports to match up with ingress-nginx controller

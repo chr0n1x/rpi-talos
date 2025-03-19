@@ -22,7 +22,6 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - noxz.duckdns.org
       - rannet.duckdns.org
       secretName: homepage-cert
   rules:

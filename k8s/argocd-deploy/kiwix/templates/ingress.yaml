@@ -7,13 +7,18 @@ metadata:
   labels:
     app.kubernetes.io/name: kiwix
   annotations:
+    cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - wiki.rannet.duckdns.org
+      secretName: kiwix-cert
   rules:
-    - host: wiki.home.k8s
+    - host: wiki.rannet.duckdns.org
       http:
         paths:
           - path: "/"

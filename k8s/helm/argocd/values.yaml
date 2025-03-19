@@ -7,22 +7,28 @@ repo:
 
 server:
   ingress:
-    host: argocd.home.k8s
+    host: argocd.rannet.duckdns.org
     class: nginx
     enabled: true
+    tls:
+      - hosts:
+        - argocd.noxz.duckdns.org
+        - argocd.rannet.duckdns.org
+        secretName: argocd-cert
     annotations:
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
-      # don't feel too good about this; ideally should be \$server_port, but
-      # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
-      nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
-      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
+      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+    #   nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    #   nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    #   nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    #   nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
+    #   # don't feel too good about this; ideally should be \$server_port, but
+    #   # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
+    #   nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
+    #   nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
 
 argo-cd:
   global:
-    domain: argocd.home.k8s
+    domain: argocd.rannet.duckdns.org
 
   configs:
     params:

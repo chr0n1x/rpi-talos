@@ -11,6 +11,9 @@ metadata:
     {{ .Values.server.ingress.annotations | toYaml }}
 spec:
   ingressClassName: {{ .Values.server.ingress.class | default "nginx" }}
+  {{- if .Values.server.ingress.tls }}
+    {{ .Values.server.ingress.tls | toYaml }}
+  {{- end -}}
   rules:
     - host: {{ .Values.server.ingress.host }}
       http:
