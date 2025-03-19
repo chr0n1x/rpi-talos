@@ -12,7 +12,7 @@ helmCharts:
       repository: ghcr.io/gethomepage/homepage
       tag: latest
     env:
-      - HOMEPAGE_ALLOWED_HOSTS: home.k8s:30443,home.k8s:30080,rannet.duckdns.org
+      HOMEPAGE_ALLOWED_HOSTS: "home.k8s:30443,home.k8s:30080,rannet.duckdns.org"
 
 resources:
 - ./ingress.yaml

@@ -32,6 +32,7 @@ prometheus:
         - prometheus.rannet.duckdns.org
       ingressClassName: nginx
       annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
         nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/ssl-passthrough: "false"
