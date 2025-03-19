@@ -7,13 +7,16 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: argocd-server-ingress
+{{- if .Values.ingress.annotations }}
   annotations:
-    {{ .Values.server.ingress.annotations | toYaml }}
+{{ .Values.server.ingress.annotations | toYaml | indent 4 }}
+{{- end }}
 spec:
   ingressClassName: {{ .Values.server.ingress.class | default "nginx" }}
-  {{- if .Values.server.ingress.tls }}
-    {{ .Values.server.ingress.tls | toYaml }}
-  {{- end -}}
+{{- if .Values.server.ingress.tls }}
+  tls:
+{{ .Values.server.ingress.tls | toYaml | indent 4 }}
+{{- end }}
   rules:
     - host: {{ .Values.server.ingress.host }}
       http:
