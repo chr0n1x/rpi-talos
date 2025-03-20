@@ -9,13 +9,11 @@ oauth2-proxy:
     tls:
       - hosts:
         - oauth2.rannet.duckdns.org
-        - oauth2.noxz.duckdns.org
         - oauth2.dundundun.duckdns.org
         secretName: oauth2-cert
     hosts:
       - oauth2-proxy.home.k8s
       - oauth2.rannet.duckdns.org
-      - oauth2.noxz.duckdns.org
       - oauth2.dundundun.duckdns.org
 
   extraArgs:

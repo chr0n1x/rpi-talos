@@ -16,7 +16,6 @@ docker-registry-ui:
     ingress:
       tls:
         - hosts:
-          - docker-registry.noxz.duckdns.org
           - docker-registry.rannet.duckdns.org
           secretName: docker-registry-cert
       enabled: true
@@ -31,7 +30,6 @@ docker-registry-ui:
         enabled: true
         tls:
           - hosts:
-            - docker-registry.noxz.duckdns.org
             - docker-registry.rannet.duckdns.org
             secretName: docker-registry-ui-cert
         # automatically has a prefix of /v2

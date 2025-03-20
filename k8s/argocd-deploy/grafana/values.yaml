@@ -23,7 +23,6 @@ grafana:
   ingress:
     tls:
       - hosts:
-        - grafana.noxz.duckdns.org
         - grafana.rannet.duckdns.org
         secretName: grafana-cert
     enabled: true

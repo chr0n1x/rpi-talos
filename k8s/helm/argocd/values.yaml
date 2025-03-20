@@ -12,7 +12,6 @@ server:
     enabled: true
     tls:
       - hosts:
-        - argocd.noxz.duckdns.org
         - argocd.rannet.duckdns.org
         secretName: argocd-cert
     annotations:
