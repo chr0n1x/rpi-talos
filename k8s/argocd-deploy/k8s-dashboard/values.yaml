@@ -39,7 +39,7 @@ kubernetes-dashboard:
       enabled: true
       ingressClassName: nginx
       hosts:
-        - k8s.dashboard.rannet.duckdns.org
+        - k8s-dashboard.rannet.duckdns.org
       pathType: Prefix
       useDefaultAnnotations: true
       issuer:

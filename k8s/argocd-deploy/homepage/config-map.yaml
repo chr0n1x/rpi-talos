@@ -58,7 +58,7 @@ data:
       - K8s Dashboard:
           icon: 'https://kubernetes.io/images/wheel.svg'
           description: K8s dashboard
-          href: "https://k8s.dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
       - Longhorn:
           icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
           description: Longhorn Persistent Store Dashboard
