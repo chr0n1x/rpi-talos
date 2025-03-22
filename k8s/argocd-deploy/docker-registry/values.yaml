@@ -16,10 +16,10 @@ docker-registry-ui:
     ingress:
       tls:
         - hosts:
-          - docker-registry.rannet.duckdns.org
+          - docker.rannet.duckdns.org
           secretName: docker-registry-cert
       enabled: true
-      host: docker-registry.rannet.duckdns.org
+      host: docker.rannet.duckdns.org
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
         nginx.ingress.kubernetes.io/proxy-body-size: "0"
