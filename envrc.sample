@@ -22,6 +22,9 @@ export GITHUB_APP_ID=
 export GITHUB_APP_SECRET=
 # comman-delimited list of usernames
 export GITHUB_ALLOWED_USERS=
+# use these instead if you want google; update oauth2-proxy provider type in oauth2-proxy.gotmpl
+export GOOGLE_OAUTH_CLIENT_ID=
+export GOOGLE_OAUTH_CLIENT_SECRET=
 
 export ARGOCD_REPO_SSH_URL=$(git remote -v | grep origin | grep fetch | awk '{ print $2 }')
 export ARGOCD_REPO_URL=$(echo $ARGOCD_REPO_SSH_URL | sed 's/:/\//g' | sed 's/git\@/https\:\/\//g')

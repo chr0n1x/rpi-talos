@@ -13,8 +13,7 @@ longhorn:
     backupTarget: REPLACE
     # literal name; TODO: allow for name override
     backupTargetCredentialSecret: cifs-backup-target-creds
-  # https://longhorn.io/docs/1.6.2/deploy/important-notes/#pod-security-policies-disabled--pod-security-admission-introduction
-    #
+    # https://longhorn.io/docs/1.6.2/deploy/important-notes/#pod-security-policies-disabled--pod-security-admission-introduction
   ingress:
     enabled: true
     host: longhorn.REPLACE
@@ -23,8 +22,7 @@ longhorn:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      # nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
-      # # don't feel too good about this; ideally should be $server_port, but
-      # # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
-      # nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
-      # nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
+      nginx.ingress.kubernetes.io/auth-url: https://my-oauth2-proxy-url/oauth2/auth
+      nginx.ingress.kubernetes.io/auth-signin: https://my-oauth2-proxy-url/oauth2/start
+      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
+      nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
