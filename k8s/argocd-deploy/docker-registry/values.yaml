@@ -19,6 +19,7 @@ docker-registry-ui:
           - docker.rannet.duckdns.org
           secretName: docker-registry-cert
       enabled: true
+      # automatically has a prefix of /v2
       host: docker.rannet.duckdns.org
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
@@ -32,9 +33,7 @@ docker-registry-ui:
           - hosts:
             - docker.rannet.duckdns.org
             secretName: docker-registry-cert
-        # automatically has a prefix of /v2
         host: docker.rannet.duckdns.org
-        path: /ui
         pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
