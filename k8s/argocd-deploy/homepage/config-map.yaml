@@ -45,10 +45,15 @@ data:
           abbr: IF
 
     - General:
+      - Google OAuth:
+        - href: https://console.cloud.google.com/auth/overview?project=home-k8s-oidc
+          abbr: GO
+          icon: https://www.gstatic.com/pantheon/images/gcpIconGallery.svg
       - OSI Networking Model:
         - abbr: OM
           href: https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/
           icon: https://www.cloudflare.com/favicon.ico
+
 
   kubernetes.yaml: |
     mode: disabled
