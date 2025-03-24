@@ -30,10 +30,12 @@ docker-registry-ui:
         enabled: true
         tls:
           - hosts:
-            - docker-registry.rannet.duckdns.org
-            secretName: docker-registry-ui-cert
+            - docker.rannet.duckdns.org
+            secretName: docker-registry-cert
         # automatically has a prefix of /v2
-        host: docker-registry.rannet.duckdns.org
+        host: docker.rannet.duckdns.org
+        path: /ui
+        pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
           nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
