@@ -80,7 +80,7 @@ data:
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
-          href: "https://docker-registry.rannet.duckdns.org"
+          href: "https://docker-registry.rannet.duckdns.org/ui"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
