@@ -1,9 +1,0 @@
-nginx-proxy-manager:
-  persistence:
-    data:
-      storageClass: longhorn
-      existingVolumeName: pvc-1679faf8-4f6b-41a1-9ebc-852bba23621f
-    letsEncrypt:
-      storageClass: smb
-      existingVolumeName: pvc-f7328e1e-4635-487b-a839-dbe3e2dcfa47
-
