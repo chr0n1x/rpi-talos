@@ -123,18 +123,22 @@ data:
           href: "https://proxmox.home:8006/"
 
     - Tools:
-      - Oryx:
-          icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
-          description: ZSA Configuration Tool
-          href: "https://configure.zsa.io/voyager/layouts"
-      - key.br:
-          icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
-          description: Best typing training tool.
-          href: "https://www.keybr.com/"
       - DuckDNS:
           icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
           description: Free domain provider; Sign in via GitHub.
           href: "https://www.duckdns.org/"
+      - key.br:
+          icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
+          description: Best typing training tool.
+          href: "https://www.keybr.com/"
+      - Oryx:
+          icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
+          description: ZSA Configuration Tool
+          href: "https://configure.zsa.io/voyager/layouts"
+      - Twingate:
+          description: Zero-Trust Network
+          href: "https://auth.twingate.com/"
+          icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
   widgets.yaml: |
     - resources:
         backend: resources

@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: twingate
+version: 1.0.0
+description: twingate wrapper chart
+type: application
+
+dependencies:
+  - name: connector
+    version: ~0.1
+    repository: https://twingate.github.io/helm-charts
