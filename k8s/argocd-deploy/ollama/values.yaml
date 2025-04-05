@@ -17,9 +17,11 @@ open-webui:
     runtimeClassName: nvidia
     ollama:
       pull:
-        - gemma2:9B
+        - gemma3:1B
+        - gemma3:4B
+        - gemma3:12B
       run:
-        - gemma2:9B
+        - gemma3:4B
       gpu:
         enabled: true
         type: nvidia
