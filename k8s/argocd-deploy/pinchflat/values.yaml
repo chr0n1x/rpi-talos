@@ -22,6 +22,7 @@ pinchflat:
     persistence:
       enabled: true
       storageClass: longhorn
+      existingVolumeName: pvc-42119381-2dda-4b70-8039-a3e8517a9595
 
   ingress:
     enabled: true
