@@ -18,6 +18,11 @@ pinchflat:
     # after your first install, fill in this field with the created PV name
     existingVolumeName: pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2
 
+  db:
+    persistence:
+      enabled: true
+      storageClass: longhorn
+
   ingress:
     enabled: true
     class: nginx
