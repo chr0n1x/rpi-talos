@@ -1,31 +1,31 @@
-{{- if .Values.server.ingress.enabled -}}
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: argocd-server-ingress
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: argocd-server-ingress
-{{- if .Values.server.ingress.annotations }}
-  annotations:
-{{ .Values.server.ingress.annotations | toYaml | indent 4 }}
-{{- end }}
-spec:
-  ingressClassName: {{ .Values.server.ingress.class | default "nginx" }}
-{{- if .Values.server.ingress.tls }}
-  tls:
-{{ .Values.server.ingress.tls | toYaml | indent 4 }}
-{{- end }}
-  rules:
-    - host: {{ .Values.server.ingress.host }}
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: argo-cd-argocd-server
-                port:
-                  number: 80
-{{- end -}}
+#{{- if .Values.server.ingress.enabled -}}
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: argocd-server-ingress
+#  namespace: {{ .Release.Namespace }}
+#  labels:
+#    app.kubernetes.io/name: argocd-server-ingress
+#{{- if .Values.server.ingress.annotations }}
+#  annotations:
+#{{ .Values.server.ingress.annotations | toYaml | indent 4 }}
+#{{- end }}
+#spec:
+#  ingressClassName: {{ .Values.server.ingress.class | default "nginx" }}
+#{{- if .Values.server.ingress.tls }}
+#  tls:
+#{{ .Values.server.ingress.tls | toYaml | indent 4 }}
+#{{- end }}
+#  rules:
+#    - host: {{ .Values.server.ingress.host }}
+#      http:
+#        paths:
+#          - path: "/"
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: argo-cd-argocd-server
+#                port:
+#                  number: 80
+#{{- end -}}

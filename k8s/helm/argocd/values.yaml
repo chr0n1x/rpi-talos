@@ -1,3 +1,4 @@
+# VALUES OF SECRETS IN THE gotmpl!!!
 # repo metadata for THIS repo (e.g.: your fork)
 repo:
   name: chr0n1x-rpi-talos.git
@@ -5,26 +6,7 @@ repo:
   token: replace
   username: chr0n-B07
 
-server:
-  ingress:
-    host: argocd.rannet.duckdns.org
-    class: nginx
-    enabled: true
-    tls:
-      - hosts:
-        - argocd.rannet.duckdns.org
-        secretName: argocd-cert
-    annotations:
-      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-    #   nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    #   nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-    #   nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    #   nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
-    #   # don't feel too good about this; ideally should be \$server_port, but
-    #   # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
-    #   nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
-    #   nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-
+# initial sync uses helmfile gotmpl, automated sync uses these :/
 argo-cd:
   global:
     domain: argocd.rannet.duckdns.org
@@ -32,3 +14,28 @@ argo-cd:
   configs:
     params:
       server.insecure: true
+
+  applicationSet:
+    replicas: 2
+
+  repoServer:
+    replicas: 2
+
+  server:
+    replicas: 2
+    ingress:
+      enabled: true
+      hostname: argocd.rannet.duckdns.org
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+      pathType: Prefix
+      # use this instead of tls, cannot adjust secretName w/ tls
+      extraTls:
+        - hosts:
+          - argocd.rannet.duckdns.org
+          secretName: argocd-cert
+
+  controller:
+    replicas: 2
+
