@@ -1,3 +1,0 @@
-[submodule "k8s/misc/ingress-nginx"]
-	path = k8s/kustomize/nginx/ingress-nginx
-	url = https://github.com/kubernetes/ingress-nginx.git
