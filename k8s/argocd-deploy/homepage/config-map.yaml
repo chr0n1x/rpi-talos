@@ -105,6 +105,10 @@ data:
           href: https://pinchflat.rannet.duckdns.org
 
     - HomeLab General:
+      - PeaNUT:
+          icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
+          description: PeaNUT NUT-Server UI
+          href: "http://nutpi/"
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
           description: Pi-Hole, LocalDNS
