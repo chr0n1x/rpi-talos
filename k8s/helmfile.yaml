@@ -32,7 +32,7 @@ releases:
 
   - name: ingress-nginx
     namespace: ingress-nginx
-    chart: kustomize/nginx
+    chart: ./helm/ingress-nginx
     createNamespace: true
     # post validation hooks can sometimes be slow
     # use script below to validate
