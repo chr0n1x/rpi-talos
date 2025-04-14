@@ -14,12 +14,31 @@ open-webui:
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
     enabled: true
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+      hosts:
+        - host: ollama.rannet.duckdns.org
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: ollama-tols-cert
+          hosts:
+            - ollama.rannet.duckdns.org
+
     runtimeClassName: nvidia
     ollama:
       pull:
         - gemma3:1B
         - gemma3:4B
         - gemma3:12B
+        - gemma3:27B
+        - qwen2.5-coder:7b-base-q6_K
+        - qwen2.5-coder:14b-base-q6_K
+        - qwen2.5-coder:32b-base-q6_K
       run:
         - gemma3:4B
       gpu:
@@ -47,7 +66,7 @@ open-webui:
   ingress:
     class: nginx
     enabled: true
-    host: ollama.rannet.duckdns.org
+    host: open-webui.rannet.duckdns.org
     tls: true
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
@@ -55,9 +74,7 @@ open-webui:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      #
-      # nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
-      # # don't feel too good about this; ideally should be $server_port, but
-      # # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
-      # nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
-      # nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
+      nginx.ingress.kubernetes.io/auth-url: https://my-oauth2-proxy-url/oauth2/auth
+      nginx.ingress.kubernetes.io/auth-signin: https://my-oauth2-proxy-url/oauth2/start
+      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
+      nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
