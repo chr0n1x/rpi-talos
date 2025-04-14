@@ -25,7 +25,7 @@ open-webui:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: ollama-tols-cert
+        - secretName: ollama-tls-cert
           hosts:
             - ollama.rannet.duckdns.org
 
