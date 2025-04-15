@@ -14,20 +14,20 @@ open-webui:
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
     enabled: true
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      hosts:
-        - host: ollama.rannet.duckdns.org
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: ollama-tls-cert
-          hosts:
-            - ollama.rannet.duckdns.org
+    # ingress:
+    #   enabled: true
+    #   className: nginx
+    #   annotations:
+    #     cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+    #   hosts:
+    #     - host: ollama.rannet.duckdns.org
+    #       paths:
+    #         - path: /
+    #           pathType: Prefix
+    #   tls:
+    #     - secretName: ollama-tls-cert
+    #       hosts:
+    #         - ollama.rannet.duckdns.org
 
     runtimeClassName: nvidia
     ollama:
@@ -68,6 +68,7 @@ open-webui:
     enabled: true
     host: open-webui.rannet.duckdns.org
     tls: true
+    existingSecret: open-webui-tls
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
 
