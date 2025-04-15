@@ -95,10 +95,10 @@ data:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
           href: https://wiki.rannet.duckdns.org
-      - Ollama:
+      - Open WebUI:
           icon: 'https://ollama.com/public/ollama.png'
-          description: Ollama in-cluster via open-webui
-          href: https://ollama.rannet.duckdns.org
+          description: LLMs in-cluster via open-webui
+          href: https://open-webui.rannet.duckdns.org
       - Pinchflat:
           icon: 'https://i.imgur.com/8WTIZWn.png'
           description: Media/Youtube Downloader
