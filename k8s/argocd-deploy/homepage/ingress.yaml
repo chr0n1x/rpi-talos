@@ -25,16 +25,6 @@ spec:
       - rannet.duckdns.org
       secretName: homepage-cert
   rules:
-    - host: home.k8s
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: homepage
-                port:
-                  number: 3000
     - host: rannet.duckdns.org
       http:
         paths:
