@@ -13,3 +13,7 @@ dependencies:
   - name: cert-manager
     version: ~1.17
     repository: https://charts.jetstack.io
+
+  - name: cert-manager-duckdns-webhook
+    version: ~1.1
+    repository: https://csp33.github.io/cert-manager-duckdns-webhook
