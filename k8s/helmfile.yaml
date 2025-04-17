@@ -12,6 +12,12 @@ releases:
         args:
           - -c
           - 'rm helm/cert-manager/Chart.lock || :'
+      - events:
+          - prepare
+        command: bash
+        args:
+          - ./scripts/cert-manager-prep.sh
+
 
   - name: cert-manager-duckdns-hook
     namespace: cert-manager
