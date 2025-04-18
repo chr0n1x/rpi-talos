@@ -15,12 +15,11 @@ open-webui:
   ollama:
     enabled: true
 
-    deployment:
-      resources:
-        requests:
-          memory: "15Gi"
-        limits:
-          memory: "30Gi"
+    resources:
+      requests:
+        memory: "15Gi"
+      limits:
+        memory: "30Gi"
 
     ingress:
       enabled: true
