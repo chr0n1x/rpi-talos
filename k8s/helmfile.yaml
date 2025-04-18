@@ -36,6 +36,7 @@ releases:
           - -c
           - 'rm helm/cert-manager-duckdns/Chart.lock || :'
 
+  # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
   - name: ingress-nginx
     namespace: ingress-nginx
     chart: ./helm/ingress-nginx
