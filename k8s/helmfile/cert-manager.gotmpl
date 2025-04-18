@@ -4,6 +4,8 @@ cert-manager:
   # https://cert-manager.io/docs/usage/certificate/#cleaning-up-secrets-when-certificates-are-deleted
   extraArgs:
     - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53 --enable-certificate-owner-ref}"
+    # use this if you want secret deletion to also nuke the cert
+    # - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53 --enable-certificate-owner-ref}"
 
 cert-manager-duckdns-webhook:
   token:
