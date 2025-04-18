@@ -19,7 +19,7 @@ open-webui:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "1200"
       hosts:
         - host: ollama.rannet.duckdns.org
           paths:
@@ -76,7 +76,7 @@ open-webui:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "1200"
       nginx.ingress.kubernetes.io/auth-url: https://my-oauth2-proxy-url/oauth2/auth
       nginx.ingress.kubernetes.io/auth-signin: https://my-oauth2-proxy-url/oauth2/start
       nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
