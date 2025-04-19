@@ -8,8 +8,8 @@ data:
 
   settings.yaml: |
     layout:
-      HomeLab Admin:
-        initiallyCollapsed: true
+        HomeLab Admin:
+            initiallyCollapsed: true
 
   docker.yaml: ''
 
@@ -70,26 +70,42 @@ data:
   services.yaml: |
 
     - HomeLab:
+      - ArgoCD:
+          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+          description: ArgoCD!
+          href: "https://argocd.rannet.duckdns.org/applications"
+          siteMonitor: "https://argocd.rannet.duckdns.org/health"
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
           href: "https://docker.rannet.duckdns.org"
+          siteMonitor: "https://docker.rannet.duckdns.org/v2/"
+          ping: "https://docker.rannet.duckdns.org"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
           href: https://wiki.rannet.duckdns.org
+          ping: https://wiki.rannet.duckdns.org
+      - K8s Dashboard:
+          icon: 'https://kubernetes.io/images/wheel.svg'
+          description: K8s dashboard
+          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
       - Open WebUI:
           icon: 'https://ollama.com/public/ollama.png'
           description: LLMs in-cluster via open-webui
           href: https://open-webui.rannet.duckdns.org
+          siteMonitor: "https://open-webui.rannet.duckdns.org/health"
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
+          ping: "https://nas.rannet-edge.duckdns.org/"
       - Pinchflat:
           icon: 'https://i.imgur.com/8WTIZWn.png'
           description: Media/Youtube Downloader
           href: https://pinchflat.rannet.duckdns.org
+          ping: https://pinchflat.rannet.duckdns.org
 
     - Other:
       - key.br:
@@ -102,19 +118,10 @@ data:
           href: "https://configure.zsa.io/voyager/layouts"
 
       - HomeLab Admin:
-          - ArgoCD:
-              icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-              description: ArgoCD!
-              href: "https://argocd.rannet.duckdns.org/applications"
-              ping: "https://argocd.rannet.duckdns.org/health"
           - DuckDNS:
               icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
               description: Free domain provider; Sign in via GitHub.
               href: "https://www.duckdns.org/"
-          - K8s Dashboard:
-              icon: 'https://kubernetes.io/images/wheel.svg'
-              description: K8s dashboard
-              href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
           - Longhorn:
               icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
               description: Longhorn Persistent Store Dashboard
