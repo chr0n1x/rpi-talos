@@ -6,7 +6,11 @@ metadata:
 data:
   $patch: replace
 
-  settings.yaml: ''
+  settings.yaml: |
+    layout:
+      HomeLab Admin:
+        initiallyCollapsed: true
+
   docker.yaml: ''
 
   bookmarks.yaml: |
@@ -147,7 +151,6 @@ data:
               description: Zero-Trust Network
               href: "https://auth.twingate.com/"
               icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
-          initiallyCollapsed: true
 
   widgets.yaml: |
     - resources:
