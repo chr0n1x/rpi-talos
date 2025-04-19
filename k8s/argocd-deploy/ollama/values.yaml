@@ -38,19 +38,21 @@ open-webui:
             - ollama.rannet.duckdns.org
     runtimeClassName: nvidia
     ollama:
-      models:
-        pull:
-          - gemma3:1B
-          - gemma3:4B
-          - gemma3:12B
-          - gemma3:27B
-          - qwen2.5-coder:7b-base-q6_K
-          - qwen2.5-coder:14b-base-q6_K
-          - qwen2.5-coder:32b-base-q6_K
-        run:
-          - gemma3:4B
-          # - gemma3:27B
-          # - qwen2.5-coder:32b-base-q6_K
+      # these for some reason stall the container; processes will literally hang
+      # not sure if this is because Im running these off of a NAS
+      # models:
+      #   pull:
+      #     - gemma3:1B
+      #     - gemma3:4B
+      #     - gemma3:12B
+      #     - gemma3:27B
+      #     - qwen2.5-coder:7b-base-q6_K
+      #     - qwen2.5-coder:14b-base-q6_K
+      #     - qwen2.5-coder:32b-base-q6_K
+      #   run:
+      #     - gemma3:4B
+      #     # - gemma3:27B
+      #     # - qwen2.5-coder:32b-base-q6_K
       gpu:
         enabled: true
         type: nvidia
