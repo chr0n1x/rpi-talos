@@ -40,4 +40,4 @@ pinchflat:
       nginx.ingress.kubernetes.io/auth-url: https://oauth2.rannet.duckdns.org/oauth2/auth
       nginx.ingress.kubernetes.io/auth-signin: https://oauth2.rannet.duckdns.org/oauth2/start
       nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-      nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
+      nginx.ingress.kubernetes.io/auth-request-redirect: "https://$host:$server_port$request_uri$args"
