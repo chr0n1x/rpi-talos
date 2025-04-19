@@ -8,7 +8,7 @@ data:
 
   settings.yaml: |
     layout:
-        HomeLab Admin:
+        "HomeLab Admin":
             initiallyCollapsed: true
 
   docker.yaml: ''
