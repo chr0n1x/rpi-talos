@@ -64,29 +64,8 @@ data:
     mode: disabled
 
   services.yaml: |
-    - HomeLab K8s:
-      - K8s Dashboard:
-          icon: 'https://kubernetes.io/images/wheel.svg'
-          description: K8s dashboard
-          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
-      - Longhorn:
-          icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
-          description: Longhorn Persistent Store Dashboard
-          href: "https://longhorn.rannet.duckdns.org"
-      - Grafana:
-          icon: 'https://grafana.com/static/img/menu/grafana2.svg'
-          description: Grafana Dashboard
-          href: "https://grafana.rannet.duckdns.org"
-      - Prometheus:
-          icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
-          description: Prometheus Dashboard
-          href: "https://prometheus.rannet.duckdns.org"
 
-    - HomeLab K8s Hosted:
-      - ArgoCD:
-          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-          description: ArgoCD!
-          href: "https://argocd.rannet.duckdns.org/applications"
+    - HomeLab:
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
@@ -99,42 +78,20 @@ data:
           icon: 'https://ollama.com/public/ollama.png'
           description: LLMs in-cluster via open-webui
           href: https://open-webui.rannet.duckdns.org
-      - Pinchflat:
-          icon: 'https://i.imgur.com/8WTIZWn.png'
-          description: Media/Youtube Downloader
-          href: https://pinchflat.rannet.duckdns.org
-
-    - HomeLab General:
-      - PeaNUT:
-          icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
-          description: PeaNUT NUT-Server UI
-          href: "https://nut.rannet-edge.duckdns.org/"
-      - Pi-Hole:
-          icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
-          description: Pi-Hole, LocalDNS
-          href: "https://pihole.rannet-edge.duckdns.org/admin/"
-      - OpenMediaVault:
-          icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
-          description: NAS Management
-          href: "https://nas-admin.rannet-edge.duckdns.org/"
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
-      - NginxPM:
-          icon: 'https://nginxproxymanager.com/icon.png'
-          description: Nginx Proxy Manager Admin Panel
-          href: "https://admin.rannet-edge.duckdns.org/"
-      - ProxmoxVE:
-          icon: 'https://www.proxmox.com/favicon.svg'
-          description: Proxmox VE
-          href: "https://proxmox.rannet-edge.duckdns.org/"
+      - Pinchflat:
+          icon: 'https://i.imgur.com/8WTIZWn.png'
+          description: Media/Youtube Downloader
+          href: https://pinchflat.rannet.duckdns.org
+      - Twingate:
+          description: Zero-Trust Network
+          href: "https://auth.twingate.com/"
+          icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
 
-    - Tools:
-      - DuckDNS:
-          icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
-          description: Free domain provider; Sign in via GitHub.
-          href: "https://www.duckdns.org/"
+    - Other Tools:
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
@@ -143,10 +100,53 @@ data:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
           description: ZSA Configuration Tool
           href: "https://configure.zsa.io/voyager/layouts"
-      - Twingate:
-          description: Zero-Trust Network
-          href: "https://auth.twingate.com/"
-          icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
+
+    - HomeLab Admin:
+      - ArgoCD:
+          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+          description: ArgoCD!
+          href: "https://argocd.rannet.duckdns.org/applications"
+      - DuckDNS:
+          icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
+          description: Free domain provider; Sign in via GitHub.
+          href: "https://www.duckdns.org/"
+      - K8s Dashboard:
+          icon: 'https://kubernetes.io/images/wheel.svg'
+          description: K8s dashboard
+          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+      - Longhorn:
+          icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
+          description: Longhorn Persistent Store Dashboard
+          href: "https://longhorn.rannet.duckdns.org"
+      - Grafana:
+          icon: 'https://grafana.com/static/img/menu/grafana2.svg'
+          description: Grafana Dashboard
+          href: "https://grafana.rannet.duckdns.org"
+      - NginxPM:
+          icon: 'https://nginxproxymanager.com/icon.png'
+          description: Nginx Proxy Manager Admin Panel
+          href: "https://admin.rannet-edge.duckdns.org/"
+      - OpenMediaVault:
+          icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
+          description: NAS Management
+          href: "https://nas-admin.rannet-edge.duckdns.org/"
+      - PeaNUT:
+          icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
+          description: PeaNUT NUT-Server UI
+          href: "https://nut.rannet-edge.duckdns.org/"
+      - Pi-Hole:
+          icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
+          description: Pi-Hole, LocalDNS
+          href: "https://pihole.rannet-edge.duckdns.org/admin/"
+      - Prometheus:
+          icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
+          description: Prometheus Dashboard
+          href: "https://prometheus.rannet.duckdns.org"
+      - ProxmoxVE:
+          icon: 'https://www.proxmox.com/favicon.svg'
+          description: Proxmox VE
+          href: "https://proxmox.rannet-edge.duckdns.org/"
+
   widgets.yaml: |
     - resources:
         backend: resources
