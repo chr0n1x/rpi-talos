@@ -128,7 +128,7 @@ data:
       - ProxmoxVE:
           icon: 'https://www.proxmox.com/favicon.svg'
           description: Proxmox VE
-          href: "https://proxmox.home:8006/"
+          href: "https://proxmox.rannet-edge.duckdns.org/"
 
     - Tools:
       - DuckDNS:
