@@ -74,7 +74,7 @@ data:
           icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
           description: ArgoCD!
           href: "https://argocd.rannet.duckdns.org/applications"
-          siteMonitor: "https://argocd.rannet.duckdns.org/health"
+          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
