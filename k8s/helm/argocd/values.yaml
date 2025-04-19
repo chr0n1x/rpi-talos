@@ -17,15 +17,14 @@ argo-cd:
     params:
       server.insecure: true
     cm:
-      data:
-        kustomize.buildOptions: --enable-helm
-        resource.customizations: |
-          networking.k8s.io/Ingress:
-            health.lua: |
-              return {
-                status = "Healthy",
-                message = "HACK: skip health check for Ingress (override in argo-cd.config.cm chart val)",
-              }
+      kustomize.buildOptions: --enable-helm
+      resource.customizations: |
+        networking.k8s.io/Ingress:
+          health.lua: |
+            return {
+              status = "Healthy",
+              message = "HACK: skip health check for Ingress (override in argo-cd.config.cm chart val)",
+            }
 
   applicationSet:
     replicas: 2
