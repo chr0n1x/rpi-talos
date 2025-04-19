@@ -50,7 +50,7 @@ open-webui:
         run:
           - gemma3:4B
           # - gemma3:27B
-          - qwen2.5-coder:32b-base-q6_K
+          # - qwen2.5-coder:32b-base-q6_K
       gpu:
         enabled: true
         type: nvidia
