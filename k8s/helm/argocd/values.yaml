@@ -16,10 +16,9 @@ argo-cd:
   configs:
     params:
       server.insecure: true
-
-  config:
     cm:
       data:
+        kustomize.buildOptions: --enable-helm
         resource.customizations: |
           networking.k8s.io/Ingress:
             health.lua: |
