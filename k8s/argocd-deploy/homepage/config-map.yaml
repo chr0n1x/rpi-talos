@@ -112,15 +112,19 @@ data:
       - Pi-Hole:
           icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
           description: Pi-Hole, LocalDNS
-          href: "http://pi.hole/admin/"
+          href: "https://pihole.rannet-edge.duckdns.org/admin/"
       - OpenMediaVault:
           icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
           description: NAS Management
-          href: "http://nas.lan/"
+          href: "https://nas-admin.rannet-edge.duckdns.org/"
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
-          href: "http://nas.lan:3670/"
+          href: "https://nas.rannet-edge.duckdns.org/"
+      - NginxPM:
+          icon: 'https://nginxproxymanager.com/icon.png'
+          description: Nginx Proxy Manager Admin Panel
+          href: "https://admin.rannet-edge.duckdns.org/"
       - ProxmoxVE:
           icon: 'https://www.proxmox.com/favicon.svg'
           description: Proxmox VE
