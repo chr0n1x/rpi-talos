@@ -1,5 +1,7 @@
 # VALUES OF SECRETS IN THE gotmpl!!!
 # repo metadata for THIS repo (e.g.: your fork)
+# this is set in k8s/helmfile/argocd.gotmpl on initial sync
+# the config for argocd then omits syncing this secret
 repo:
   name: chr0n1x-rpi-talos.git
   url: https://github.com/chr0n1x/rpi-talos.git
@@ -14,6 +16,17 @@ argo-cd:
   configs:
     params:
       server.insecure: true
+
+  config:
+    cm:
+      data:
+        resource.customizations: |
+          networking.k8s.io/Ingress:
+            health.lua: |
+              return {
+                status = "Healthy",
+                message = "HACK: skip health check for Ingress (override in argo-cd.config.cm chart val)",
+              }
 
   applicationSet:
     replicas: 2
