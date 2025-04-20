@@ -7,8 +7,12 @@ data:
   $patch: replace
 
   settings.yaml: |
+    title: "Ran Home, Have We?"
+    headerStyle: boxedWidgets
     layout:
-        Other:
+      - HomeLab:
+          columns: 2
+      - Other:
           "HomeLab Admin":
               initiallyCollapsed: true
 
