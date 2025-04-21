@@ -122,7 +122,6 @@ data:
           icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
           description: Free domain provider; Sign in via GitHub.
           href: "https://www.duckdns.org/"
-          ping: "https://www.duckdns.org/about.jsp"
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
