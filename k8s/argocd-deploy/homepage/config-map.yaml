@@ -86,6 +86,11 @@ data:
           href: "https://docker.rannet.duckdns.org"
           siteMonitor: "https://docker.rannet.duckdns.org/v2/"
           ping: "https://docker.rannet.duckdns.org"
+      - Jellyfin:
+          icon: 'https://jellyfin.org/images/logo.svg'
+          description: Jellyfin Media Server
+          href: "https://jellyfin.rannet-edge.duckdns.org/"
+          siteMonitor: "https://jellyfin.rannet-edge.duckdns.org/health"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
