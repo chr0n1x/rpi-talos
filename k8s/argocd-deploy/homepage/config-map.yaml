@@ -113,6 +113,10 @@ data:
           ping: https://pinchflat.rannet.duckdns.org
 
     - Other:
+      - DuckDNS:
+          icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
+          description: Free domain provider; Sign in via GitHub.
+          href: "https://www.duckdns.org/"
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
@@ -121,12 +125,12 @@ data:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
           description: ZSA Configuration Tool
           href: "https://configure.zsa.io/voyager/layouts"
+      - Twingate:
+          description: Zero-Trust Network
+          href: "https://auth.twingate.com/"
+          icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
 
       - "HomeLab Admin ⏬":
-          - DuckDNS:
-              icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
-              description: Free domain provider; Sign in via GitHub.
-              href: "https://www.duckdns.org/"
           - Longhorn:
               icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
               description: Longhorn Persistent Store Dashboard
@@ -159,10 +163,6 @@ data:
               icon: 'https://www.proxmox.com/favicon.svg'
               description: Proxmox VE
               href: "https://proxmox.rannet-edge.duckdns.org/"
-          - Twingate:
-              description: Zero-Trust Network
-              href: "https://auth.twingate.com/"
-              icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
 
   widgets.yaml: |
     - resources:
