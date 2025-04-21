@@ -137,7 +137,7 @@ data:
       - Twingate:
           description: Zero-Trust Network
           href: "https://auth.twingate.com/"
-          icon: 'https://cdn.prod.website-files.com/619c01ae3cf18f2cff926c03/619c01ae3cf18f7db3926d89_twingate_logo_rev-768x448.png'
+          icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
 
       - "HomeLab Admin ⏬":
           - Longhorn:
