@@ -125,6 +125,10 @@ data:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
           description: ZSA Configuration Tool
           href: "https://configure.zsa.io/voyager/layouts"
+      - ProxmoxVE:
+          icon: 'https://www.proxmox.com/favicon.svg'
+          description: Proxmox VE
+          href: "https://proxmox.rannet-edge.duckdns.org/"
       - Twingate:
           description: Zero-Trust Network
           href: "https://auth.twingate.com/"
@@ -159,10 +163,6 @@ data:
               icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
               description: Prometheus Dashboard
               href: "https://prometheus.rannet.duckdns.org"
-          - ProxmoxVE:
-              icon: 'https://www.proxmox.com/favicon.svg'
-              description: Proxmox VE
-              href: "https://proxmox.rannet-edge.duckdns.org/"
 
   widgets.yaml: |
     - resources:
