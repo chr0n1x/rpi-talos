@@ -1,2 +1,6 @@
 .envrc
 .validate-tools
+chroma.log
+
+secrets/
+talos/

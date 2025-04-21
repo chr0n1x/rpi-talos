@@ -1,0 +1,20 @@
+[Unit]
+Description=Start up nginx-proxy-manager
+
+[Service]
+Type=simple
+
+ExecStartPre=-/usr/bin/mkdir -p /etc/nginx-proxy-manager
+ExecStartPre=-/usr/bin/podman rm -f nginx-proxy-manager
+ExecStart=/usr/bin/podman run --rm \
+          --name nginx-proxy-manager \
+          -v /etc/nginx-proxy-manager/data:/data \
+          -v /etc/nginx-proxy-manager/letsencrypt:/etc/letsencrypt \
+          --net=host \
+          docker.io/jc21/nginx-proxy-manager:latest
+
+
+ExecStop=/usr/bin/podman rm -f nginx-proxy-manager
+
+[Install]
+WantedBy=multi-user.target

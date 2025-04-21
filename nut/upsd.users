@@ -1,0 +1,10 @@
+[admin-username-here]
+    password = adminpw
+    actions = set
+    actions = fsd
+    instcmds = all
+    upsmon primary
+
+[readonly-username-here]
+    password = somepw
+    upsmon secondary

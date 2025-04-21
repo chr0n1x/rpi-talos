@@ -1,0 +1,26 @@
+# NUT is the bane of any UX designer
+# Thank the lord for kind souls like this
+#
+# https://github.com/Brandawg93/PeaNUT
+
+[Unit]
+Description=Start up peanut service, pretty web UI for nut-server
+
+[Service]
+Type=simple
+
+Requires=nut-server.service
+After=nut-server.service
+
+ExecStartPre=-/usr/bin/podman rm -f nut-peanut
+ExecStart=/usr/bin/podman run --rm \
+          --name nut-peanut \
+          -v /etc/nut/peanut-config/:/config \
+          -e WEB_PORT=80 \
+          --net=host \
+          docker.io/brandawg93/peanut
+
+ExecStop=/usr/bin/podman rm -f nut-peanut
+
+[Install]
+WantedBy=multi-user.target

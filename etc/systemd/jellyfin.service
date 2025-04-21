@@ -1,0 +1,27 @@
+[Unit]
+Description=Jellyfin Server
+Requires=podman.service
+
+[Service]
+Type=simple
+
+# assumes fstab
+#   //nas.lan/k8s.smb-csi-share /mnt/k8s.smb-csi-share cifs username=jellyfin,password=**** 0 0
+#   //nas.lan/jellyfin /mnt/jellyfin cifs username=jellyfin,password=**** 0 0
+ExecStartPre=-/usr/bin/podman rm -f jellyfin
+ExecStart=podman run \
+ --label "io.containers.autoupdate=registry" \
+ --name jellyfin \
+ --publish 8096:8096/tcp \
+ --net=host \
+ --rm \
+ --volume /mnt/jellyfin/cache:/cache:Z \
+ --volume /mnt/jellyfin/config:/config:Z \
+ --mount type=bind,source=/mnt/k8s.smb-csi-share/ns-pinchflat--pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2/,destination=/media,ro=true,relabel=private \
+ -e JELLYFIN_PublishedServerUrl="https://jellyfin.rannet-edge.duckdns.org" \
+ docker.io/jellyfin/jellyfin:latest
+
+ExecStop=/usr/bin/podman rm -f jellyfin
+
+[Install]
+WantedBy=multi-user.target
