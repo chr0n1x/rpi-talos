@@ -122,6 +122,7 @@ data:
           icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
           description: Free domain provider; Sign in via GitHub.
           href: "https://www.duckdns.org/"
+          ping: "https://www.duckdns.org/"
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
@@ -134,10 +135,12 @@ data:
           icon: 'https://www.proxmox.com/favicon.svg'
           description: Proxmox VE
           href: "https://proxmox.rannet-edge.duckdns.org/"
+          ping: "https://proxmox.rannet-edge.duckdns.org/"
       - Twingate:
           description: Zero-Trust Network
           href: "https://auth.twingate.com/"
           icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
+          siteMonitor: 'https://status.twingate.com/api/v2/status.json'
 
       - "HomeLab Admin ⏬":
           - Longhorn:
@@ -152,18 +155,22 @@ data:
               icon: 'https://nginxproxymanager.com/icon.png'
               description: Nginx Proxy Manager Admin Panel
               href: "https://admin.rannet-edge.duckdns.org/"
+              ping: "https://admin.rannet-edge.duckdns.org/"
           - OpenMediaVault:
               icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
               description: NAS Management
               href: "https://nas-admin.rannet-edge.duckdns.org/"
+              ping: "https://nas-admin.rannet-edge.duckdns.org/"
           - PeaNUT:
               icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
               description: PeaNUT NUT-Server UI
               href: "https://nut.rannet-edge.duckdns.org/"
+              siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
           - Pi-Hole:
               icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
               description: Pi-Hole, LocalDNS
               href: "https://pihole.rannet-edge.duckdns.org/admin/"
+              ping: "https://pihole.rannet-edge.duckdns.org/"
           - Prometheus:
               icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
               description: Prometheus Dashboard
