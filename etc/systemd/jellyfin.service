@@ -7,7 +7,7 @@ Type=simple
 
 # assumes fstab
 #   //nas.lan/k8s.smb-csi-share /mnt/k8s.smb-csi-share cifs username=jellyfin,password=**** 0 0
-#   //nas.lan/jellyfin /mnt/jellyfin cifs username=jellyfin,password=**** 0 0
+#   //nas.lan/jellyfin /mnt/jellyfin cifs mfsymlinks,nobrl,username=jellyfin,password=**** 0 0
 ExecStartPre=-/usr/bin/podman rm -f jellyfin
 ExecStart=podman run \
  --label "io.containers.autoupdate=registry" \
