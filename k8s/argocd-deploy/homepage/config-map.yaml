@@ -87,7 +87,7 @@ data:
           siteMonitor: "https://docker.rannet.duckdns.org/v2/"
           ping: "https://docker.rannet.duckdns.org"
       - Jellyfin:
-          icon: 'https://jellyfin.org/images/logo.svg'
+          icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
           description: Jellyfin Media Server
           href: "https://jellyfin.rannet-edge.duckdns.org/"
           siteMonitor: "https://jellyfin.rannet-edge.duckdns.org/health"
