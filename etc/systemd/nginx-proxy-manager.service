@@ -4,12 +4,14 @@ Description=Start up nginx-proxy-manager
 [Service]
 Type=simple
 
+# assumes fstab
+#   //nas.lan/nginx-proxy-manager /mnt/nginx-proxy-manager cifs mfsymlinks,nobrl,username=admin-svc,password=**** 0 0
 ExecStartPre=-/usr/bin/mkdir -p /etc/nginx-proxy-manager
 ExecStartPre=-/usr/bin/podman rm -f nginx-proxy-manager
 ExecStart=/usr/bin/podman run --rm \
           --name nginx-proxy-manager \
-          -v /etc/nginx-proxy-manager/data:/data \
-          -v /etc/nginx-proxy-manager/letsencrypt:/etc/letsencrypt \
+          -v /mnt/nginx-proxy-manager/data:/data \
+          -v /mnt/nginx-proxy-manager/letsencrypt:/etc/letsencrypt \
           --net=host \
           docker.io/jc21/nginx-proxy-manager:latest
 
