@@ -1,5 +1,9 @@
 [Unit]
 Description=Start up nginx-proxy-manager
+Requires=podman.service
+After=remote-fs.target network.target network-online.target
+Wants=network-online.target
+RequiresMountsFor=/mnt/nginx-proxy-manager
 
 [Service]
 Type=simple
