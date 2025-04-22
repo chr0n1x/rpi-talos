@@ -1,18 +1,23 @@
+# assumes fstab
+#   //nas.lan/k8s.smb-csi-share /mnt/k8s.smb-csi-share cifs username=jellyfin,password=**** 0 0
+#   //nas.lan/jellyfin /mnt/jellyfin cifs mfsymlinks,nobrl,username=jellyfin,password=**** 0 0
+
 [Unit]
 Description=Jellyfin Server
 Requires=podman.service
+After=remote-fs.target network.target network-online.target
+Wants=network-online.target
+RequiresMountsFor=/mnt/jellyfin /mnt/k8s.smb-csi-share/ns-pinchflat--pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2/
 
 [Service]
 Type=simple
 
-# assumes fstab
-#   //nas.lan/k8s.smb-csi-share /mnt/k8s.smb-csi-share cifs username=jellyfin,password=**** 0 0
-#   //nas.lan/jellyfin /mnt/jellyfin cifs mfsymlinks,nobrl,username=jellyfin,password=**** 0 0
+ExecStartPre=-/usr/bin/mkdir -p /etc/jellyfin/cache
+ExecStartPre=-/usr/bin/mkdir -p /etc/jellyfin/config
 ExecStartPre=-/usr/bin/podman rm -f jellyfin
 ExecStart=podman run \
  --label "io.containers.autoupdate=registry" \
  --name jellyfin \
- --publish 8096:8096/tcp \
  --net=host \
  --rm \
  --volume /mnt/jellyfin/cache:/cache:Z \
