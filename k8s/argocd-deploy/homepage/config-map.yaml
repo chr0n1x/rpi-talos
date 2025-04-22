@@ -155,6 +155,11 @@ data:
               description: Nginx Proxy Manager Admin Panel
               href: "https://admin.rannet-edge.duckdns.org/"
               ping: "https://admin.rannet-edge.duckdns.org/"
+          - PiSugar Monitor:
+              icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
+              description: PiSugar LiIon Battery Monitor
+              href: "https://pisugar.rannet-edge.duckdns.org/"
+              ping: "https://pisugar.rannet-edge.duckdns.org/"
           - OpenMediaVault:
               icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
               description: NAS Management
