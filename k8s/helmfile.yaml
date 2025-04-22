@@ -137,13 +137,3 @@ releases:
         args:
           - -c
           - 'rm helm/twingate/Chart.lock || :'
-      # chart as of writing this does not support changing replica count
-      - events:
-          - cleanup
-        command: kubectl
-        args:
-          - --namespace
-          - twingate
-          - scale
-          - --replicas=3
-          - deployments/twingate-connector
