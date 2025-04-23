@@ -1,0 +1,12 @@
+[Unit]
+Description=Trigger pisugar-server status check
+Requires=pisugar-server.service
+
+[Service]
+Environment="SHUTDOWN_TIMER_SECONDS=600"
+# Environment="DRY_RUN=true"
+Type=oneshot
+ExecStart=/bin/bash /etc/pisugar-server/pisugar-util.bash check
+
+[Install]
+WantedBy=pisugar-server.service

@@ -1,0 +1,12 @@
+[Unit]
+Description=Timer for pisugar-server status check
+Requires=pisugar-faux-upsmon.service
+
+[Timer]
+OnBootSec=8m
+OnUnitActiveSec=30s
+Unit=pisugar-faux-upsmon.service
+
+[Install]
+WantedBy=timers.target
+WantedBy=pisugar-faux-upsmon.service
