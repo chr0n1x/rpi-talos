@@ -131,13 +131,11 @@ list_shutdown() {
   #
   # you can (and should) be very careful with these kinds of lists!
   IFS=$'\n'
-  for server_conn in $(cat /etc/pisugar-server/shutdown-list); do
-    cmd="$server_conn bash -c '$SHUTDOWN_SSH_COMMAND'"
-    log_info "${cmd}"
+  for server_cmd in $(cat /etc/pisugar-server/shutdown-list); do
+    log_info "${server_cmd}"
     if [ "$DRY_RUN" != "true" ]; then
-      bash -c "${cmd}" || :
+      bash -c "${server_cmd}" || :
     fi
-    log_info
     log_info
   done
   unset IFS
@@ -148,7 +146,18 @@ list_shutdown() {
     batt_plug_status=$(get_pisugar_field_val battery_power_plugged)
     # log_info "battery plugged in: $batt_plug_status"
     if [ "$batt_plug_status" = "true" ]; then
-      log_warn "PLUGGED IN - ethwakeonlan NOT IMPLEMENTED YET!"
+      log_warn "PLUGGED IN - running commands in /etc/pisugar-server/powerup-list!"
+
+      IFS=$'\n'
+      for server_cmd in $(cat /etc/pisugar-server/powerup-list); do
+        log_info "${server_cmd}"
+        if [ "$DRY_RUN" != "true" ]; then
+          bash -c "${server_cmd}" || :
+        fi
+        log_info
+      done
+      unset IFS
+
       rm $LOCKFILE
       exit 0
     fi
