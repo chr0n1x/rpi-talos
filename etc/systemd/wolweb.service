@@ -1,0 +1,27 @@
+[Unit]
+Description=WoL Web Tool
+Requires=podman.service
+After=remote-fs.target network.target network-online.target
+
+[Service]
+Restart=always
+Type=simple
+
+Requires=podman.service
+After=podman.service
+
+ExecStartPre=-/usr/bin/podman rm -f wol-web
+ExecStart=/usr/bin/podman run --rm \
+          --name wol-web \
+          -v /etc/wolweb/devices.json:/wolweb/devices.json \
+          -e WEB_PORT=80 \
+          -e WOLWEBHOST="0.0.0.0" \
+          -e WOLWEBPORT="8089" \
+          -e WOLWEBBCASTIP="192.168.1.255:9" \
+          --net=host \
+          ghcr.io/sameerdhoot/wolweb
+
+ExecStop=/usr/bin/podman rm -f wol-web
+
+[Install]
+WantedBy=multi-user.target
