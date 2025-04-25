@@ -99,9 +99,9 @@ list_shutdown() {
   log_info "Starting timer - $SHUTDOWN_TIMER_SECONDS seconds before shutting down servers in /etc/pisuger-server/server-list ..."
   start_s=$(curr_epoch_s)
 
+  log_info "polling for status while timer going..."
   while true; do
     batt_plug_status=$(get_pisugar_field_val battery_power_plugged)
-    log_info "status - battery plugged in: $batt_plug_status"
     if [ "$batt_plug_status" = "true" ]; then
       log_warn "pihole battery_power_plugged = 'true'"
       log_warn "NOT shutting down!"
@@ -146,7 +146,7 @@ list_shutdown() {
   log_info "...or I die"
   while true; do
     batt_plug_status=$(get_pisugar_field_val battery_power_plugged)
-    log_info "battery plugged in: $batt_plug_status"
+    # log_info "battery plugged in: $batt_plug_status"
     if [ "$batt_plug_status" = "true" ]; then
       log_warn "PLUGGED IN - ethwakeonlan NOT IMPLEMENTED YET!"
       rm $LOCKFILE
