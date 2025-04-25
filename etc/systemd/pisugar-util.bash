@@ -135,7 +135,7 @@ list_shutdown() {
     cmd="$server_conn bash -c '$SHUTDOWN_SSH_COMMAND'"
     log_info "${cmd}"
     if [ "$DRY_RUN" != "true" ]; then
-      $cmd || :
+      bash -c "${cmd}" || :
     fi
     log_info
     log_info
