@@ -131,7 +131,7 @@ list_shutdown() {
   #
   # you can (and should) be very careful with these kinds of lists!
   IFS=$'\n'
-  for server_cmd in $(cat /etc/pisugar-server/shutdown-list); do
+  for server_cmd in $(cat /etc/pisugar-server/pisugar-shutdown-commands); do
     log_info "${server_cmd}"
     if [ "$DRY_RUN" != "true" ]; then
       bash -c "${server_cmd}" || :
@@ -148,8 +148,9 @@ list_shutdown() {
     if [ "$batt_plug_status" = "true" ]; then
       log_warn "PLUGGED IN - running commands in /etc/pisugar-server/powerup-list!"
 
+      # TODO: rpi4s do not support WoL :(
       IFS=$'\n'
-      for server_cmd in $(cat /etc/pisugar-server/powerup-list); do
+      for server_cmd in $(cat /etc/pisugar-server/powerup-powerup-commands); do
         log_info "${server_cmd}"
         if [ "$DRY_RUN" != "true" ]; then
           bash -c "${server_cmd}" || :

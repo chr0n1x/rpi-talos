@@ -179,6 +179,11 @@ data:
               icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
               description: Prometheus Dashboard
               href: "https://prometheus.rannet.duckdns.org"
+          - WoLWeb:
+              icon: 'https://m.media-amazon.com/images/I/41N9RhtWh9L.png'
+              description: WoL Web - Wake-on-LAN webapp
+              href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
+              ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
 
   widgets.yaml: |
     - resources:
