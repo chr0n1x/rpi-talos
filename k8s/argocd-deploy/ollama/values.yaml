@@ -13,6 +13,9 @@ open-webui:
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
+    image:
+      tag: latest
+
     enabled: true
 
     resources:
