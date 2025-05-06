@@ -15,6 +15,7 @@ open-webui:
   ollama:
     image:
       tag: latest
+      pullPolicy: Always
 
     enabled: true
 
