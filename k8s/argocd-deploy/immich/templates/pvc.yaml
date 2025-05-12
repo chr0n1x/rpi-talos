@@ -1,3 +1,4 @@
+# TODO: templatize
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -15,3 +16,5 @@ spec:
       storage: 1024Gi
   storageClassName: smb
   volumeMode: Filesystem
+  # NOTE: added this after SMB CSI created it
+  volumeName: pvc-0addb8f9-de72-49e1-9d15-b879c844a19e
