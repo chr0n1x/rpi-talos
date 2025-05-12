@@ -1,0 +1,42 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich
+  namespace: immich
+spec:
+  # At the time of writing, immich is only compatible with pgvecto.rs <0.4. Latest postgres image with that version is 16.5.
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
+  # A bug was reported in v0.3.0, which does not allow a replicated setup:
+  # https://github.com/immich-app/immich-charts/issues/149#issuecomment-2559012759
+  instances: 1
+
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
+
+  # The "postgres" superuser is needed only for import and it can be deactivated after migration.
+  enableSuperuserAccess: true
+  # superuserSecret: immich-superuser
+
+  managed:
+    roles:
+      - name: immich
+        superuser: true
+        login: true
+        passwordSecret:
+          name: immich-postgres-user
+
+  bootstrap:
+    initdb:
+      database: immich
+      owner: immich
+      # secret:
+      #   name: immich-postgres-user
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS "vectors";
+        - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
+
+  storage:
+    size: 32Gi
+    storageClass: longhorn
