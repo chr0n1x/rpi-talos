@@ -1,7 +1,8 @@
 immich:
-  persistence:
-    library:
-      existingClaim: immich-store-pvc
+  immich:
+    persistence:
+      library:
+        existingClaim: immich-store-pvc
   server:
     ingress:
       main:
