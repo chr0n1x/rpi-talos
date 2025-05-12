@@ -1,0 +1,26 @@
+# persistence:
+
+immich:
+  # persistence:
+  #   library:
+  #     # Automatically creating the library volume is not supported by this chart
+  #     # You have to specify an existing PVC to use
+  #     existingClaim:
+  server:
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+          nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+        hosts:
+          - host: immich.rannet.duckdns.org
+            paths:
+              - path: "/"
+        tls:
+          - hosts:
+            - immich.rannet.duckdns.org
+            secretName: immich-cert
