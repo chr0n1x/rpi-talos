@@ -5,6 +5,6 @@ description: cloud native postgres
 type: application
 
 dependencies:
-  - name: cnpg
+  - name: cloudnative-pg
     version: ~0.23
     repository: https://cloudnative-pg.github.io/charts
