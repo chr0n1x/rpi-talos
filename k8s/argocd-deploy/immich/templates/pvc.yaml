@@ -12,7 +12,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1024GB
+      storage: 1024Gi
   storageClassName: smb
   volumeMode: Filesystem
   volumeName: immich-store
