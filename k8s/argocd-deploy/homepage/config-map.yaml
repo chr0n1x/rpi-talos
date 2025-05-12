@@ -14,7 +14,7 @@ data:
           columns: 2
       - Other:
           "HomeLab Admin ⏬":
-              initiallyCollapsed: true
+            initiallyCollapsed: true
 
   docker.yaml: ''
 
