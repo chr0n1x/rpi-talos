@@ -11,7 +11,7 @@ immich:
   server:
     env:
       - name: DB_HOSTNAME
-        value: http://immich-rw:5432
+        value: immich-rw
 
       - name: DB_DATABASE_NAME
         value: immich
