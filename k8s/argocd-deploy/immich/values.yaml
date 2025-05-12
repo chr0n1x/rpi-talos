@@ -1,8 +1,13 @@
 immich:
+
   immich:
     persistence:
       library:
         existingClaim: immich-store-pvc
+
+  redis:
+    enabled: true
+
   server:
     ingress:
       main:
