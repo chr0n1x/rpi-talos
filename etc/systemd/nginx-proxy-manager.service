@@ -7,6 +7,8 @@ RequiresMountsFor=/mnt/nginx-proxy-manager
 
 [Service]
 Type=simple
+Restart=always
+RestartSec=3
 
 # assumes fstab
 #   //nas.lan/nginx-proxy-manager /mnt/nginx-proxy-manager cifs mfsymlinks,nobrl,username=admin-svc,password=**** 0 0
