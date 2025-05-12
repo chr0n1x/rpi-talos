@@ -5,6 +5,7 @@ metadata:
     - kubernetes.io/pvc-protection
   # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
 spec:
+  name: immich-store-pvc
   accessModes:
     - ReadWriteOnce
   resources:
