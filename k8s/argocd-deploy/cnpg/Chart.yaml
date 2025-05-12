@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: cnpg
+version: 1.0.0
+description: cloud native postgres
+type: application
+
+dependencies:
+  - name: cnpg
+    version: ~0.23
+    repository: https://cloudnative-pg.github.io/charts
