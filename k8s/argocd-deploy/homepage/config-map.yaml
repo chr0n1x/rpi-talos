@@ -75,11 +75,21 @@ data:
   services.yaml: |
 
     - Apps:
+      - ArgoCD:
+          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+          description: ArgoCD!
+          href: "https://argocd.rannet.duckdns.org/applications"
+          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
       - Jellyfin:
           icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
           description: Jellyfin Media Server
           href: "https://jellyfin.rannet-edge.duckdns.org/"
           siteMonitor: "https://jellyfin.rannet-edge.duckdns.org/health"
+      - K8s Dashboard:
+          icon: 'https://kubernetes.io/images/wheel.svg'
+          description: K8s dashboard
+          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
@@ -102,26 +112,12 @@ data:
           ping: "https://nas.rannet-edge.duckdns.org/"
 
     - Tools:
-      - ArgoCD:
-          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-          description: ArgoCD!
-          href: "https://argocd.rannet.duckdns.org/applications"
-          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
           href: "https://docker.rannet.duckdns.org"
           siteMonitor: "https://docker.rannet.duckdns.org/v2/"
           ping: "https://docker.rannet.duckdns.org"
-      - DuckDNS:
-          icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
-          description: Free domain provider; Sign in via GitHub.
-          href: "https://www.duckdns.org/"
-      - K8s Dashboard:
-          icon: 'https://kubernetes.io/images/wheel.svg'
-          description: K8s dashboard
-          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
-          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
@@ -147,6 +143,10 @@ data:
           siteMonitor: 'https://status.twingate.com/api/v2/status.json'
 
       - "HomeLab Admin ⏬":
+          - DuckDNS:
+              icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
+              description: Free domain provider; Sign in via GitHub.
+              href: "https://www.duckdns.org/"
           - Longhorn:
               icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
               description: Longhorn Persistent Store Dashboard
