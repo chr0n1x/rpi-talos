@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  finalizers:
+    - kubernetes.io/pvc-protection
+  # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512GB
+  storageClassName: smb 
+  volumeMode: Filesystem
+  volumeName: immich-store

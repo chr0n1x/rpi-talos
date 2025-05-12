@@ -1,11 +1,7 @@
-# persistence:
-
 immich:
-  # persistence:
-  #   library:
-  #     # Automatically creating the library volume is not supported by this chart
-  #     # You have to specify an existing PVC to use
-  #     existingClaim:
+  persistence:
+    library:
+      existingClaim: immich-store
   server:
     ingress:
       main:
