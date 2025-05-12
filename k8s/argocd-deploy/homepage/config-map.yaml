@@ -101,6 +101,11 @@ data:
           description: K8s dashboard
           href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
           siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
+      - Immich:
+          icon: 'https://immich.app/img/immich-logo.svg'
+          description: Photo/Video Storage
+          href: https://immich.rannet.duckdns.org
+          siteMonitor: "https://immich.rannet.duckdns.org/api/server/ping"
       - Open WebUI:
           icon: 'https://ollama.com/public/ollama.png'
           description: LLMs in-cluster via open-webui
