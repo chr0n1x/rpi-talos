@@ -15,4 +15,3 @@ spec:
       storage: 1024Gi
   storageClassName: smb
   volumeMode: Filesystem
-  volumeName: immich-store
