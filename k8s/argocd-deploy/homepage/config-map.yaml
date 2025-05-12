@@ -10,12 +10,11 @@ data:
     title: "Ran Home, Have We?"
     headerStyle: boxedWidgets
     layout:
-      - HomeLab:
+      - Apps:
           columns: 2
-      - Other:
-          Tools:
-            "HomeLab Admin ⏬":
-                initiallyCollapsed: true
+      - Tools:
+          "HomeLab Admin ⏬":
+            initiallyCollapsed: true
 
   docker.yaml: ''
 
