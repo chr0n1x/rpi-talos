@@ -118,6 +118,10 @@ data:
           href: "https://docker.rannet.duckdns.org"
           siteMonitor: "https://docker.rannet.duckdns.org/v2/"
           ping: "https://docker.rannet.duckdns.org"
+      - Grafana:
+          icon: 'https://grafana.com/static/img/menu/grafana2.svg'
+          description: Grafana Dashboard
+          href: "https://grafana.rannet.duckdns.org"
       - key.br:
           icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
           description: Best typing training tool.
@@ -151,10 +155,6 @@ data:
               icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
               description: Longhorn Persistent Store Dashboard
               href: "https://longhorn.rannet.duckdns.org"
-          - Grafana:
-              icon: 'https://grafana.com/static/img/menu/grafana2.svg'
-              description: Grafana Dashboard
-              href: "https://grafana.rannet.duckdns.org"
           - NginxPM:
               icon: 'https://nginxproxymanager.com/icon.png'
               description: Nginx Proxy Manager Admin Panel
