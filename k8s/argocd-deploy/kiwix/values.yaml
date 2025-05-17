@@ -17,8 +17,8 @@ deployment:
       limit: 1000m
       request: 500m
     mem:
-      limit: 4Gi
-      request: 2Gi
+      limit: 8Gi
+      request: 4Gi
   livenessProbe:
     initialDelaySeconds: 180
     timeoutSeconds: 180

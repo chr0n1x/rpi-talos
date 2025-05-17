@@ -61,8 +61,8 @@ spec:
             port: 8080
           initialDelaySeconds: {{ .Values.deployment.livenessProbe.initialDelaySeconds | default 180 }}
           timeoutSeconds: {{ .Values.deployment.livenessProbe.timeoutSeconds | default 180 }}
-          successThreshold: 1
-          failureThreshold: 8 
+          successThreshold: {{ .Values.deployment.livenessProbe.successThreshold | default 1 }}
+          failureThreshold: {{ .Values.deployment.livenessProbe.failureThreshold | default 16 }}
           periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds | default 60 }}
         readinessProbe:
           httpGet:
@@ -70,8 +70,8 @@ spec:
             port: 8080
           initialDelaySeconds: {{ .Values.deployment.readinessProbe.initialDelaySeconds | default 180 }}
           timeoutSeconds: {{ .Values.deployment.readinessProbe.timeoutSeconds | default 180 }}
-          successThreshold: 1
-          failureThreshold: 3
+          successThreshold: {{ .Values.deployment.readinessProbe.successThreshold | default 1 }}
+          failureThreshold: {{ .Values.deployment.readinessProbe.failureThreshold | default 16 }}
           periodSeconds: {{ .Values.deployment.readinessProbe.periodSeconds | default 60 }}
         ports:
         - containerPort: 8080
