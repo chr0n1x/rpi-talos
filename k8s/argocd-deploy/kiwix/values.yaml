@@ -3,6 +3,8 @@ persistence:
   volumeName: pvc-1780b073-7e94-40f9-b005-db27fbe6d912
 
 deployment:
+  # image: ghcr.io/kiwix/kiwix-serve:3.7.0@sha256:9bd81257180e2d5328df1a139c3af76de453d6f2c475235035645c92054a168f
+
   zimPaths:
     - /data/*.zim
     - /data/stackexchange/*.zim
