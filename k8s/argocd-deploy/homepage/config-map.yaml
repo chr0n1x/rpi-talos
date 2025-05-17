@@ -110,6 +110,11 @@ data:
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
           ping: "https://nas.rannet-edge.duckdns.org/"
+      - Pinchflat:
+          icon: 'https://i.imgur.com/8WTIZWn.png'
+          description: Media/Youtube Downloader
+          href: https://pinchflat.rannet.duckdns.org
+          ping: https://pinchflat.rannet.duckdns.org
 
     - Tools:
       - Docker Registry:
@@ -130,11 +135,6 @@ data:
           icon: 'https://configure.zsa.io/assets/oryx-logo-navbar.20f1e1e8.png'
           description: ZSA Configuration Tool
           href: "https://configure.zsa.io/voyager/layouts"
-      - Pinchflat:
-          icon: 'https://i.imgur.com/8WTIZWn.png'
-          description: Media/Youtube Downloader
-          href: https://pinchflat.rannet.duckdns.org
-          ping: https://pinchflat.rannet.duckdns.org
       - ProxmoxVE:
           icon: 'https://www.proxmox.com/favicon.svg'
           description: Proxmox VE
