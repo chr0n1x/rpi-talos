@@ -34,6 +34,12 @@ spec:
         image: ghcr.io/kiwix/kiwix-serve:3.7.0@sha256:9bd81257180e2d5328df1a139c3af76de453d6f2c475235035645c92054a168f
         imagePullPolicy: IfNotPresent
         args:
+          {{- if .Values.deployment.otherArgs }}
+            {{- with .Values.deployment.otherArgs }}
+            {{- toYaml . | nindent 8 }}
+            {{- end }}
+          {{- end }}
+
           {{- if .Values.deployment.zimPaths }}
             {{- with .Values.deployment.zimPaths }}
             {{- toYaml . | nindent 8 }}
@@ -41,6 +47,7 @@ spec:
           {{- else }}
           - '/data/*.zim'
           {{- end }}
+
         resources:
           requests:
             cpu: {{ .Values.deployment.resources.cpu.request | default "100m" }}

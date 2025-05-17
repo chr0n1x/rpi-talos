@@ -6,12 +6,14 @@ deployment:
   zimPaths:
     - /data/*.zim
     - /data/stackexchange/*.zim
+  otherArgs:
+    - --verbose
 
   # tweak these if you have too much/little data
   resources:
     cpu:
-      limit: 500m
-      request: 100m
+      limit: 1000m
+      request: 500m
     mem:
       limit: 4Gi
       request: 2Gi
