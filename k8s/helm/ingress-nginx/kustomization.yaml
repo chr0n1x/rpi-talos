@@ -1,0 +1,25 @@
+namespace: ingress-nginx
+
+
+helmCharts:
+- name: ingress-nginx
+  includeCRDs: true
+  releaseName: ingress-nginx
+  namespace: ingress-nginx
+  repo: https://kubernetes.github.io/ingress-nginx
+  valuesInline:
+    controller:
+      hostNetwork: true
+
+patches:
+- patch: |-
+    - op: add
+      path: /spec/selector/matchLabels
+      value:
+        kubernetes.io/hostname: nyx
+    - op: add
+      path: /spec/template/metadata/labels
+      value:
+        kubernetes.io/hostname: nyx
+  target:
+      kind: Deployment
