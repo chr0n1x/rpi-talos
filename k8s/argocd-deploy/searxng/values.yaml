@@ -1,8 +1,16 @@
 searxng:
   namespace: searxng
+
+  searxng:
+    config:
+      use_default_settings: true
+      server:
+        secret_key: ""
+
   TZ: "America/New York"
+
   ingress:
-    api:
+    main:
       enabled: true
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
