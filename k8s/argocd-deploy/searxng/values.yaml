@@ -16,16 +16,22 @@ searxng:
   ingress:
     main:
       enabled: true
+
+      name: searxng-ingress
+
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
         nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
         nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+
       ingressClassName: nginx
+
       tls:
         - hosts:
             - searxng.rannet.duckdns.org
           secretName: searxng-cert
+
       hosts:
         - host: searxng.rannet.duckdns.org
           paths:
