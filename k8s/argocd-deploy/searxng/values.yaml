@@ -6,6 +6,10 @@ searxng:
       use_default_settings: true
       # server:
       #   secret_key: ""
+      search:
+        formats:
+          - html
+          - json
 
   TZ: "America/New York"
 
