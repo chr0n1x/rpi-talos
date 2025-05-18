@@ -17,7 +17,7 @@ searxng:
     main:
       enabled: true
 
-      name: searxng-ingress
+      nameOverride: ingress
 
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
@@ -39,6 +39,6 @@ searxng:
               pathType: Prefix
               backend:
                 service:
-                  name: kiwix-svc
+                  name: searxng
                   port:
                     number: 8080
