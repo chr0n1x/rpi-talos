@@ -1,0 +1,25 @@
+searxng:
+  TZ: "America/New York"
+  ingress:
+    api:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      ingressClassName: nginx
+      tls:
+        - hosts:
+            - searxng.rannet.duckdns.org
+          secretName: searxng-cert
+      hosts:
+        - host: searxng.rannet.duckdns.org
+          paths:
+            - path: "/"
+              pathType: Prefix
+              backend:
+                service:
+                  name: kiwix-svc
+                  port:
+                    number: 8080
