@@ -1,0 +1,11 @@
+apiVersion: 1.0.0
+name: ingress-nginx
+version: 1.0.0
+description: ingress-nginx wrapper chart
+type: application
+
+dependencies:
+  - name: ingress-nginx
+    version: ~4
+    repository: https://kubernetes.github.io/ingress-nginx
+    includeCRDs: true

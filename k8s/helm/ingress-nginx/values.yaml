@@ -1,0 +1,8 @@
+# Im a hack and a complete disgrace
+ingress-nginx:
+  controller:
+    hostNetwork: true
+    nodeSelector:
+      kubernetes.io/hostname: nyx
+    updateStrategy:
+      type: Recreate
