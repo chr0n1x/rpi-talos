@@ -16,14 +16,14 @@ spec:
       app.kubernetes.io/name: kiwix-serve
   replicas: 1
   strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        kubectl.kubernetes.io/default-container:  kiwix-serve
+  #   rollingUpdate:
+  #     maxSurge: 25%
+  #     maxUnavailable: 25%
+  #   type: RollingUpdate
+  # template:
+  #   metadata:
+  #     annotations:
+  #       kubectl.kubernetes.io/default-container:  kiwix-serve
       labels:
         app: kiwix-serve
         app.kubernetes.io/instance: kiwix-serve
@@ -56,6 +56,7 @@ spec:
             cpu: {{ .Values.deployment.resources.cpu.limit | default "500m" }}
             memory: {{ .Values.deployment.resources.mem.limit | default "2Gi" }}
 
+        {{- if .Values.deployment.livenessProbe }}
         livenessProbe:
           tcpSocket:
             port: 8080
@@ -64,6 +65,9 @@ spec:
           successThreshold: {{ .Values.deployment.livenessProbe.successThreshold | default 1 }}
           failureThreshold: {{ .Values.deployment.livenessProbe.failureThreshold | default 16 }}
           periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds | default 60 }}
+        {{- end }}
+
+        {{- if .Values.deployment.readinessProbe }}
         readinessProbe:
           httpGet:
             path: /
@@ -73,6 +77,8 @@ spec:
           successThreshold: {{ .Values.deployment.readinessProbe.successThreshold | default 1 }}
           failureThreshold: {{ .Values.deployment.readinessProbe.failureThreshold | default 16 }}
           periodSeconds: {{ .Values.deployment.readinessProbe.periodSeconds | default 60 }}
+        {{- end }}
+
         ports:
         - containerPort: 8080
           name: http

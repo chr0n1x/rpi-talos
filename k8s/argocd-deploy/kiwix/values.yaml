@@ -19,11 +19,11 @@ deployment:
     mem:
       limit: 8Gi
       request: 4Gi
-  livenessProbe:
-    initialDelaySeconds: 180
-    timeoutSeconds: 180
-    periodSeconds: 60
-  readinessProbe:
-    initialDelaySeconds: 180
-    timeoutSeconds: 180
-    periodSeconds: 60
+  # livenessProbe:
+  #   initialDelaySeconds: 180
+  #   timeoutSeconds: 180
+  #   periodSeconds: 60
+  # readinessProbe:
+  #   initialDelaySeconds: 180
+  #   timeoutSeconds: 180
+  #   periodSeconds: 60
