@@ -14,8 +14,8 @@ deployment:
   # tweak these if you have too much/little data
   resources:
     cpu:
-      limit: 1000m
-      request: 500m
+      limit: 4
+      request: 2
     mem:
       limit: 8Gi
       request: 4Gi
