@@ -197,5 +197,8 @@ data:
         expanded: true
         memory: true
     - search:
-        provider: duckduckgo
+        provider: custom
+        url: https://searxng.rannet.duckdns.org/search?q=
         target: _blank
+        suggestionUrl: https://searxng.rannet.duckdns.org/autocompleter?q=
+        showSearchSuggestions: true
