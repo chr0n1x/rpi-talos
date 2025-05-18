@@ -4,8 +4,8 @@ searxng:
   searxng:
     config:
       use_default_settings: true
-      server:
-        secret_key: ""
+      # server:
+      #   secret_key: ""
 
   TZ: "America/New York"
 
