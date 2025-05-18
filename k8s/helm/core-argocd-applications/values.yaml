@@ -1,3 +1,4 @@
+# TODO: make ALL the apps values instead of hardcoded app CRDs
 argocd:
   namespace: argocd
 

@@ -1,0 +1,16 @@
+trivy:
+  operator:
+    builtInTrivyServer: false
+    builtInServerRegistryInsecure: false
+
+  trivy:
+    mode: Standalone
+
+  trivyOperator:
+    scanJobPodTemplateContainerSecurityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+          - ALL
+      privileged: true
+      readOnlyRootFilesystem: true
