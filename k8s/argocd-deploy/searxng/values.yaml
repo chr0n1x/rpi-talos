@@ -1,4 +1,5 @@
 searxng:
+  namespace: searxng
   TZ: "America/New York"
   ingress:
     api:
