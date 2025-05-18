@@ -5,6 +5,6 @@ description: trivy wrapper chart
 type: application
 
 dependencies:
-  - name: trivy
-    version: ~0.14
+  - name: trivy-operator
+    version: ~0.28
     repository: https://aquasecurity.github.io/helm-charts/
