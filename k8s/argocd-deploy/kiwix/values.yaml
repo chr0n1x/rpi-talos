@@ -14,11 +14,11 @@ deployment:
   # tweak these if you have too much/little data
   resources:
     cpu:
-      limit: 4
-      request: 2
+      limit: 8
+      request: 4
     mem:
-      limit: 8Gi
-      request: 4Gi
+      limit: 16Gi
+      request: 8Gi
   # livenessProbe:
   #   initialDelaySeconds: 180
   #   timeoutSeconds: 180
