@@ -1,10 +1,15 @@
+# TODO: rename this
 apiVersion: 1.0.0
 name: descheduler
 version: 1.0.0
-description: descheduler wrapper chart w/ policies
+description: wrapper chart w/ policies for various cleanup services
 type: application
 
 dependencies:
   - name: descheduler
     version: ~0.32
     repository: https://kubernetes-sigs.github.io/descheduler/
+
+  - name: kube-cleanup
+    version: ~1
+    repository: http://charts.lwolf.org
