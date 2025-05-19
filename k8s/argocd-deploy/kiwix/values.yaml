@@ -15,7 +15,7 @@ deployment:
   resources:
     cpu:
       limit: 8
-      request: 4
+      request: 2
     mem:
       limit: 8Gi
       request: 2Gi
