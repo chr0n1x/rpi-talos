@@ -9,7 +9,3 @@ dependencies:
   - name: descheduler
     version: ~0.32
     repository: https://kubernetes-sigs.github.io/descheduler/
-
-  - name: kube-cleanup-operator
-    version: ~1
-    repository: http://charts.lwolf.org
