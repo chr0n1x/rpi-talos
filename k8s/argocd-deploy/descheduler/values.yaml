@@ -1,2 +1,6 @@
 descheduler:
   namespaceOverride: kube-system
+
+kube-cleanup-operator:
+  nodeSelector:
+    kubernetes.io/arch: amd64
