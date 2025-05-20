@@ -1,6 +1,9 @@
 searxng:
   namespace: searxng
 
+  image:
+    tag: 2025.5.18
+
   searxng:
     config:
       use_default_settings: true
