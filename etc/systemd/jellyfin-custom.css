@@ -1,0 +1,72 @@
+/*disable global carousel*/
+@media all {
+  .emby-scroller {
+    margin-right: 0;
+  }
+  .emby-scrollbuttons {
+    display: none;
+  }
+  .itemsContainer {
+    flex-wrap: wrap;
+  }
+
+  .detailPageWrapperContainer {
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+}
+
+/* Jellyfin Mobile Tweaks taken from https://github.com/Oniicode/JellyfinMobileTweaks */
+@media all and (max-width: 60em) { /* idk this value might vary based on screen size and dpi */
+  .section0 .cardBox {
+    width: 7em;
+  }
+
+  .skinHeader {
+    background: linear-gradient(#101010, transparent) !important;
+  }
+
+  .verticalSection .emby-scroller {
+    padding-left: 0 !important;
+    margin-right: unset;
+  }
+
+  .verticalSection .sectionTitle-cards.padded-left {
+    padding-left: 8px !important;
+    font-size: 1.1em;
+  }
+
+  .verticalSection .sectionTitleContainer-cards.padded-left {
+    padding-left: 8px !important;
+    font-size: 0.7em;
+  }
+
+  #itemDetailPage .detailPageWrapperContainer {
+    margin-top: 0;
+  }
+
+  .card {
+    width: 95% !important;
+  }
+
+  .cardBox {
+    width: 28em;
+    padding-left: 1em !important;
+    border: 2px solid #63635f;
+    border-radius: 7px;
+  }
+
+  .cardBox .cardText-first {
+    display: block;
+  }
+
+  .homePage .emby-scroller {
+    margin-right: 0;
+  }
+  .homePage .emby-scrollbuttons {
+    display: none;
+  }
+  .homePage .itemsContainer {
+    flex-wrap: wrap;
+  }
+}
