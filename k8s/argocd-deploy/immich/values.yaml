@@ -49,6 +49,7 @@ immich:
     enabled: true
 
   server:
+    replicas: 0
     env:
       - name: DB_HOSTNAME
         value: immich-rw
