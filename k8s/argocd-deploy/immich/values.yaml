@@ -1,3 +1,6 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17.5-0.3.0
+
 # note: for this setup - backups are stored into the SMB share
 #
 # 1. take the latest tz backup in ./backups
@@ -34,7 +37,7 @@
 # more info here: https://github.com/cloudnative-pg/cloudnative-pg/discussions/1171
 immich:
   image:
-    tag: v1.132.3
+    tag: v1.133.0
 
   immich:
     persistence:
@@ -70,6 +73,7 @@ immich:
         value: http://immich-machine-learning:3003
       - name: REDIS_HOSTNAME
         value: immich-redis-master
+
     ingress:
       main:
         enabled: true
