@@ -1,3 +1,37 @@
+# note: for this setup - backups are stored into the SMB share
+#
+# 1. take the latest tz backup in ./backups
+# 2. unzip: gunzip <file>.gz --> yields <backup>.sql
+# 3. sed -i "s/SELECT pg_catalog.set_config('search_path', '', false);/SELECT pg_catalog.set_config('search_path', 'public, pg_catalog', true);/g" <backup>.sql
+# 4. then remove instances where the postgres user is being updated in the sql
+#    file (if need be). when running the script, if those lines are in there
+#    and you're using the postgres user credentials, the script RESETS the
+#    password, which can cause your connetion to drop.
+#
+# #3 is from the docs
+#   https://immich.app/docs/administration/backup-and-restore/
+# no idea why it's necessary
+#
+#
+# finally, portforward to your RW db endpoint
+#
+#   kubectl --namespace immich port-forward services/immich-rw 5432:5432
+#
+# and restore via psql locally - e.g.:
+#
+#   # if you don't have psql locally
+#   sudo apt install postgresql-client
+#
+#   # note this will output the password with a '%' at the end; the '%' is NOT
+#   # a part of the password
+#   kubectl get secret immich-superuser -o=yaml | yq .data.password | base64 -d
+#
+#   # use password above in interactive terminal
+#   cat <backup>.sql | psql "sslmode=disable host=127.0.0.1 dbname=immich port=5432 user=postgres"
+#
+# note that sslmode is required for portforward. if you're hosting w/
+# a cert/ssl it's probably not needed
+# more info here: https://github.com/cloudnative-pg/cloudnative-pg/discussions/1171
 immich:
   image:
     tag: v1.132.3
