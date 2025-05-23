@@ -1,6 +1,6 @@
 cnpg:
   # image: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:16.5-0.3.0
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.3.0
 
 # note: for this setup - backups are stored into the SMB share
 #
