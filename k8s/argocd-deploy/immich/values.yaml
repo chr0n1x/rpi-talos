@@ -38,7 +38,8 @@ cnpg:
 # more info here: https://github.com/cloudnative-pg/cloudnative-pg/discussions/1171
 immich:
   image:
-    tag: v1.133.0
+    # tag: v1.133.0
+    tag: v1.132.3
 
   immich:
     persistence:
