@@ -9,8 +9,7 @@ ingress-nginx:
     nodeSelector:
       kubernetes.io/hostname: nyx
 
-    podLabels:
-      priorityClassName: system-node-critical
+    priorityClassName: system-node-critical
 
     updateStrategy:
       type: Recreate
