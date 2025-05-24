@@ -1,3 +1,5 @@
+# TODO: https://github.com/dotdc/grafana-dashboards-kubernetes
+# auto install the above
 grafana:
   # this just started to fail one day, no idea
   initChownData:
@@ -6,8 +8,7 @@ grafana:
   persistence:
     enabled: true
     storageClassName: longhorn
-    # TODO: somehow find-or-create longhorn pvc?
-    # existingClaim: grafana-pvc
+    volumeName: pvc-82b7ece5-d11a-44c4-8e21-f9b4fca70a42
     accessModes:
       - ReadWriteMany
 
@@ -34,8 +35,3 @@ grafana:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "false"
-      # nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.home.k8s:30443/oauth2/auth
-      # # don't feel too good about this; ideally should be $server_port, but
-      # # using a NodePort instead of an actual LB doesn't seem to allow this (TBD)
-      # nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.home.k8s:30443/oauth2/start?rd=$scheme://$host:30443$request_uri"
-      # nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
