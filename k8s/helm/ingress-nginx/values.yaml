@@ -3,6 +3,9 @@ ingress-nginx:
   controller:
     hostNetwork: true
 
+    progressDeadlineSeconds: 360
+    minReadySeconds: 30
+
     nodeSelector:
       kubernetes.io/hostname: nyx
 
