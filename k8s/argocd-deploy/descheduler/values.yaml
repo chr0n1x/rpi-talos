@@ -44,7 +44,7 @@ descheduler:
                 - ingress-nginx
         - name: LowNodeUtilization
           args:
-            namespaces:
+            evictableNamespaces:
               exclude:
                 - ingress-nginx
             thresholds:
