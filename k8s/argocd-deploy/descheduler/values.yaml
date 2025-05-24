@@ -1,2 +1,69 @@
 descheduler:
   namespaceOverride: kube-system
+
+  deschedulerPolicy:
+  # nodeSelector: "key1=value1,key2=value2"
+  # maxNoOfPodsToEvictPerNode: 10
+  # maxNoOfPodsToEvictPerNamespace: 10
+  # metricsProviders:
+  # - source: KubernetesMetrics
+  # tracing:
+  #   collectorEndpoint: otel-collector.observability.svc.cluster.local:4317
+  #   transportCert: ""
+  #   serviceName: ""
+  #   serviceNamespace: ""
+  #   sampleRate: 1.0
+  #   fallbackToNoOpProviderOnError: true
+  profiles:
+    - name: default
+      pluginConfig:
+        - name: DefaultEvictor
+          args:
+            ignorePvcPods: true
+            evictLocalStoragePods: false
+            evictFailedBarePods: true
+            namespaces:
+              exclude:
+                - ingress-nginx
+
+        - name: RemoveDuplicates
+        - name: RemovePodsHavingTooManyRestarts
+          args:
+            podRestartThreshold: 50
+            includingInitContainers: true
+        - name: RemovePodsViolatingNodeAffinity
+          args:
+            nodeAffinityType:
+            - requiredDuringSchedulingIgnoredDuringExecution
+        - name: RemovePodsViolatingNodeTaints
+        - name: RemovePodsViolatingInterPodAntiAffinity
+        - name: RemovePodsViolatingTopologySpreadConstraint
+          args:
+            namespaces:
+              exclude:
+                - ingress-nginx
+        - name: LowNodeUtilization
+          args:
+            namespaces:
+              exclude:
+                - ingress-nginx
+            thresholds:
+              cpu: 20
+              memory: 20
+              pods: 20
+            targetThresholds:
+              cpu: 50
+              memory: 50
+              pods: 50
+      plugins:
+        balance:
+          enabled:
+            - RemoveDuplicates
+            - RemovePodsViolatingTopologySpreadConstraint
+            - LowNodeUtilization
+        deschedule:
+          enabled:
+            - RemovePodsHavingTooManyRestarts
+            - RemovePodsViolatingNodeTaints
+            - RemovePodsViolatingNodeAffinity
+            - RemovePodsViolatingInterPodAntiAffinity
