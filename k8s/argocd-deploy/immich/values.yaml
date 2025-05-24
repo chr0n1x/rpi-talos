@@ -1,6 +1,6 @@
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0
-  # image: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.3.0
+  # image: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.3.0
 
 # note: for this setup - backups are stored into the SMB share
 #
@@ -38,8 +38,8 @@ cnpg:
 # more info here: https://github.com/cloudnative-pg/cloudnative-pg/discussions/1171
 immich:
   image:
-    # tag: v1.133.0
-    tag: v1.132.3
+    tag: v1.133.0
+    # tag: v1.132.3
 
   immich:
     persistence:

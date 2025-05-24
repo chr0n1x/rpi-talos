@@ -10,8 +10,8 @@ spec:
 
   postgresql:
     shared_preload_libraries:
-      # - "vchord.so"
-      - "vectors.so"
+      - "vchord.so"
+      # - "vectors.so"
 
   # The "postgres" superuser is needed only for import and it can be
   # deactivated after migration.
@@ -34,12 +34,12 @@ spec:
         name: immich-postgres-user
       postInitSQL:
           # only use with vchord.so above
-          # - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
-          # - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
-
-          - CREATE EXTENSION IF NOT EXISTS "vectors";
-          - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
+          - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
           - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
+
+          # - CREATE EXTENSION IF NOT EXISTS "vectors";
+          # - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
+          # - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
   storage:
     size: 8Gi
     storageClass: longhorn
