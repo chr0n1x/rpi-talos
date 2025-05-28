@@ -35,6 +35,10 @@ open-webui:
     volumeName: pvc-be195e50-a8fb-489c-a27e-4c07ff140aab
 
   pipelines:
+    resources:
+      requests:
+        cpu: 2
+        memory: 4Gi
     strategy:
       type: Recreate
     persistence:
