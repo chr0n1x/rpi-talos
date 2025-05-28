@@ -13,11 +13,15 @@ open-webui:
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
+    enabled: true
+
     image:
       tag: latest
       pullPolicy: Always
 
-    enabled: true
+    extraEnv:
+      - name: OLLAMA_KEEP_ALIVE
+        value: -1
 
     resources:
       requests:
