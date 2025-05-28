@@ -95,6 +95,7 @@ open-webui:
       nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
       nginx.ingress.kubernetes.io/auth-url: https://my-oauth2-proxy-url/oauth2/auth
       nginx.ingress.kubernetes.io/auth-signin: https://my-oauth2-proxy-url/oauth2/start
       nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
