@@ -13,3 +13,7 @@ ingress-nginx:
 
     updateStrategy:
       type: Recreate
+    resources:
+      requests:
+        cpu: 2
+        memory: 8Gi
