@@ -6,5 +6,5 @@ type: application
 
 dependencies:
   - name: open-webui
-    version: ~6.16
+    version: ~6.17
     repository: https://helm.openwebui.com/
