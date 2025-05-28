@@ -35,6 +35,7 @@ open-webui:
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
       hosts:
         - host: ollama.rannet.duckdns.org
           paths:
