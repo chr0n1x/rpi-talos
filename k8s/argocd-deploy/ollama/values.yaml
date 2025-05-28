@@ -37,7 +37,7 @@ open-webui:
   pipelines:
     resources:
       requests:
-        cpu: 2
+        cpu: 1
         memory: 4Gi
     strategy:
       type: Recreate
