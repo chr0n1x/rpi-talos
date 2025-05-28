@@ -41,9 +41,9 @@ open-webui:
       existingClaim: open-webui-pipelines
       volumeName: pvc-ba933136-1dee-458c-90c4-360553a0f858
 
-  websocket:
-    enabled: true
-    url: redis://open-webui-redis.ollama.svc.cluster.local:6379/0
+  # websocket:
+  #   enabled: true
+  #   url: redis://open-webui-redis.ollama.svc.cluster.local:6379/0
 
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
