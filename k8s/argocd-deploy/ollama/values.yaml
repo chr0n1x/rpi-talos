@@ -2,7 +2,11 @@
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
 
-  replicaCount: 2
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 2
+      memory: 4Gi
 
   ingress:
     class: nginx
