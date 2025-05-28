@@ -21,7 +21,7 @@ open-webui:
 
     extraEnv:
       - name: OLLAMA_KEEP_ALIVE
-        value: -1
+        value: "-1"
 
     resources:
       requests:
