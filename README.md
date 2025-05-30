@@ -1,7 +1,7 @@
 Talos on RPi
 ====
 
-![rpi k8s cluster via talos!](docs/img/rpi-talos-k8s.jpg?raw=true)
+![rpi k8s cluster via talos!](docs/img/rpi-talos-k8s.jpeg?raw=true)
 
 _In image above: 7 RPis, 3 control, 3 workers, 1 dedicated pi-hole (on wifi lulz), zimablade x86 worker attached to a 10TB HDD_
 
