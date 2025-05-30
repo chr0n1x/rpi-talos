@@ -3,7 +3,21 @@ Talos on RPi
 
 ![rpi k8s cluster via talos!](docs/img/rpi-talos-k8s.jpeg?raw=true)
 
-_In image above: 7 RPis, 3 control, 3 workers, 1 dedicated pi-hole (on wifi lulz), zimablade x86 worker attached to a 10TB HDD_
+In image above:
+- 9 node TalosOS cluster
+    - 3x RPi control nodes
+    - 4x RPi workers
+    - x86Zimablade+2TB NVMe worker
+    - NVIDIA 3090Ti proxmox with:
+        - pcie passthrough to AI worker VM
+        - other TalosOS worker/control VMs
+-   rock-5c lite running jellyfin
+-   RPi3 pi.hole
+-   x86 Zimablade + 2x10TB HDD NAS
+-   RPi Zero 2W nginx loadbalancer 🤣
+-   RPi Zero 2W faux NUT server
+
+## Goals
 
 - Leveraging talos/k8s with the [pi.hole](https://pi-hole.net/) stack.
 - [Talos](https://www.talos.dev/v1.7/talos-guides/install/single-board-computers/rpi_generic/) is pretty cool.
