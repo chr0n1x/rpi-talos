@@ -57,12 +57,12 @@ seconds_since() {
 
 # also added these to .envrc, too nice
 get_pisugar_field() {
-  echo "get $1" | nc -q 0 127.0.0.1 8423
+  echo "get $@" | nc -q 0 127.0.0.1 8423
 }
 
 
 get_pisugar_field_val() {
-  get_pisugar_field $1 | cut -d':' -f2 | xargs
+  get_pisugar_field $@ | cut -d':' -f2 | xargs
 }
 
 
