@@ -85,6 +85,24 @@ pisugar-info() {
 
 
 list_shutdown() {
+  # file list with servers like
+  #   <pipeable conn command>
+  # e.g.:
+  #   ssh root@nas.lan
+  #
+  # you can (and should) be very careful with these kinds of lists!
+  IFS=$'\n'
+  for server_cmd in $(cat /etc/pisugar-server/pisugar-shutdown-commands); do
+    log_info "${server_cmd}"
+    if [ "$DRY_RUN" != "true" ]; then
+      bash -c "${server_cmd}" || :
+    fi
+    log_info
+  done
+  unset IFS
+}
+
+check() {
   if [[ -f $LOCKFILE ]]; then
     if [[ "$FORCE" -eq "true" ]]; then
       log_warn "FORCE=true, IGNORING LOCK AND CONTINUING"
@@ -126,21 +144,7 @@ list_shutdown() {
     log_info "DRY_RUN=true, only printing commands"
   fi
 
-  # file list with servers like
-  #   <pipeable conn command>
-  # e.g.:
-  #   ssh root@nas.lan
-  #
-  # you can (and should) be very careful with these kinds of lists!
-  IFS=$'\n'
-  for server_cmd in $(cat /etc/pisugar-server/pisugar-shutdown-commands); do
-    log_info "${server_cmd}"
-    if [ "$DRY_RUN" != "true" ]; then
-      bash -c "${server_cmd}" || :
-    fi
-    log_info
-  done
-  unset IFS
+  list_shutdown
 
   log_info "Indefinitely polling on battery plug status until power comes back on..."
   log_info "...or I die"
@@ -172,6 +176,9 @@ list_shutdown() {
 script_fpath=$(realpath "$BASH_SOURCE")
 case $1 in
   check)
+    check
+    ;;
+  shutdown)
     list_shutdown
     ;;
   poweronline)
@@ -190,11 +197,16 @@ Example: DRY_RUN=true FORCE=true SHUTDOWN_TIMER_SECONDS=4 script_path shutdown
 
 Commands:
 
+shutdown              Uses /etc/pisugar-server/shutdown-list - plain file where
+                      each line is an executable script.
+
 check                 check pisugar battery. If it's not plugged in, start
                       a timer for SHUTDOWN_TIMER_SECONDS
                       (default: $SHUTDOWN_TIMER_SECONDS)
                       shutdown the system if the power never comes back
                       and the time is up.
+
+                      when time is up, runs list_shutdown
 
                       Available env-var configurations:
                         - DRY_RUN=[true|false]    don't run shutdown cmds
@@ -202,10 +214,6 @@ check                 check pisugar battery. If it's not plugged in, start
                         - SHUTDOWN_TIMER_SECONDS  time to wait in seconds
 
                         - FORCE                   ignore any lockfiles
-
-                        - SHUTDOWN_SSH_COMMAND    command to run on each
-                                                  machine. defaults to
-                                                  $SHUTDOWN_SSH_COMMAND
 
 poweronline           NOT YET IMPLEMENTED
 
