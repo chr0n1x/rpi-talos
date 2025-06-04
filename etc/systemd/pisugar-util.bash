@@ -78,7 +78,9 @@ pisugar-info() {
   echo $(get_pisugar_field safe_shutdown_level)"%"
   echo $(get_pisugar_field safe_shutdown_delay) "seconds"
   echo "Button Shell:"
-  echo $(get_pisugar_field button_shell)
+  echo $(get_pisugar_field button_shell single)
+  echo $(get_pisugar_field button_shell double)
+  echo $(get_pisugar_field button_shell long)
 }
 
 
