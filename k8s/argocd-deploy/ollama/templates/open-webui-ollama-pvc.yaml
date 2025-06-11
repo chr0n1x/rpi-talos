@@ -4,7 +4,6 @@
 {{- with .ollama.persistentVolume }}
 {{- if .enabled }}
 {{- if .existingClaim }}
-{{- if .volumeName }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -24,7 +23,9 @@ spec:
       storage: {{ .size }}
   storageClassName: {{ .storageClass }}
   volumeMode: Filesystem
+  {{- if .volumeName }}
   volumeName: {{ .volumeName }}
+  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
