@@ -53,6 +53,7 @@ grafana:
         token: ''
 
   # kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+  # grafana-cli --homepath "/usr/share/grafana" admin reset-admin-password <new password>
   ingress:
     tls:
       - hosts:
