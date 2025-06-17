@@ -11,6 +11,8 @@ RequiresMountsFor=/mnt/jellyfin /mnt/k8s.smb-csi-share/ns-pinchflat--pvc-19bbd24
 
 [Service]
 Type=simple
+Restart=always
+RestartSec=3
 
 ExecStartPre=-/usr/bin/mkdir -p /etc/jellyfin/cache
 ExecStartPre=-/usr/bin/mkdir -p /etc/jellyfin/config
