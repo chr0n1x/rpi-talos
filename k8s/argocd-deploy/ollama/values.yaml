@@ -34,6 +34,11 @@ open-webui:
     existingClaim: open-webui
     volumeName: pvc-be195e50-a8fb-489c-a27e-4c07ff140aab
 
+  # TODO: move to CNPG?
+  # also - no idea if this conflicts w/ the above
+  postgresql:
+    enabled: true
+
   pipelines:
     resources:
       requests:
