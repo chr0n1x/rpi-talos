@@ -1,5 +1,5 @@
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.3.0
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
 
 # note: for this setup - backups are stored into the SMB share
 #
