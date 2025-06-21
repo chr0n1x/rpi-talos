@@ -52,6 +52,8 @@ open-webui:
   websocket:
     enabled: true
     url: redis://open-webui-redis-master.ollama.svc.cluster.local:6379/0
+    redis:
+      enabled: false
   redis-cluster:
     enabled: true
 
