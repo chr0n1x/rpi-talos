@@ -6,6 +6,7 @@
 prometheus:
   persistence:
     enabled: true
+    size: 32Gi
     storageClassName: longhorn
     # TODO: somehow find-or-create longhorn pvc?
     # existingClaim: prometheus-pvc
