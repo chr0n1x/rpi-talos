@@ -6,7 +6,6 @@
 prometheus:
   persistence:
     enabled: true
-    size: 32Gi
     storageClassName: longhorn
     # TODO: somehow find-or-create longhorn pvc?
     # existingClaim: prometheus-pvc
@@ -23,6 +22,8 @@ prometheus:
       enabled: true
 
   server:
+    persistentVolume:
+      size: 32Gi
     ingress:
       enabled: true
       tls:
