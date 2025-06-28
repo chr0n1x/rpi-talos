@@ -41,6 +41,25 @@ paperless-ngx:
       accessMode: ReadWriteOnce
       size: 256Gi
 
+  # disabling all of these in favor of above
+  # also - export and consume are enabled by default
+  data:
+    enabled: false
+    retain: true
+    mountPath: /usr/src/paperless/data
+  media:
+    enabled: false
+    retain: true
+    mountPath: /usr/src/paperless/media
+  export:
+    enabled: false
+    retain: true
+    mountPath: /usr/src/paperless/export
+  consume:
+    enabled: false
+    retain: true
+    mountPath: /usr/src/paperless/consume
+
 
   # using cnpg instead of this
   postgresql:
