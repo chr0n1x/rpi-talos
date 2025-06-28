@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: paperless-ngx
     version: ~0.24
-    repository: oci://ghcr.io/gabe565/charts/paperless-ngx
+    repository: https://charts.gabe565.com
