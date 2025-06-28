@@ -1,0 +1,58 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+
+paperless-ngx:
+  env:
+    TZ: "America/New York"
+    PAPERLESS_DBENGINE: postgresql
+    PAPERLESS_DBHOST: paperless-ngx-rw
+    PAPERLESS_DBNAME: paperless_ngx
+    PAPERLESS_DBUSER:
+      valueFrom:
+        secretKeyRef:
+          name: paperless-postgres-user
+          key: username 
+    PAPERLESS_DBPASS:
+      valueFrom:
+       secretKeyRef:
+         name: paperless-postgres-user
+         key: password
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 128m
+        hosts:
+          - host: paperless-ngx.rannet.duckdns.org
+            paths:
+              - path: /
+        tls:
+          - secretName: paperless-ngx-cert
+            hosts:
+              - paperless-ngx.rannet.duckdns.org
+
+  persistence:
+    paperless:
+      enabled: true
+      retain: true
+      mountPath: /usr/src/paperless/
+      storageClass: smb
+      accessMode: ReadWriteOnce
+      size: 256Gi
+
+
+  # using cnpg instead of this
+  postgresql:
+    enabled: false
+
+  redis:
+    enabled: true
+    auth:
+      enabled: true
+      username: ""
+    master:
+      persistence:
+        enabled: false
+    replica:
+      replicaCount: 1

@@ -1,0 +1,29 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: paperless-ngx
+  namespace: paperless-ngx
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: 1
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: paperless
+        superuser: true
+        login: true
+        passwordSecret:
+          name: paperless-postgres-user
+
+  bootstrap:
+    initdb:
+      database: paperless_ngx
+      owner: paperless
+      secret:
+        name: paperless-postgres-user
+  storage:
+    size: 32Gi
+    storageClass: longhorn

@@ -1,0 +1,10 @@
+apiVersion: v1
+name: paperless-ngx
+version: 1.0.0
+description: paperless-ngx wrapper chart
+type: application
+
+dependencies:
+  - name: paperless-ngx
+    version: ~0.24
+    repository: oci://ghcr.io/gabe565/charts/paperless-ngx
