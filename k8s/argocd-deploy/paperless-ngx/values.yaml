@@ -23,14 +23,14 @@ paperless-ngx:
       enabled: true
       annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 128m
-        hosts:
-          - host: paperless-ngx.rannet.duckdns.org
-            paths:
-              - path: /
-        tls:
-          - secretName: paperless-ngx-cert
-            hosts:
-              - paperless-ngx.rannet.duckdns.org
+      hosts:
+        - host: paperless-ngx.rannet.duckdns.org
+          paths:
+            - path: /
+      tls:
+        - secretName: paperless-ngx-cert
+          hosts:
+            - paperless-ngx.rannet.duckdns.org
 
   persistence:
     paperless:
