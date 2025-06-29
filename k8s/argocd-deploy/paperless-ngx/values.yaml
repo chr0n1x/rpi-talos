@@ -77,7 +77,7 @@ paperless-ngx:
   redis:
     enabled: true
     auth:
-      enabled: true
+      enabled: false
       username: ""
     master:
       persistence:
