@@ -3,7 +3,7 @@ cnpg:
 
 paperless-ngx:
   env:
-    TZ: "America/New York"
+    TZ: UTC
     PAPERLESS_DBENGINE: postgresql
     PAPERLESS_DBHOST: paperless-ngx-rw
     PAPERLESS_DBNAME: paperless_ngx
