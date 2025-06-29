@@ -110,6 +110,13 @@ data:
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
           ping: "https://nas.rannet-edge.duckdns.org/"
+
+      - PaperlessNGX:
+          icon: 'https://docs.paperless-ngx.com/assets/favicon.png'
+          description: "PDF doc/ref storage"
+          href: https://paperless-ngx.rannet.duckdns.org
+          ping: https://paperless-ngx.rannet.duckdns.org
+
       - Pinchflat:
           icon: 'https://i.imgur.com/8WTIZWn.png'
           description: Media/Youtube Downloader
