@@ -18,6 +18,7 @@ paperless-ngx:
          name: paperless-ngx-superuser
          key: password
     PAPERLESS_REDIS: paperless-ngx-redis-master
+    A_REDIS_PASSWORD: ""
 
     # IMPORTANT: overriding to allow for one single big mount
     # TODO: probably a bad idea? iunno
