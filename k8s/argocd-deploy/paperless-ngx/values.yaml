@@ -3,6 +3,10 @@ cnpg:
 
 paperless-ngx:
   env:
+    # temporary - creds are changed after initial setup
+    PAPERLESS_ADMIN_USER: admin
+    PAPERLESS_ADMIN_PASSWORD: admin
+
     TZ: UTC
     PAPERLESS_DBENGINE: postgresql
     PAPERLESS_DBHOST: paperless-ngx-rw
