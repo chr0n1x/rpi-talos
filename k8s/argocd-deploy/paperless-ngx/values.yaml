@@ -18,6 +18,13 @@ paperless-ngx:
          name: paperless-ngx-superuser
          key: password
 
+    # IMPORTANT: overriding to allow for one single big mount
+    # TODO: probably a bad idea? iunno
+    PAPERLESS_CONSUMPTION_DIR: /etc/paperless/consume
+    PAPERLESS_DATA_DIR: /etc/paperless/data
+    PAPERLESS_EMPTY_TRASH_DIR: /etc/paperless/trash
+    PAPERLESS_MEDIA_ROOT: /etc/paperless/media
+
   ingress:
     main:
       enabled: true
@@ -36,11 +43,18 @@ paperless-ngx:
     paperless:
       enabled: true
       retain: true
-      mountPath: /usr/src/paperless/
+      mountPath: /etc/paperless/
       storageClass: smb
       accessMode: ReadWriteOnce
       size: 256Gi
-
+    # enabling this separately, cannot be configured
+    export:
+      enabled: true
+      retain: true
+      mountPath: /usr/src/paperless/export
+      storageClass: smb
+      accessMode: ReadWriteOnce
+      size: 4Gi
     # disabling all of these in favor of above
     # also - export and consume are enabled by default
     data:
@@ -51,10 +65,6 @@ paperless-ngx:
       enabled: false
       retain: true
       mountPath: /usr/src/paperless/media
-    export:
-      enabled: false
-      retain: true
-      mountPath: /usr/src/paperless/export
     consume:
       enabled: false
       retain: true
