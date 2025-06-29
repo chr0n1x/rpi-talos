@@ -17,6 +17,7 @@ paperless-ngx:
        secretKeyRef:
          name: paperless-ngx-superuser
          key: password
+    PAPERLESS_REDIS: paperless-ngx-redis-master
 
     # IMPORTANT: overriding to allow for one single big mount
     # TODO: probably a bad idea? iunno
