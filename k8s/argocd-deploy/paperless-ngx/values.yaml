@@ -10,12 +10,12 @@ paperless-ngx:
     PAPERLESS_DBUSER:
       valueFrom:
         secretKeyRef:
-          name: paperless-postgres-superuser
+          name: paperless-ngx-superuser
           key: username 
     PAPERLESS_DBPASS:
       valueFrom:
        secretKeyRef:
-         name: paperless-postgres-superuser
+         name: paperless-ngx-superuser
          key: password
 
   ingress:
