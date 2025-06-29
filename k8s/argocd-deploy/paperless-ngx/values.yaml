@@ -22,8 +22,9 @@ paperless-ngx:
     # TODO: probably a bad idea? iunno
     PAPERLESS_CONSUMPTION_DIR: /etc/paperless/consume
     PAPERLESS_DATA_DIR: /etc/paperless/data
-    PAPERLESS_EMPTY_TRASH_DIR: /etc/paperless/trash
     PAPERLESS_MEDIA_ROOT: /etc/paperless/media
+    # this....doesnt work? or isnt auto-created the same way as the ones above
+    # PAPERLESS_EMPTY_TRASH_DIR: /etc/paperless/trash
 
   ingress:
     main:
@@ -84,4 +85,4 @@ paperless-ngx:
       persistence:
         enabled: false
     replica:
-      replicaCount: 0
+      replicaCount: 3
