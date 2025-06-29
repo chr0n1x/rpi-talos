@@ -79,6 +79,7 @@ paperless-ngx:
     auth:
       enabled: true
       username: ""
+      password: "dontfreakoutyoupos"
     master:
       persistence:
         enabled: false
