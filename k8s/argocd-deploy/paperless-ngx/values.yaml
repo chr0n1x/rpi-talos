@@ -34,7 +34,11 @@ paperless-ngx:
     main:
       enabled: true
       annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
         nginx.ingress.kubernetes.io/proxy-body-size: 128m
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       hosts:
         - host: paperless-ngx.rannet.duckdns.org
           paths:
