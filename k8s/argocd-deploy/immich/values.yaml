@@ -46,6 +46,8 @@ immich:
 
   redis:
     enabled: true
+    persistence:
+      size: 4Gi
 
   server:
     replicas: 2

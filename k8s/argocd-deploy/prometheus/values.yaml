@@ -22,8 +22,9 @@ prometheus:
       enabled: true
 
   server:
+    # seems to be just about enough for the default 15 day retention window
     persistentVolume:
-      size: 32Gi
+      size: 64Gi
     ingress:
       enabled: true
       tls:

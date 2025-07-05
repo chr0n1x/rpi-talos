@@ -61,6 +61,12 @@ open-webui:
       enabled: false
   redis-cluster:
     enabled: true
+    master:
+      persistence:
+        size: 2Gi
+    replica:
+      persistence:
+        size: 2Gi
 
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244

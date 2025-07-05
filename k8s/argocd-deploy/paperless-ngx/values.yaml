@@ -93,5 +93,8 @@ paperless-ngx:
     master:
       persistence:
         enabled: false
+        size: 2Gi
     replica:
       replicaCount: 3
+      persistence:
+        size: 2Gi
