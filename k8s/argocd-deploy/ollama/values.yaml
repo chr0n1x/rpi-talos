@@ -63,10 +63,10 @@ open-webui:
     enabled: true
     master:
       persistence:
-        size: 2Gi
+        size: 1Gi
     replica:
       persistence:
-        size: 2Gi
+        size: 1Gi
 
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
