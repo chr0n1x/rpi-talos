@@ -112,7 +112,7 @@ data:
           ping: "https://nas.rannet-edge.duckdns.org/"
 
       - PaperlessNGX:
-          icon: 'https://docs.paperless-ngx.com/assets/favicon.png'
+          icon: 'https://avatars.githubusercontent.com/u/99562962?s=280&v=4'
           description: "PDF doc/ref storage"
           href: https://paperless-ngx.rannet.duckdns.org
           ping: https://paperless-ngx.rannet.duckdns.org
