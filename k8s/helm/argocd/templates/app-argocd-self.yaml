@@ -18,8 +18,10 @@ spec:
   ignoreDifferences:
     - kind: Secret
       jsonPointers:
-        - /data/password
+        - /stringData/password
   syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true
     # disable this for now
     automated: {}
       # selfHeal: false
