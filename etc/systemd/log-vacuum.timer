@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for log-vacuum
+
+[Timer]
+OnBootSec=8m
+OnUnitActiveSec=1w
+Unit=log-vacuum.service
+
+[Install]
+WantedBy=timers.target
+WantedBy=log-vacuum.service

@@ -1,0 +1,6 @@
+[Unit]
+Description=Vacuum up logs
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash journalctl --vacuum-size=20M
