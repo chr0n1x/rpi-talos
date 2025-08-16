@@ -11,13 +11,15 @@ open-webui:
     - name: DATABASE_NAME
       value: owui
     - name: DATABASE_USER
-      secretKeyRef:
-        name: owui-db-superuser
-        key: username
+      valueFrom:
+        secretKeyRef:
+          name: owui-db-superuser
+          key: username
     - name: DATABASE_PASSWORD
-      secretKeyRef:
-        name: owui-db-superuser
-        key: password
+      valueFrom:
+        secretKeyRef:
+          name: owui-db-superuser
+          key: password
     - name: DATABASE_TYPE
       value: postgres
 
