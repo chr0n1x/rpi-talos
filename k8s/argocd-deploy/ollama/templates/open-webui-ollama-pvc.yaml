@@ -14,7 +14,6 @@ metadata:
     app.kubernetes.io/instance: {{ $chartName }}
     argocd.argoproj.io/instance: {{ $chartName }}
   name: {{ .existingClaim }}
-  # uid: 9108f24f-5220-488c-a91a-9bd88f584ed9
 spec:
   accessModes:
     - ReadWriteOnce
