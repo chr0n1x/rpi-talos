@@ -4,7 +4,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: owui-db
-  namespace: owui
+  namespace: ollama
 spec:
   imageName: {{ .Values.cnpg.image }}
   instances: 1
