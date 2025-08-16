@@ -1,0 +1,31 @@
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: owui-db
+  namespace: owui
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: 1
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: owui
+        superuser: true
+        login: true
+        passwordSecret:
+          name: owui-postgres-user
+
+  bootstrap:
+    initdb:
+      database: owui
+      owner: owui
+      secret:
+        name: owui-postgres-user
+  storage:
+    size: 32Gi
+    storageClass: longhorn
+
