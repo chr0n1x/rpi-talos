@@ -21,9 +21,9 @@ spec:
       storage: {{ .pipelines.persistence.size }}
   storageClassName: {{ .pipelines.persistence.storageClass }}
   volumeMode: Filesystem
-  {{- if .pipelines.persistence.volumeName -}}
+  {{- if .pipelines.persistence.volumeName }}
   volumeName: {{ .pipelines.persistence.volumeName }}
-  {{- end -}}
+  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
