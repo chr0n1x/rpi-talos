@@ -2,7 +2,6 @@
 {{- with index .Values "open-webui" }}
 {{- if .pipelines.persistence.enabled }}
 {{- if .pipelines.persistence.existingClaim }}
-{{- if .pipelines.persistence.volumeName }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -22,8 +21,9 @@ spec:
       storage: {{ .pipelines.persistence.size }}
   storageClassName: {{ .pipelines.persistence.storageClass }}
   volumeMode: Filesystem
+  {{- if .pipelines.persistence.volumeName -}}
   volumeName: {{ .pipelines.persistence.volumeName }}
-{{- end }}
+  {{- end -}}
 {{- end }}
 {{- end }}
 {{- end }}
