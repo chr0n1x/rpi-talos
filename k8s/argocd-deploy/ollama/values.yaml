@@ -5,6 +5,22 @@ cnpg:
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
 
+  extraEnvVars:
+    - name: DATABASE_HOST
+      value: owui-db-rw
+    - name: DATABASE_NAME
+      value: owui
+    - name: DATABASE_USER
+      secretKeyRef:
+        name: owui-db-superuser
+        key: username
+    - name: DATABASE_PASSWORD
+      secretKeyRef:
+        name: owui-db-superuser
+        key: password
+    - name: DATABASE_TYPE
+      value: postgres
+
   replicaCount: 1
   resources:
     requests:
