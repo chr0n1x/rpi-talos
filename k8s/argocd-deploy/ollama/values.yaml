@@ -10,6 +10,12 @@ open-webui:
       value: owui-db-rw
     - name: DATABASE_NAME
       value: owui
+    - name: DATABASE_TYPE
+      value: postgres
+    - name: DATABASE_PORT
+      value: 5432
+    - name: VECTOR_DB
+      value: pgvector
     - name: DATABASE_USER
       valueFrom:
         secretKeyRef:
@@ -20,8 +26,6 @@ open-webui:
         secretKeyRef:
           name: owui-db-superuser
           key: password
-    - name: DATABASE_TYPE
-      value: postgres
 
   replicaCount: 1
   resources:
