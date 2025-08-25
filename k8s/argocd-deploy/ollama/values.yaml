@@ -13,7 +13,7 @@ open-webui:
     - name: DATABASE_TYPE
       value: postgres
     - name: DATABASE_PORT
-      value: 5432
+      value: "5432"
     - name: VECTOR_DB
       value: pgvector
     - name: DATABASE_USER
