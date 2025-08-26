@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: searxng
     version: ~1
-    repository: https://charts.searxng.org
+    repository: https://chr0n1x.github.io/searxng-helm-chart
