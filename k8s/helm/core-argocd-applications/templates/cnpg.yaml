@@ -19,5 +19,21 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kube-system
   syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
     automated:
       selfHeal: true
+      prune: true
+  # https://github.com/cloudnative-pg/cloudnative-pg/issues/3756#issuecomment-2835900275
+  ignoreDifferences:
+    - group: "admissionregistration.k8s.io"
+      kind: MutatingWebhookConfiguration
+      name: cnpg-mutating-webhook-configuration
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
+    - group: "admissionregistration.k8s.io"
+      kind: ValidatingWebhookConfiguration
+      name: cnpg-validating-webhook-configuration
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
