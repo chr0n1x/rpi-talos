@@ -96,7 +96,7 @@ data:
           href: https://wiki.rannet.duckdns.org
           ping: https://wiki.rannet.duckdns.org
       - Immich:
-          icon: 'https://immich.app/img/immich-logo.svg'
+          icon: 'https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo-stacked-light.svg'
           description: Photo/Video Storage
           href: https://immich.rannet.duckdns.org
           siteMonitor: "https://immich.rannet.duckdns.org/api/server/ping"
