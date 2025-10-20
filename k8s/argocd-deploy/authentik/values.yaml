@@ -3,6 +3,8 @@ cnpg:
 
 global:
   namespaceOverride: authentik
+  # to prevent Role name clash w/ other CRDs?
+  fullnameOverride: authentik-app
 
   env:
     - name: AUTHENTIK_POSTGRESQL__HOST 
@@ -50,6 +52,7 @@ server:
             - authentik.rannet.duckdns.org
 
 # death to bitnami
+# using cnpg and valkey here instead
 postgresql:
     enabled: false
 redis:
