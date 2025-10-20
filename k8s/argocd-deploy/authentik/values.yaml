@@ -1,5 +1,11 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  roleName: authentik
+  labels: {}
+  annotations: {}
+
+# TODO: eh?
+# valkey:
 
 global:
   namespaceOverride: authentik
