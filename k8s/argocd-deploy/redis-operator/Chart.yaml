@@ -5,6 +5,6 @@ description: generic redis-api CRD/operator wrapper chart
 type: application
 
 dependencies:
-  - name: valkey/valkey
+  - name: valkey
     version: ~0.7
     repository: https://valkey.io/valkey-helm/
