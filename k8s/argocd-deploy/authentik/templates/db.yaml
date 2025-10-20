@@ -3,7 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: authentik-ngx
-  namespace: authentik-ngx
+  namespace: authentik
 spec:
   imageName: {{ .Values.cnpg.image }}
   instances: 1
