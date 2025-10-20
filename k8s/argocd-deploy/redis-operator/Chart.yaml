@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: valkey/valkey
     version: ~0.7
-    repository: https://cloudnative-pg.github.io/charts
+    repository: https://valkey.io/valkey-helm/
