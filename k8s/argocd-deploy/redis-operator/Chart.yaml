@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: redis-operator
+version: 1.0.0
+description: generic redis-api CRD/operator wrapper chart
+type: application
+
+dependencies:
+  - name: valkey/valkey
+    version: ~0.7
+    repository: https://cloudnative-pg.github.io/charts
