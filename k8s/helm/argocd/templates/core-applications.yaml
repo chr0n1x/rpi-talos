@@ -3,10 +3,10 @@ kind: Application
 metadata:
   name: core-applications
   namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: Helm
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-labels:
-  app.kubernetes.io/managed-by: Helm
 spec:
   project: default
   source:
