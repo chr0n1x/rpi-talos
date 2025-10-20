@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: authentik
+version: 1.0.0
+description: authentik wrapper chart
+type: application
+
+dependencies:
+  - name: authentik
+    version: 2025.8.4
+    repository: https://charts.goauthentik.io

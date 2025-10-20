@@ -1,0 +1,30 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-ngx
+  namespace: authentik-ngx
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: 1
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: authentik
+        superuser: true
+        login: true
+        passwordSecret:
+          name: authentik-postgres-user
+
+  bootstrap:
+    initdb:
+      database: authentik
+      owner: authentik
+      secret:
+        name: authentik-postgres-user
+  storage:
+    size: 4Gi
+    storageClass: longhorn
+

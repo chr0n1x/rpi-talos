@@ -1,0 +1,42 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+
+global:
+  env:
+    - name: AUTHENTIK_POSTGRESQL__HOST 
+      value: authentik-rw
+
+    - name: AUTHENTIK_POSTGRESQL__SSLMODE
+      value: prefer
+
+    - name: AUTHENTIK_POSTGRESQL__NAME
+      value: authentik
+
+    - name: AUTHENTIK_POSTGRESQL__USER
+      valueFrom:
+        secretKeyRef:
+          name: authentik-superuser
+          key: username
+
+    - name: AUTHENTIK_POSTGRESQL__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: authentik-superuser
+          key: password
+
+authentik:
+    error_reporting:
+        enabled: true
+
+server:
+    ingress:
+        ingressClassName: nginx
+        enabled: true
+        hosts:
+            - authentik.rannet.duckdns.org
+
+# death to bitnami
+postgresql:
+    enabled: false
+redis:
+    enabled: false
