@@ -18,5 +18,5 @@ roleRef:
   name: {{ .Values.cnpg.roleName }}
 subjects:
   - kind: ServiceAccount
-    name: {{- .Values.global.fullnameOverride -}}
-    namespace: {{ .Release.namespace }}
+    name: {{- .Values.global.fullnameOverride }}
+    namespace: {{- .Release.namespace }}
