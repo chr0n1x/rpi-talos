@@ -2,6 +2,8 @@ cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
 global:
+  namespaceOverride: authentik
+
   env:
     - name: AUTHENTIK_POSTGRESQL__HOST 
       value: authentik-rw
