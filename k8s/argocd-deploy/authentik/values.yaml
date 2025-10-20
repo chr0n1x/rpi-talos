@@ -32,6 +32,12 @@ global:
           name: authentik-superuser
           key: password
 
+    - name: AUTHENTIK_REDIS__HOST
+      value: authentik-valkey
+
+    - name: AUTHENTIK_REDIS__PORT
+      value: 6379
+
 authentik:
     error_reporting:
         enabled: true
