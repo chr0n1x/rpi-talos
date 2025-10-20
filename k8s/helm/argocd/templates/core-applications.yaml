@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
+labels:
+  app.kubernetes.io/managed-by: Helm
 spec:
   project: default
   source:
