@@ -47,19 +47,19 @@ global:
       value: "6379"
 
 authentik:
-    error_reporting:
-        enabled: true
+  error_reporting:
+    enabled: true
 
-server:
+  server:
     ingress:
-        ingressClassName: nginx
-        enabled: true
-        hosts:
-            - authentik.rannet.duckdns.org
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - authentik.rannet.duckdns.org
 
-# death to bitnami
-# using cnpg and valkey here instead
-postgresql:
-    enabled: false
-redis:
-    enabled: false
+  # death to bitnami
+  # using cnpg and valkey here instead
+  postgresql:
+      enabled: false
+  redis:
+      enabled: false
