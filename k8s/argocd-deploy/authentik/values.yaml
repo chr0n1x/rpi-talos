@@ -36,7 +36,7 @@ global:
       value: authentik-valkey
 
     - name: AUTHENTIK_REDIS__PORT
-      value: 6379
+      value: "6379"
 
 authentik:
     error_reporting:
