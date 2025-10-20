@@ -26,6 +26,12 @@ global:
           name: authentik-superuser
           key: password
 
+    - name: AUTHENTIK_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: authentik-superuser
+          key: password
+
 authentik:
     error_reporting:
         enabled: true
