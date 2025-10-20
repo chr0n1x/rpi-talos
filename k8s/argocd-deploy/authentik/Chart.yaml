@@ -8,3 +8,7 @@ dependencies:
   - name: authentik
     version: 2025.8.4
     repository: https://charts.goauthentik.io
+
+  - name: valkey
+    version: ~0.7
+    repository: https://valkey.io/valkey-helm/
