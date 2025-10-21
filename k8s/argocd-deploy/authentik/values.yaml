@@ -51,13 +51,14 @@ authentik:
     enabled: true
 
   server:
+    replicas: 2
     resources:
       requests:
         cpu: 250m
-        memory: 2G
+        memory: 3G
       limits:
         cpu: 750m
-        memory: 4G
+        memory: 6G
 
     ingress:
       enabled: true
