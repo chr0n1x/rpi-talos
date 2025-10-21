@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.global.namespaceOverride }}
 spec:
   imageName: {{ .Values.cnpg.image }}
-  instances: 1
+  instances: 2
 
   enableSuperuserAccess: true
 
@@ -27,4 +27,3 @@ spec:
   storage:
     size: 8Gi
     storageClass: longhorn
-
