@@ -13,6 +13,9 @@ global:
 vault:
   ui:
     enabled: true
+    serviceType: NodePort
+    serviceNodePort: null
+    externalPort: 8200
 
   server:
     ha:
