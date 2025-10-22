@@ -21,17 +21,17 @@ vault:
     ha:
       enabled: false
       # replicas: 3
-  ingress:
-    enabled: true
-    annotations:
-      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      nginx.ingress.kubernetes.io/proxy-body-size: 8m
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    tls:
-      - hosts:
-          - vault.rannet.duckdns.org
-        secretName: vault-tls
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+        nginx.ingress.kubernetes.io/proxy-body-size: 8m
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      tls:
+        - hosts:
+            - vault.rannet.duckdns.org
+          secretName: vault-tls
 
   # resources:
   #   requests:
