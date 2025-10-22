@@ -83,7 +83,7 @@ data:
       - Authentik:
           icon: 'https://goauthentik.io/img/icon.png'
           description: IdP for RanNet
-          href: "https://authentik.rannet.duckdns.org/applications"
+          href: "https://authentik.rannet.duckdns.org"
           siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
       - Jellyfin:
           icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
