@@ -1,0 +1,13 @@
+apiVersion: 1.0.0
+name: vault
+version: 1.0.0
+description: |
+  hashi-corp vault wrapper chart
+  meant ONLY for intra-service secrets
+  NOT PRODUCTION GRADE
+type: application
+
+dependencies:
+  - name: vault
+    version: ~0.31
+    repository: https://helm.releases.hashicorp.com
