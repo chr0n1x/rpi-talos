@@ -157,6 +157,12 @@ data:
           href: "https://auth.twingate.com/"
           icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
           siteMonitor: 'https://status.twingate.com/api/v2/status.json'
+      - Vault:
+          description: On-Prem Vault Instance
+          href: "https://vault.rannet.duckdns.org/"
+          icon: 'https://www.datocms-assets.com/2885/1679087583-devdot-vault_dm.png'
+          siteMonitor: "https://vault.rannet.duckdns.org/"
+
 
       - "HomeLab Admin ⏬":
           - DuckDNS:
