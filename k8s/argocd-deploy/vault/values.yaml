@@ -32,9 +32,9 @@ vault:
       hosts:
         - host: vault.rannet.duckdns.org
       tls:
-        hosts:
-          - vault.rannet.duckdns.org
-        secretName: vault-tls
+        - hosts:
+            - vault.rannet.duckdns.org
+          secretName: vault-tls
 
   # resources:
   #   requests:
