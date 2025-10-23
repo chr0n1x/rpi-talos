@@ -1,16 +1,14 @@
----
-apiVersion: v1
-items:
 {{- range .Values.authMethods }}
-  - apiVersion: secrets.hashicorp.com/v1beta1
-    kind: VaultAuth
-    metadata:
-      namespace: {{ $.Release.Namespace }}
-      name: {{ $.Values.releaseName | default "vault" }}-{{ .name }}-auth
-    spec:
-      vaultConnectionRef: {{ $.Values.releaseName | default "vault" }}-connection
-      method: {{ .method }}
-      mount: {{ .mount }}
-      {{ .method }}:
-{{ toYaml .config | indent 8 }}
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  namespace: {{ $.Release.Namespace }}
+  name: {{ $.Values.releaseName | default "vault" }}-{{ .name }}-auth
+spec:
+  vaultConnectionRef: {{ $.Values.releaseName | default "vault" }}-connection
+  method: {{ .method }}
+  mount: {{ .mount }}
+  {{ .method }}:
+{{ toYaml .config | indent 4 }}
 {{- end }}
