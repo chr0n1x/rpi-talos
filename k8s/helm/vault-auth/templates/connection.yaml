@@ -1,0 +1,8 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.releaseName | default "vault-auth" -}}-connection
+spec:
+  address: {{ .Values.address | default "http://vault.vault.svc.cluster.local:8200" | quote }}

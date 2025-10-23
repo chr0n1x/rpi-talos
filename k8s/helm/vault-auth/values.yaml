@@ -1,0 +1,19 @@
+address: "http://vault.vault.svc.cluster.local:8200"
+releaseName: "vault-auth"
+
+authMethods: []
+
+  # example
+  # - name: default-cluster-k8s-auth
+  #   method: kubernetes
+  #   mount: kubernetes
+  #   config:
+  #     role: default-role
+  #     serviceAccount: default
+  #     # optional configuration injected directly into config
+  #     # ns where the auth backend is mounted (requires Vault Enterprise)
+  #     namespace: ""
+  #     # Params to use when authenticating to Vault
+  #     params: []
+  #     # HTTP headers to be included in all Vault authentication requests.
+  #     headers: []
