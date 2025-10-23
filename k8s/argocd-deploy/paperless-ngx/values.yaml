@@ -1,7 +1,17 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
+vault-auth:
+  authMethods:
+    - name: k8s-auth
+      method: kubernetes
+      mount: paperless-ngx
+      config:
+        role: paperless-ngx
+        serviceAccount: paperless-ngx-sa
+
 paperless-ngx:
+  serviceAccountName: paperless-ngx-sa
   env:
     # temporary - creds are changed after initial setup
     PAPERLESS_ADMIN_USER: admin
