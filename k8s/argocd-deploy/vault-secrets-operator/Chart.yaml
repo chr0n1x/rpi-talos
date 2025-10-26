@@ -1,13 +1,13 @@
 apiVersion: 1.0.0
-name: vault
+name: vault-secrets-operator
 version: 1.0.0
 description: |
-  hashi-corp vault wrapper chart
+  hashi-corp VSO wrapper chart
   meant ONLY for intra-service secrets
   NOT PRODUCTION GRADE
 type: application
 
 dependencies:
-  - name: vault
-    version: ~0.31
+  - name: vault-secrets-operator
+    version: ~1
     repository: https://helm.releases.hashicorp.com
