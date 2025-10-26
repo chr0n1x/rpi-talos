@@ -9,6 +9,6 @@ dependencies:
     version: ~0.24
     repository: https://charts.gabe565.com
 
-  - name: vault-auth
-    version: ~1
-    repository: file://../../helm/vault-auth
+  # - name: vault-auth
+  #   version: ~1
+  #   repository: file://../../helm/vault-auth
