@@ -7,8 +7,10 @@ vault-auth:
       method: kubernetes
       mount: paperless-ngx
       config:
-        role: paperless-ngx
+        role: k8s-paperless-ngx-role
         serviceAccount: paperless-ngx-sa
+        audiences:
+          - vault
 
 paperless-ngx:
   serviceAccount:
@@ -20,6 +22,14 @@ paperless-ngx:
     # temporary - creds are changed after initial setup
     PAPERLESS_ADMIN_USER: admin
     PAPERLESS_ADMIN_PASSWORD: admin
+
+    # OIDC
+    PAPERLESS_SOCIALACCOUNT_PROVIDERS:
+      valueFrom:
+        secretKeyRef:
+          name: paperless-ngx-env-secrets
+          key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+    PAPERLESS_LOGOUT_REDIRECT_URL: "https://authentik.rannet.duckdns.org/application/o/paperless-ngx/end-session/"
 
     TZ: UTC
     PAPERLESS_DBENGINE: postgresql
