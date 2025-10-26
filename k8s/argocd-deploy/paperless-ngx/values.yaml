@@ -3,7 +3,7 @@ cnpg:
 
 vault-auth:
   authMethods:
-    - name: on-prem-vault
+    - name: on-prem
       method: kubernetes
       mount: paperless-ngx
       config:

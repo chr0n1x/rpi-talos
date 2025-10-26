@@ -1,10 +1,12 @@
-{{- if $.Values.vaultConnectionRef -}}
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ $.Values.vaultConnectionRef }}
+  {{- if .Values.vaultConnectionRef -}}
+  name: {{ .Values.vaultConnectionRef }}
+  {{- else -}}
+  name: default
+  {{- end -}}
 spec:
   address: {{ .Values.address | default "http://vault.vault.svc.cluster.local:8200" | quote }}
-{{- end -}}
