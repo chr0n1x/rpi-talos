@@ -7,7 +7,7 @@ vault-auth:
       method: kubernetes
       mount: paperless-ngx
       config:
-        role: k8s-paperless-ngx-role
+        role: paperless-ngx
         serviceAccount: paperless-ngx-sa
         audiences:
           - vault
