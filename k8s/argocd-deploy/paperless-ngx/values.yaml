@@ -1,16 +1,16 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
-# vault-auth:
-#   authMethods:
-#     - name: on-prem-vault
-#       method: kubernetes
-#       mount: paperless-ngx
-#       config:
-#         role: paperless-ngx
-#         serviceAccount: paperless-ngx-sa
-#         audiences:
-#           - vault
+vault-auth:
+  authMethods:
+    - name: on-prem-vault
+      method: kubernetes
+      mount: paperless-ngx
+      config:
+        role: paperless-ngx
+        serviceAccount: paperless-ngx-sa
+        audiences:
+          - vault
 
 paperless-ngx:
   serviceAccount:
