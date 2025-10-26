@@ -6,9 +6,9 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   name: {{ $.Values.releaseName | default "vault" }}-{{ .name }}-auth
 spec:
-  {{- if $.Values.vaultConnectionRef -}}
+  {{- if $.Values.vaultConnectionRef }}
   vaultConnectionRef: {{ $.Values.vaultConnectionRef }}
-  {{- end -}}
+  {{- end }}
   method: {{ .method }}
   mount: {{ .mount }}
   {{ .method }}:
