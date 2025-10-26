@@ -4,3 +4,8 @@ name: vault-auth
 version: 1.0.0
 description: wrapper chart for generic VaultAuth and VaultConnection CRDs
 type: application
+
+dependencies:
+  - name: vault-secrets-operator
+    version: ~1
+    repository: https://helm.releases.hashicorp.com
