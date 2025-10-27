@@ -5,17 +5,17 @@ vault-secrets-operator:
      skipTLSVerify: true
 
   # no idea if this is needed
-  controller:
-    manager:
-      clientCache:
-        persistenceModel: direct-encrypted
-        storageEncryption:
-          enabled: true
-          mount: in-cluster
-          keyName: vso-client-cache
-          transitMount: in-cluster-transit
-          namespace: vault-secrets-operator
-          kubernetes:
-            role: auth-role-operator
-            serviceAccount: vault-secrets-operator-controller-manager
-            tokenAudiences: ["vault"]
+  # controller:
+  #   manager:
+  #     clientCache:
+  #       persistenceModel: direct-encrypted
+  #       storageEncryption:
+  #         enabled: true
+  #         mount: in-cluster
+  #         keyName: vso-client-cache
+  #         transitMount: in-cluster-transit
+  #         namespace: vault-secrets-operator
+  #         kubernetes:
+  #           role: auth-role-operator
+  #           serviceAccount: vault-secrets-operator-controller-manager
+  #           tokenAudiences: ["vault"]
