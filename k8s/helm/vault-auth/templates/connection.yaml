@@ -1,14 +1,14 @@
-{{- if .Values.vaultConnectionName }}
----
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultConnection
-metadata:
-  namespace: {{ .Release.Namespace }}
-  {{- if .Values.vaultConnectionName }}
-  name: {{ .Values.vaultConnectionName }}
-  {{- else }}
-  name: default
-  {{- end }}
-spec:
-  address: {{ .Values.address | default "http://vault.vault.svc.cluster.local:8200" | quote }}
-{{- end }}
+# {{- if .Values.vaultConnectionName }}
+# ---
+# apiVersion: secrets.hashicorp.com/v1beta1
+# kind: VaultConnection
+# metadata:
+#   namespace: {{ .Release.Namespace }}
+#   {{- if .Values.vaultConnectionName }}
+#   name: {{ .Values.vaultConnectionName }}
+#   {{- else }}
+#   name: default
+#   {{- end }}
+# spec:
+#   address: {{ .Values.address | default "http://vault.vault.svc.cluster.local:8200" | quote }}
+# {{- end }}
