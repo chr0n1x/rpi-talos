@@ -1,5 +1,11 @@
+# completely based on the VSO setup here:
+#
+# you CAN configure everything via the UI; for the k8s auth method, you can get
+# a URL for your API by exec'ing into a vault pod and running:
+#
+#   echo https://${KUBERNETES_PORT_443_TCP_ADDR}:443
 releaseName: "vault-auth"
-vaultConnectionRef: vso-namespace/vaultconnection-name
+vaultConnectionName: vso-namespace/vaultconnection-name
 
 authMethods: []
 
