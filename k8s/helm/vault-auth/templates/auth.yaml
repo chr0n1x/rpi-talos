@@ -8,6 +8,8 @@ metadata:
 spec:
   {{- if $.Values.vaultConnectionRef }}
   vaultConnectionRef: {{ $.Values.vaultConnectionRef }}
+  {{- else }}
+  vaultConnectionRef: default
   {{- end }}
   method: {{ .method }}
   mount: {{ .mount }}

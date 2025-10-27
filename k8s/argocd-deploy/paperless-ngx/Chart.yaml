@@ -9,10 +9,6 @@ dependencies:
     version: ~0.24
     repository: https://charts.gabe565.com
 
-  - name: vault-secrets-operator
-    version: ~1
-    repository: https://helm.releases.hashicorp.com
-
   - name: vault-auth
     version: ~1
     repository: file://../../helm/vault-auth
