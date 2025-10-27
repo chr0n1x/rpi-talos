@@ -5,21 +5,30 @@
 #
 #   echo https://${KUBERNETES_PORT_443_TCP_ADDR}:443
 releaseName: "vault-auth"
+
+# use default connection set up in VSO namespace
+# the VaultAuth in the installed namespace will reference it
 vaultConnectionName: vso-namespace/vaultconnection-name
 
-authMethods: []
-
+# create an auth methods
+# secrets use these explicitly (via vaultAuthName)
+#
+# these auth methods connect to a VaultConnection (reference above) to generate a opaque secret
+authMethods:
   # example
-  # - name: default-cluster-k8s-auth
-  #   method: kubernetes
-  #   mount: kubernetes
-  #   config:
-  #     role: default-role
-  #     serviceAccount: default
-  #     # optional configuration injected directly into config
-  #     # ns where the auth backend is mounted (requires Vault Enterprise)
-  #     namespace: ""
-  #     # Params to use when authenticating to Vault
-  #     params: []
-  #     # HTTP headers to be included in all Vault authentication requests.
-  #     headers: []
+  - name: default-cluster-k8s-auth
+    vaultAuthName: paperless-ngx-vso-connection-auth
+    method: kubernetes
+    mount: kubernetes
+    config:
+      role: default-role
+      # not sure why but this particular value breaks the <namespace>/<name>
+      # convention for the other CRDs
+      serviceAccount: default-app-svc-acc
+      # optional configuration injected directly into config
+      # ns where the auth backend is mounted (requires Vault Enterprise)
+      namespace: ""
+      # Params to use when authenticating to Vault
+      params: []
+      # HTTP headers to be included in all Vault authentication requests.
+      headers: []

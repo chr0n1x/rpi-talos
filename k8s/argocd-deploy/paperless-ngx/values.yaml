@@ -1,14 +1,9 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
+
 vault-auth:
-  # use default connection set up in VSO namespace
-  # the VaultAuth in THIS namespace will reference it
   vaultConnectionName: vault-secrets-operator/default
-  # create an auth method mapped to a k8s auth method
-  # secret uses this auth method (which connects to default connection above in
-  # VSO namespace) to generate opaque secret
-  # service accounts are generated below
   authMethods:
     - name: on-prem
       # match this up with secret
@@ -20,6 +15,7 @@ vault-auth:
         serviceAccount: paperless-ngx-sa
         audiences:
           - vault
+
 
 paperless-ngx:
   serviceAccount:

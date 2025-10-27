@@ -3,6 +3,7 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
+  # for some reason this does not work
   # namespace: {{ $.Release.Namespace }}
   {{- if .vaultAuthName }}
   name: {{ .vaultAuthName }}
