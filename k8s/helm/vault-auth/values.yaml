@@ -1,9 +1,14 @@
 # completely based on the VSO setup here:
 #
+# https://developer.hashicorp.com/vault/tutorials/kubernetes-introduction/vault-secrets-operator
+# https://github.com/hashicorp-education/learn-vault-secrets-operator/blob/main/vault
+#
 # you CAN configure everything via the UI; for the k8s auth method, you can get
 # a URL for your API by exec'ing into a vault pod and running:
 #
 #   echo https://${KUBERNETES_PORT_443_TCP_ADDR}:443
+#
+# note that there are more notes in templates/example-secret.yaml
 releaseName: "vault-auth"
 
 # use default connection set up in VSO namespace
