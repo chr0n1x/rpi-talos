@@ -6,7 +6,7 @@ metadata:
   namespace: paperless-ngx
 spec:
   imageName: {{ .Values.cnpg.image }}
-  instances: 1
+  instances: {{ .Values.cnpg.instances }}
 
   enableSuperuserAccess: true
 

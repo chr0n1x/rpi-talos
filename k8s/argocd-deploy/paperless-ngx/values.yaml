@@ -1,5 +1,6 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  instances: 2
 
 
 vault-auth:
