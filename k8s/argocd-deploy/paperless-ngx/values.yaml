@@ -2,6 +2,7 @@ cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
 vault-auth:
+  vaultConnectionName: paperless-ngx-vso-connection
   authMethods:
     - name: on-prem
       method: kubernetes

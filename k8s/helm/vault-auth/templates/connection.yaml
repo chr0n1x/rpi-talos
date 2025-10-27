@@ -3,8 +3,8 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultConnection
 metadata:
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.vaultConnectionRef }}
-  name: {{ .Values.vaultConnectionRef }}
+  {{- if .Values.vaultConnectionName }}
+  name: {{ .Values.vaultConnectionName }}
   {{- else }}
   name: default
   {{- end }}
