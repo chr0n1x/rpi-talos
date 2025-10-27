@@ -3,9 +3,9 @@ cnpg:
 
 vault-auth:
   vaultConnectionName: paperless-ngx-vso-connection
-  vaultAuthName: paperless-ngx-vso-connection-auth # match this up with secret
   authMethods:
     - name: on-prem
+      vaultAuthName: paperless-ngx-vso-connection-auth # match this up with secret
       method: kubernetes
       mount: paperless-ngx
       config:

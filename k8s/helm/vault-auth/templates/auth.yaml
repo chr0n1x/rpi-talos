@@ -4,8 +4,8 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   namespace: {{ $.Release.Namespace }}
-  {{- if $.Values.vaultAuthName }}
-  name: {{ $.Values.vaultAuthName }}
+  {{- if .vaultAuthName }}
+  name: {{ .vaultAuthName }}
   {{- else }}
   name: {{ $.Values.releaseName | default "vault" }}-{{ .name }}-auth
   {{- end }}
