@@ -29,6 +29,10 @@ paperless-ngx:
     PAPERLESS_ADMIN_PASSWORD: admin
 
     # OIDC
+    #   https://integrations.goauthentik.io/documentation/paperless-ngx/
+    #
+    # when configurating the social account provider config in the secret
+    # below, omit "openid_connect.APPS[].settings.claims"
     PAPERLESS_SOCIALACCOUNT_PROVIDERS:
       valueFrom:
         secretKeyRef:
