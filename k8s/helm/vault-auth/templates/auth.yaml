@@ -10,11 +10,11 @@ metadata:
   name: {{ $.Values.releaseName | default "vault" }}-{{ .name }}-auth
   {{- end }}
 spec:
-  {{- if $.Values.vaultConnectionName }}
-  vaultConnectionRef: {{ $.Values.vaultConnectionName }}
-  {{- else }}
-  vaultConnectionRef: default
-  {{- end }}
+  # {{- if $.Values.vaultConnectionName }}
+  # vaultConnectionRef: {{ $.Values.vaultConnectionName }}
+  # {{- else }}
+  # vaultConnectionRef: default
+  # {{- end }}
   method: {{ .method }}
   mount: {{ .mount }}
   {{ .method }}:
