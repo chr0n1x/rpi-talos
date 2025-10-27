@@ -17,7 +17,7 @@ vault-auth:
       mount: in-cluster
       config:
         role: paperless-ngx
-        serviceAccount: paperless-ngx-sa
+        serviceAccount: paperless-ngx/paperless-ngx-sa
         audiences:
           - vault
 
