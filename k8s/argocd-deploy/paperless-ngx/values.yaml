@@ -35,6 +35,7 @@ paperless-ngx:
           name: paperless-ngx-env-secrets
           key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
     PAPERLESS_LOGOUT_REDIRECT_URL: "https://authentik.rannet.duckdns.org/application/o/paperless-ngx/end-session/"
+    PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
 
     TZ: UTC
     PAPERLESS_DBENGINE: postgresql
