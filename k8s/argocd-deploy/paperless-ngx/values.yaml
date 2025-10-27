@@ -2,7 +2,7 @@ cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
 
 vault-auth:
-  vaultConnectionName: paperless-ngx-vso-connection
+  # vaultConnectionName: paperless-ngx-vso-connection
   authMethods:
     - name: on-prem
       vaultAuthName: paperless-ngx-vso-connection-auth # match this up with secret
