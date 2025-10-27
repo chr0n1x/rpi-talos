@@ -7,7 +7,7 @@ vault-auth:
     - name: on-prem
       vaultAuthName: paperless-ngx-vso-connection-auth # match this up with secret
       method: kubernetes
-      mount: paperless-ngx
+      mount: in-cluster
       config:
         role: paperless-ngx
         serviceAccount: paperless-ngx-sa
