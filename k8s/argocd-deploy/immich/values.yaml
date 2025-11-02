@@ -46,9 +46,9 @@ immich:
         existingClaim: immich-store-pvc
 
   redis:
-    enabled: true
-    persistence:
-      size: 4Gi
+    enabled: false
+    # persistence:
+    #   size: 4Gi
 
   server:
     replicas: 2
@@ -76,7 +76,7 @@ immich:
       - name: IMMICH_MACHINE_LEARNING_URL
         value: http://immich-machine-learning:3003
       - name: REDIS_HOSTNAME
-        value: immich-redis-master
+        value: immich-valkey
 
     ingress:
       main:

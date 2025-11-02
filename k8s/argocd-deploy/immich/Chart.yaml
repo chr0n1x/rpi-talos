@@ -8,3 +8,7 @@ dependencies:
   - name: immich
     version: ~0.9
     repository: https://immich-app.github.io/immich-charts
+
+  - name: valkey
+    version: ~0.7
+    repository: https://valkey.io/valkey-helm/
