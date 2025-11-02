@@ -1,5 +1,6 @@
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
+  instances: 2
 
 # if PVCs get stuck in Progressing state:
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821

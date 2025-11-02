@@ -6,7 +6,7 @@ metadata:
   namespace: immich
 spec:
   imageName: {{ .Values.cnpg.image }}
-  instances: 1
+  instances: {{ .Values.cnpg.instances }}
 
   postgresql:
     shared_preload_libraries:
