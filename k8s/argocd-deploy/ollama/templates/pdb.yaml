@@ -2,9 +2,31 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: app-pdb
+  name: ui-pdb
 spec:
   minAvailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/instance: ollama
+      app.kubernetes.io/component: open-webui
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ollama-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ollama
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pipelines-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: open-webui-pipelines
