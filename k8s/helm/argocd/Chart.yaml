@@ -8,3 +8,7 @@ dependencies:
   - name: argo-cd
     version: ~9
     repository: https://argoproj.github.io/argo-helm
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

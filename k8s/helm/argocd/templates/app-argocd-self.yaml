@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: {{ .Values.repo.url }}
+    repoURL: {{ .Values.thisRepoURL }}
     path: k8s/helm/argocd
     targetRevision: HEAD
   destination:

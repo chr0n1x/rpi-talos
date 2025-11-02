@@ -1,0 +1,24 @@
+{{/*
+  example repo manifest
+  https://argo-cd.readthedocs.io/en/stable/operator-manual/argocd-repositories-yaml/
+  */}}
+{{- range .Values.repos -}}
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: argocd-repo-creds-{{ .name -}}-vso-ref
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: {{ .mountType | default "kv-v2" }}
+  mount: {{ .mount }}
+  path: {{ .path }}
+  destination:
+    name: {{ .name }}
+    create: true
+    overwrite: true
+    labels:
+      argocd.argoproj.io/secret-type: repository
+  refreshAfter: 30s
+  vaultAuthRef: {{ $.Release.Namespace -}}/argocd-vso-connection-auth
+{{- end -}}

@@ -1,14 +1,28 @@
-# VALUES OF SECRETS IN THE gotmpl!!!
-# repo metadata for THIS repo (e.g.: your fork)
-# this is set in k8s/helmfile/argocd.gotmpl on initial sync
-# the config for argocd then omits syncing this secret
-repo:
-  name: chr0n1x-rpi-talos.git
-  url: https://github.com/chr0n1x/rpi-talos.git
-  token: replace
-  username: chr0n-B07
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: argocd-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: argocd
+        # just choosing arbitrary svc acc for now
+        serviceAccount: argocd-server
+        audiences:
+          - vault
 
-# initial sync uses helmfile gotmpl, automated sync uses these :/
+
+thisRepoURL: https://github.com/chr0n1x/rpi-talos.git
+repos:
+  - name: chr0n1x-rpi-talos.git
+    url: https://github.com/chr0n1x/rpi-talos.git
+    path: argocd/repo-creds/rpi-talos
+    mount: in-cluster
+
+
+# initial sync uses helmfile gotmpl, automated sync uses these; there may be drift
 argo-cd:
   global:
     domain: argocd.rannet.duckdns.org
