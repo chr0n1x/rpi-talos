@@ -18,7 +18,7 @@ thisRepoURL: https://github.com/chr0n1x/rpi-talos.git
 repos:
   - name: chr0n1x-rpi-talos.git
     url: https://github.com/chr0n1x/rpi-talos.git
-    path: argocd/data/repo-creds/rpi-talos
+    path: argocd/repo-creds/rpi-talos
     mount: in-cluster
 
 
