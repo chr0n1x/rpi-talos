@@ -65,7 +65,8 @@ paperless-ngx:
     # this....doesnt work? or isnt auto-created the same way as the ones above
     # PAPERLESS_EMPTY_TRASH_DIR: /etc/paperless/trash
 
-    PAPERLESS_REDIS: paperless-ngx-valkey
+    # svc automatically pulled in from valkey chart
+    PAPERLESS_REDIS: redis://paperless-ngx-valkey
 
   ingress:
     main:
