@@ -1,3 +1,7 @@
+argocdSecret:
+  mount: in-cluster
+  path: argocd/argocd-secret
+
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
   authMethods:
@@ -30,6 +34,14 @@ argo-cd:
   configs:
     params:
       server.insecure: true
+
+    rbac:
+      policy.csv: |
+        g, authentik Admins, role:admin
+        g, authentik Read-only, role:readonly
+        g, authentik-homelab-group, role:readonly
+
+
     cm:
       kustomize.buildOptions: --enable-helm
       resource.customizations: |
@@ -63,4 +75,3 @@ argo-cd:
 
   controller:
     replicas: 2
-
