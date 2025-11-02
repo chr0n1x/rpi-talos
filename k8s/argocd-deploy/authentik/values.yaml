@@ -5,7 +5,7 @@ cnpg:
   annotations: {}
 
 # TODO: eh?
-#ls  valkey:
+# valkey:
 
 global:
   namespaceOverride: authentik
