@@ -9,6 +9,10 @@ dependencies:
     version: ~0.24
     repository: https://charts.gabe565.com
 
+  - name: valkey
+    version: ~0.7
+    repository: https://valkey.io/valkey-helm/
+
   - name: vault-auth
     version: ~1
     repository: file://../../helm/vault-auth
