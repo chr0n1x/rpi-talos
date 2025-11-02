@@ -32,6 +32,9 @@ argo-cd:
     domain: argocd.rannet.duckdns.org
 
   configs:
+    secret:
+      createSecret: false
+
     params:
       server.insecure: true
 
