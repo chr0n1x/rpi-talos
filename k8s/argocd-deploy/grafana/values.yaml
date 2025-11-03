@@ -1,4 +1,7 @@
 grafana:
+  podDisruptionBudget:
+    minAvailable: 1
+
   # this just started to fail one day, no idea
   initChownData:
     enabled: false
