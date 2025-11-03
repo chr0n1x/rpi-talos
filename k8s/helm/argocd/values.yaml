@@ -54,6 +54,21 @@ argo-cd:
               status = "Healthy",
               message = "HACK: skip health check for Ingress (override in argo-cd.config.cm chart val)",
             }
+      url: https://argocd.rannet.duckdns.org
+      dex.config: |
+        connectors:
+        - config:
+            issuer: $dex.authentik.issuerURL
+            clientID: $dex.authentik.clientID
+            clientSecret: $dex.authentik.clientSecret
+            insecureEnableGroups: true
+            scopes:
+              - openid
+              - profile
+              - email
+          name: authentik
+          type: oidc
+          id: authentik
 
   applicationSet:
     replicas: 2
