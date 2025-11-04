@@ -73,11 +73,11 @@ open-webui:
           name: env-secrets
           key: OPENID_PROVIDER_URL
 
-    - name: OPENID_REDIRECT_URL
+    - name: OPENID_REDIRECT_URI
       valueFrom:
         secretKeyRef:
           name: env-secrets
-          key: OPENID_REDIRECT_URL
+          key: OPENID_REDIRECT_URI
 
 
   replicaCount: 1
