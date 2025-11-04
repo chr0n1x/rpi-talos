@@ -75,7 +75,11 @@ open-webui:
           key: OPENID_REDIRECT_URI
     - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
       value: "true"
-
+    # enable the following after you confirm that login works and you still have admin
+    - name: ENABLE_OAUTH_SIGNUP
+      value: "true"
+    - name: ENABLE_LOGIN_FORM
+      value: "false"
 
   replicaCount: 1
   resources:
