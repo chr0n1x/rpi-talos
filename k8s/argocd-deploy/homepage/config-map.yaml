@@ -12,8 +12,8 @@ data:
     layout:
       - Apps:
           columns: 2
-      - Tools:
-          "HomeLab Admin ⏬":
+      - "HomeLab Admin":
+          "Misc Tools ⏬":
             initiallyCollapsed: true
 
   docker.yaml: ''
@@ -31,27 +31,36 @@ data:
       - PapersWithCode:
         - abbr: PC
           href: https://paperswithcode.com/
-          icon: 'https://production-assets.paperswithcode.com/static/logo_192.png'
+          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
 
-    - K8s:
-      - Reference Homepage:
-        - abbr: K8
-          href: https://kubernetes.io/docs/reference/
-          icon: 'https://kubernetes.io/images/wheel.svg'
+    - "K8s/Talos":
       - Awesome K8s:
         - abbr: AK
           href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
           icon: 'https://octodex.github.com/images/adventure-cat.png'
-
-    - Talos Linux:
-      - Machine Config API:
-        - abbr: TA
-          href: https://www.talos.dev/v1.7/reference/configuration/v1alpha1/config/
-          icon: 'https://www.talos.dev/images/logo.svg'
-      - Image Factory:
-        - icon: 'https://www.talos.dev/images/logo.svg'
-          href: "https://factory.talos.dev/"
+      - K8s Reference Homepage:
+        - abbr: K8
+          href: https://kubernetes.io/docs/reference/
+          icon: 'https://kubernetes.io/images/wheel.svg'
+      - Talos Image Factory:
+        - href: "https://factory.talos.dev/"
+          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
           abbr: IF
+      - Talos Machine Config API:
+        - abbr: TA
+          href: https://docs.siderolabs.com/talos/v1.11/reference/configuration/v1alpha1/config
+          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
+
+
+    - Misc Tools:
+      - key.br:
+          icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
+          description: Best typing training tool.
+          href: "https://www.keybr.com/"
+      - Oryx:
+          icon: 'https://configure.zsa.io/assets/oryx-logo-navbar-LAgSxL-X.png'
+          description: ZSA Configuration Tool
+          href: "https://configure.zsa.io/voyager/layouts"
 
     - General:
       - Google OAuth:
@@ -72,29 +81,15 @@ data:
   kubernetes.yaml: |
     mode: disabled
 
+
   services.yaml: |
 
     - Apps:
-      - ArgoCD:
-          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-          description: ArgoCD!
-          href: "https://argocd.rannet.duckdns.org/applications"
-          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
-      - Authentik:
-          icon: 'https://goauthentik.io/img/icon.png'
-          description: IdP for RanNet
-          href: "https://authentik.rannet.duckdns.org"
-          siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
       - Jellyfin:
           icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
           description: Jellyfin Media Server
           href: "https://jellyfin.rannet-edge.duckdns.org/"
           siteMonitor: "https://jellyfin.rannet-edge.duckdns.org/health"
-      - K8s Dashboard:
-          icon: 'https://kubernetes.io/images/wheel.svg'
-          description: K8s dashboard
-          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
-          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
       - Kiwix:
           icon: 'https://kiwix.org/android-chrome-512x512.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
@@ -115,20 +110,18 @@ data:
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
           ping: "https://nas.rannet-edge.duckdns.org/"
-
       - PaperlessNGX:
           icon: 'https://avatars.githubusercontent.com/u/99562962?s=280&v=4'
           description: "PDF doc/ref storage"
           href: https://paperless-ngx.rannet.duckdns.org
           ping: https://paperless-ngx.rannet.duckdns.org
 
-      - Pinchflat:
-          icon: 'https://i.imgur.com/8WTIZWn.png'
-          description: Media/Youtube Downloader
-          href: https://pinchflat.rannet.duckdns.org
-          ping: https://pinchflat.rannet.duckdns.org
-
-    - Tools:
+    - Cluster Tools:
+      - ArgoCD:
+          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+          description: Deploy ALL the things!
+          href: "https://argocd.rannet.duckdns.org/applications"
+          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
       - Docker Registry:
           icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
           description: Internal LAN Docker Container Registry
@@ -139,74 +132,82 @@ data:
           icon: 'https://grafana.com/static/img/menu/grafana2.svg'
           description: Grafana Dashboard
           href: "https://grafana.rannet.duckdns.org"
-      - key.br:
-          icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
-          description: Best typing training tool.
-          href: "https://www.keybr.com/"
-      - Oryx:
-          icon: 'https://configure.zsa.io/assets/oryx-logo-navbar-LAgSxL-X.png'
-          description: ZSA Configuration Tool
-          href: "https://configure.zsa.io/voyager/layouts"
-      - ProxmoxVE:
-          icon: 'https://www.proxmox.com/favicon.svg'
-          description: Proxmox VE
-          href: "https://proxmox.rannet-edge.duckdns.org/"
-          ping: "https://proxmox.rannet-edge.duckdns.org/"
-      - Twingate:
-          description: Zero-Trust Network
-          href: "https://auth.twingate.com/"
-          icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
-          siteMonitor: 'https://status.twingate.com/api/v2/status.json'
+      - K8s Dashboard:
+          icon: 'https://kubernetes.io/images/wheel.svg'
+          description: K8s dashboard
+          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
+      - Longhorn:
+          icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
+          description: Longhorn Persistent Store Dashboard
+          href: "https://longhorn.rannet.duckdns.org"
       - Vault:
           description: On-Prem Vault Instance
           href: "https://vault.rannet.duckdns.org/"
           icon: 'https://www.datocms-assets.com/2885/1679087583-devdot-vault_dm.png'
           siteMonitor: "https://vault.rannet.duckdns.org/"
 
-
-      - "HomeLab Admin ⏬":
-          - DuckDNS:
-              icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
-              description: Free domain provider; Sign in via GitHub.
-              href: "https://www.duckdns.org/"
-          - Longhorn:
-              icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
-              description: Longhorn Persistent Store Dashboard
-              href: "https://longhorn.rannet.duckdns.org"
-          - NginxPM:
-              icon: 'https://nginxproxymanager.com/icon.png'
-              description: Nginx Proxy Manager Admin Panel
-              href: "https://admin.rannet-edge.duckdns.org/"
-              ping: "https://admin.rannet-edge.duckdns.org/"
-          - PiSugar Monitor:
-              icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
-              description: PiSugar LiIon Battery Monitor
-              href: "https://pisugar.rannet-edge.duckdns.org/"
-              ping: "https://pisugar.rannet-edge.duckdns.org/"
-          - OpenMediaVault:
-              icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
-              description: NAS Management
-              href: "https://nas-admin.rannet-edge.duckdns.org/"
-              ping: "https://nas-admin.rannet-edge.duckdns.org/"
-          - PeaNUT:
-              icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
-              description: PeaNUT NUT-Server UI
-              href: "https://nut.rannet-edge.duckdns.org/"
-              siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
-          - Pi-Hole:
-              icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
-              description: Pi-Hole, LocalDNS
-              href: "https://pihole.rannet-edge.duckdns.org/admin/"
-              ping: "https://pihole.rannet-edge.duckdns.org/"
-          - Prometheus:
-              icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
-              description: Prometheus Dashboard
-              href: "https://prometheus.rannet.duckdns.org"
-          - WoLWeb:
-              icon: 'https://m.media-amazon.com/images/I/41N9RhtWh9L.png'
-              description: WoL Web - Wake-on-LAN webapp
-              href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
-              ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
+    - Admin:
+      - "Apps/Media":
+        - Authentik:
+            icon: 'https://goauthentik.io/img/icon.png'
+            description: IdP for RanNet
+            href: "https://authentik.rannet.duckdns.org"
+            siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
+        - OpenMediaVault:
+            icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
+            description: NAS Management
+            href: "https://nas-admin.rannet-edge.duckdns.org/"
+            ping: "https://nas-admin.rannet-edge.duckdns.org/"
+        - Pinchflat:
+            icon: 'https://i.imgur.com/8WTIZWn.png'
+            description: Media/Youtube Downloader
+            href: https://pinchflat.rannet.duckdns.org
+            ping: https://pinchflat.rannet.duckdns.org
+        - Prometheus:
+            icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
+            description: Prometheus Dashboard
+            href: "https://prometheus.rannet.duckdns.org"
+      - "Cluster/Hardware Management":
+        - DuckDNS:
+            icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
+            description: Free domain provider; Sign in via GitHub.
+            href: "https://www.duckdns.org/"
+        - PeaNUT:
+            icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
+            description: PeaNUT NUT-Server UI
+            href: "https://nut.rannet-edge.duckdns.org/"
+            siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
+        - Pi-Hole:
+            icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
+            description: Pi-Hole, LocalDNS
+            href: "https://pihole.rannet-edge.duckdns.org/admin/"
+            ping: "https://pihole.rannet-edge.duckdns.org/"
+        - PiSugar Monitor:
+            icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
+            description: PiSugar LiIon Battery Monitor
+            href: "https://pisugar.rannet-edge.duckdns.org/"
+            ping: "https://pisugar.rannet-edge.duckdns.org/"
+        - ProxmoxVE:
+            icon: 'https://www.proxmox.com/favicon.svg'
+            description: Proxmox VE
+            href: "https://proxmox.rannet-edge.duckdns.org/"
+            ping: "https://proxmox.rannet-edge.duckdns.org/"
+        - NginxPM:
+            icon: 'https://nginxproxymanager.com/icon.png'
+            description: Nginx Proxy Manager Admin Panel
+            href: "https://admin.rannet-edge.duckdns.org/"
+            ping: "https://admin.rannet-edge.duckdns.org/"
+        - Twingate:
+            description: Zero-Trust Network
+            href: "https://auth.twingate.com/"
+            icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
+            siteMonitor: 'https://status.twingate.com/api/v2/status.json'
+        - WoLWeb:
+            icon: 'https://m.media-amazon.com/images/I/41N9RhtWh9L.png'
+            description: WoL Web - Wake-on-LAN webapp
+            href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
+            ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
 
   widgets.yaml: |
     - resources:
