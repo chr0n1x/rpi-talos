@@ -8,3 +8,7 @@ dependencies:
   - name: open-webui
     version: ~8
     repository: https://helm.openwebui.com/
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

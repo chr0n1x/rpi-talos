@@ -2,6 +2,20 @@ cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
   instances: 2
 
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: ollama-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: ollama
+        serviceAccount: open-webui-ollama
+        audiences:
+          - vault
+
 # if PVCs get stuck in Progressing state:
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
@@ -17,6 +31,7 @@ open-webui:
       value: "5432"
     - name: VECTOR_DB
       value: pgvector
+
     - name: DATABASE_USER
       valueFrom:
         secretKeyRef:
@@ -27,6 +42,12 @@ open-webui:
         secretKeyRef:
           name: owui-db-superuser
           key: password
+
+    # oidc things
+    # DANGER - do this once first
+    - name: WEBUI_URL
+      value: https://open-webui.rannet.duckdns.org
+    # rest of the configs should be applied after the above is deployed w/ a reliable ingress
 
   replicaCount: 1
   resources:
