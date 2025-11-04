@@ -44,7 +44,8 @@ open-webui:
           key: password
 
     # oidc things
-    # DANGER - do this once first
+    # DANGER - deploy with ONLY WEBUI_URL first
+    # https://integrations.goauthentik.io/miscellaneous/open-webui/
     - name: WEBUI_URL
       value: https://open-webui.rannet.duckdns.org
     # rest of the configs should be applied after the above is deployed w/ a reliable ingress
