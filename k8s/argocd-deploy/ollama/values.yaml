@@ -48,36 +48,33 @@ open-webui:
     - name: WEBUI_URL
       value: https://open-webui.rannet.duckdns.org
     # rest of the configs should be applied after the above is deployed w/ a reliable ingress
-
     - name: OAUTH_CLIENT_ID
       valueFrom:
         secretKeyRef:
           name: env-secrets
           key: OAUTH_CLIENT_ID
-
     - name: OAUTH_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
           name: env-secrets
           key: OAUTH_CLIENT_SECRET
-
     - name: OAUTH_PROVIDER_NAME
       valueFrom:
         secretKeyRef:
           name: env-secrets
           key: OAUTH_PROVIDER_NAME
-
     - name: OPENID_PROVIDER_URL
       valueFrom:
         secretKeyRef:
           name: env-secrets
           key: OPENID_PROVIDER_URL
-
     - name: OPENID_REDIRECT_URI
       valueFrom:
         secretKeyRef:
           name: env-secrets
           key: OPENID_REDIRECT_URI
+    - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
+      value: "true"
 
 
   replicaCount: 1
