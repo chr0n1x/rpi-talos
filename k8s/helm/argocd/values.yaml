@@ -43,10 +43,10 @@ argo-cd:
         g, authentik Admins, role:admin
         g, authentik Read-only, role:readonly
         g, authentik-homelab-group, role:readonly
-
+        g, k8s_automation_user, role:readonly
 
     cm:
-      accounts.k8s_automation_user: apiKey, login
+      accounts.k8s_automation_user: apiKey
       accounts.k8s_automation_user.enabled: "true"
       # ONLY DO THIS AFTER INITIAL SETUP
       accounts.admin.enabled: "false"
