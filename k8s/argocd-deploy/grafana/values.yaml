@@ -14,11 +14,14 @@ vault-auth:
 
 grafana:
   grafana.ini:
+    server:
+      domain: grafana.rannet.duckdns.org
+      root_url: "%(protocol)s://%(domain)s"
     auth.generic_oauth:
       name: RanNet OIDC
       enabled: true
-      allow_sign_up: false
-      scopes: openid
+      allow_sign_up: true
+      scopes: openid profile email
       empty_scopes: false
       auth_url: $__file{/etc/secrets/oidc_authentik_secrets/authorize_url}
       token_url: $__file{/etc/secrets/oidc_authentik_secrets/token_url}
@@ -26,7 +29,7 @@ grafana:
       client_id: $__file{/etc/secrets/oidc_authentik_secrets/client_id}
       client_secret: "$__file{/etc/secrets/oidc_authentik_secrets/client_secret}"
       role_attribute_strict: true
-      role_attribute_path: contains(groups[*], '**authentik-homelab-group**')
+      # role_attribute_path: contains(groups[*], '**authentik-homelab-group**')
 
   extraSecretMounts:
     - name: oidc-authentik-secret-mount
