@@ -20,9 +20,9 @@ grafana:
       allow_sign_up: false
       scopes: openid
       empty_scopes: false
-      auth_url: $__file{/etc/secrets/oidc_authentik_secrets/auth_url}
+      auth_url: $__file{/etc/secrets/oidc_authentik_secrets/authorize_url}
       token_url: $__file{/etc/secrets/oidc_authentik_secrets/token_url}
-      api_url: $__file{/etc/secrets/oidc_authentik_secrets/api_url}
+      api_url: $__file{/etc/secrets/oidc_authentik_secrets/userinfo_url}
       client_id: $__file{/etc/secrets/oidc_authentik_secrets/client_id}
       client_secret: "$__file{/etc/secrets/oidc_authentik_secrets/client_secret}"
       role_attribute_strict: true
