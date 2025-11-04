@@ -27,10 +27,11 @@ grafana:
       auth_url: $__file{/etc/secrets/oidc_authentik_secrets/authorize_url}
       token_url: $__file{/etc/secrets/oidc_authentik_secrets/token_url}
       api_url: $__file{/etc/secrets/oidc_authentik_secrets/userinfo_url}
+      signout_url: $__file{/etc/secrets/oidc_authentik_secrets/signout_url}
       client_id: $__file{/etc/secrets/oidc_authentik_secrets/client_id}
       client_secret: "$__file{/etc/secrets/oidc_authentik_secrets/client_secret}"
       role_attribute_strict: true
-      # role_attribute_path: contains(groups[*], '**authentik-homelab-group**')
+      role_attribute_path: "contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'"
 
   extraSecretMounts:
     - name: oidc-authentik-secret-mount
