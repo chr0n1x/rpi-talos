@@ -1,0 +1,111 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      vaultAuthName: homepage-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: homepage
+        serviceAccount: homepage
+        audiences:
+          - vault
+
+# uses vso config above to generate secret refs
+widgetConfigs:
+  - name: argocd
+    path: homepage/widgets/argocd
+  - name: immich
+    path: homepage/widgets/immich
+  - name: jellyfin
+    path: homepage/widgets/jellyfin
+  - name: jellyfin
+    path: homepage/widgets/filebrowser
+  - name: paperless-ngx
+    path: homepage/widgets/paperless-ngx
+
+homepage:
+  # required for above
+  serviceAccount:
+    create: true
+    name: homepage
+
+  # reloader operator in separate NS; restarts deployment when cfg map updates
+  podAnnotations:
+    configmap.reloader.stakater.com/reload: "homepage-cm"
+
+  # match name up with manifest + name above
+  config:
+    useExistingConfigMap: homepage-cm
+
+  image:
+    repository: ghcr.io/gethomepage/homepage
+    tag: latest
+  env:
+    - name: HOMEPAGE_ALLOWED_HOSTS
+      value: "home.k8s:30443,home.k8s:30080,rannet.duckdns.org"
+
+  extraClusterRoles:
+    - apiGroups:
+        - ""
+      resources:
+        - namespaces
+        - pods
+        - nodes
+      verbs:
+        - get
+        - list
+    - apiGroups:
+        - extensions
+        - networking.k8s.io
+      resources:
+        - ingresses
+      verbs:
+        - get
+        - list
+    - apiGroups:
+        - traefik.containo.us
+      resources:
+        - ingressroutes
+      verbs:
+        - get
+        - list
+    - apiGroups:
+        - metrics.k8s.io
+      resources:
+        - nodes
+        - pods
+      verbs:
+        - get
+        - list
+
+
+  ingress:
+    main:
+      enabled: true
+      # labels:
+        # This label will enable discover of this deployment in Homepage
+        # gethomepage.dev/enabled: "true"
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+
+        gethomepage.dev/description: Dynamically Detected Homepage
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Cluster Management
+        gethomepage.dev/icon: homepage.png
+        gethomepage.dev/name: Homepage
+
+      ingressClassName: "nginx"
+      hosts:
+        - host: "rannet.duckdns.org"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - "rannet.duckdns.org"
+          secretName: homepage-cert
