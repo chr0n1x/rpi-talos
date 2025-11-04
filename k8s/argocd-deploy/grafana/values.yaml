@@ -13,6 +13,27 @@ vault-auth:
           - vault
 
 grafana:
+  auth.generic_oauth:
+    name: RanNet OIDC
+    enabled: true
+    allow_sign_up: false
+    scopes: openid
+    empty_scopes: false
+    auth_url: $__file{/etc/secrets/oidc_authentik_secrets/auth_url}
+    token_url: $__file{/etc/secrets/oidc_authentik_secrets/token_url}
+    api_url: $__file{/etc/secrets/oidc_authentik_secrets/api_url}
+    client_id: ""
+    client_secret: ""
+    role_attribute_strict: true
+    role_attribute_path: contains(groups[*], '**authentik-homelab-group**')
+
+  extraSecretMounts:
+    - name: oidc-authentik-secret-mount
+      secretName: oidc-authentik-secrets
+      defaultMode: 0440
+      mountPath: /etc/secrets/oidc_authentik_secrets
+      readOnly: true
+
   podDisruptionBudget:
     minAvailable: 1
 
