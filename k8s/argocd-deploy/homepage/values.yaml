@@ -81,7 +81,7 @@ homepage:
 
 
   ingress:
-    main:
+    "homepage-ingress":
       enabled: true
       # labels:
         # This label will enable discover of this deployment in Homepage

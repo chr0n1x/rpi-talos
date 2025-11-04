@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
   name: homepage-cm
 data:
-  $patch: replace
-
   widgets.yaml: |
     - resources:
         backend: resources
