@@ -81,6 +81,7 @@ argo-cd:
   dex:
     pdb:
       enabled: true
+      minAvailable: 1
 
   repoServer:
     replicas: 2
