@@ -26,9 +26,9 @@ data:
       - Apps:
           style: row
           columns: 2
-      - "Cluster Tools":
+      - Admin:
           style: row
-          columns: 2
+          columns: 3
 
   docker.yaml: ''
 
