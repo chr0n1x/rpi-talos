@@ -46,6 +46,11 @@ argo-cd:
 
 
     cm:
+      accounts.k8s_automation_user: apiKey, login
+      accounts.k8s_automation_user.enabled: "true"
+      # ONLY DO THIS AFTER INITIAL SETUP
+      accounts.admin.enabled: "false"
+
       kustomize.buildOptions: --enable-helm
       resource.customizations: |
         networking.k8s.io/Ingress:
