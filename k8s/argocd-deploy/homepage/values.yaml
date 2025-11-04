@@ -19,7 +19,7 @@ widgetConfigs:
     path: homepage/widgets/immich
   - name: jellyfin
     path: homepage/widgets/jellyfin
-  - name: jellyfin
+  - name: filebrowser
     path: homepage/widgets/filebrowser
   - name: paperless-ngx
     path: homepage/widgets/paperless-ngx
@@ -81,7 +81,7 @@ homepage:
 
 
   ingress:
-    "homepage-ingress":
+    main:
       enabled: true
       # labels:
         # This label will enable discover of this deployment in Homepage
