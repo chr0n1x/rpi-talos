@@ -16,7 +16,8 @@ grafana:
   grafana.ini:
     server:
       domain: grafana.rannet.duckdns.org
-      root_url: "%(protocol)s://%(domain)s"
+      # forcing https here, for some reason it defaults %(protocol)s goes to http
+      root_url: "https://%(domain)s"
     auth.generic_oauth:
       name: RanNet OIDC
       enabled: true
