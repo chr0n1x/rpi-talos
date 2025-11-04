@@ -6,70 +6,31 @@ metadata:
 data:
   $patch: replace
 
+  widgets.yaml: |
+    - resources:
+        backend: resources
+        cpu: true
+        expanded: true
+        memory: true
+    - search:
+        provider: custom
+        url: https://searxng.rannet.duckdns.org/search?q=
+        target: _blank
+        suggestionUrl: https://searxng.rannet.duckdns.org/autocompleter?q=
+        showSearchSuggestions: true
+
   settings.yaml: |
     title: "Ran Home, Have We?"
     headerStyle: boxedWidgets
     layout:
       - Apps:
+          style: row
+          columns: 2
+      - "Cluster Tools":
+          style: row
           columns: 2
 
   docker.yaml: ''
-
-  bookmarks.yaml: |
-    - AI / Ollama:
-      - Ollama:
-        - abbr: Ol
-          href: https://ollama.com/search
-          icon: 'https://ollama.com/public/ollama.png'
-      - Hugging Face:
-        - abbr: HF
-          href: https://huggingface.co/
-          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
-      - PapersWithCode:
-        - abbr: PC
-          href: https://paperswithcode.com/
-          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
-
-    - "K8s/Talos":
-      - Awesome K8s:
-        - abbr: AK
-          href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
-          icon: 'https://octodex.github.com/images/adventure-cat.png'
-      - K8s Reference Homepage:
-        - abbr: K8
-          href: https://kubernetes.io/docs/reference/
-          icon: 'https://kubernetes.io/images/wheel.svg'
-      - Talos Image Factory:
-        - href: "https://factory.talos.dev/"
-          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
-          abbr: IF
-      - Talos Machine Config API:
-        - abbr: TA
-          href: https://docs.siderolabs.com/talos/v1.11/reference/configuration/v1alpha1/config
-          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
-
-
-    - Misc Tools:
-      - key.br:
-        - icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
-          href: "https://www.keybr.com/"
-      - Oryx:
-        - icon: 'https://configure.zsa.io/assets/oryx-logo-navbar-LAgSxL-X.png'
-          href: "https://configure.zsa.io/voyager/layouts"
-
-    - General:
-      - Google OAuth:
-        - href: https://console.cloud.google.com/auth/overview?project=home-k8s-oidc
-          abbr: GO
-          icon: https://www.gstatic.com/pantheon/images/gcpIconGallery.svg
-      - OSI Networking Model:
-        - abbr: OM
-          href: https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/
-          icon: https://www.cloudflare.com/favicon.ico
-      - Logout:
-        - abbr: LO
-          href: https://oauth2.rannet.duckdns.org/oauth2/sign_out
-          icon: https://oauth2-proxy.github.io/oauth2-proxy/img/logos/OAuth2_Proxy_icon.svg
 
 
 
@@ -111,38 +72,39 @@ data:
           href: https://paperless-ngx.rannet.duckdns.org
           ping: https://paperless-ngx.rannet.duckdns.org
 
-    - Cluster Tools:
-      - ArgoCD:
-          icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-          description: Deploy ALL the things!
-          href: "https://argocd.rannet.duckdns.org/applications"
-          siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
-      - Docker Registry:
-          icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
-          description: Internal LAN Docker Container Registry
-          href: "https://docker.rannet.duckdns.org"
-          siteMonitor: "https://docker.rannet.duckdns.org/v2/"
-          ping: "https://docker.rannet.duckdns.org"
-      - Grafana:
-          icon: 'https://grafana.com/static/img/menu/grafana2.svg'
-          description: Grafana Dashboard
-          href: "https://grafana.rannet.duckdns.org"
-      - K8s Dashboard:
-          icon: 'https://kubernetes.io/images/wheel.svg'
-          description: K8s dashboard
-          href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
-          siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
-      - Longhorn:
-          icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
-          description: Longhorn Persistent Store Dashboard
-          href: "https://longhorn.rannet.duckdns.org"
-      - Vault:
-          description: On-Prem Vault Instance
-          href: "https://vault.rannet.duckdns.org/"
-          icon: 'https://www.datocms-assets.com/2885/1679087583-devdot-vault_dm.png'
-          siteMonitor: "https://vault.rannet.duckdns.org/"
 
     - Admin:
+      - Cluster Tools:
+        - ArgoCD:
+            icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+            description: Deploy ALL the things!
+            href: "https://argocd.rannet.duckdns.org/applications"
+            siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
+        - Docker Registry:
+            icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
+            description: Internal LAN Docker Container Registry
+            href: "https://docker.rannet.duckdns.org"
+            siteMonitor: "https://docker.rannet.duckdns.org/v2/"
+            ping: "https://docker.rannet.duckdns.org"
+        - Grafana:
+            icon: 'https://grafana.com/static/img/menu/grafana2.svg'
+            description: Grafana Dashboard
+            href: "https://grafana.rannet.duckdns.org"
+        - K8s Dashboard:
+            icon: 'https://kubernetes.io/images/wheel.svg'
+            description: K8s dashboard
+            href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
+            siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
+        - Longhorn:
+            icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
+            description: Longhorn Persistent Store Dashboard
+            href: "https://longhorn.rannet.duckdns.org"
+        - Vault:
+            description: On-Prem Vault Instance
+            href: "https://vault.rannet.duckdns.org/"
+            icon: 'https://www.datocms-assets.com/2885/1679087583-devdot-vault_dm.png'
+            siteMonitor: "https://vault.rannet.duckdns.org/"
+
       - "Apps/Media":
         - Authentik:
             icon: 'https://goauthentik.io/img/icon.png'
@@ -163,7 +125,8 @@ data:
             icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
             description: Prometheus Dashboard
             href: "https://prometheus.rannet.duckdns.org"
-      - "Cluster/Hardware Management":
+
+      - "Network/Hardware Management":
         - DuckDNS:
             icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
             description: Free domain provider; Sign in via GitHub.
@@ -204,15 +167,58 @@ data:
             href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
             ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
 
-  widgets.yaml: |
-    - resources:
-        backend: resources
-        cpu: true
-        expanded: true
-        memory: true
-    - search:
-        provider: custom
-        url: https://searxng.rannet.duckdns.org/search?q=
-        target: _blank
-        suggestionUrl: https://searxng.rannet.duckdns.org/autocompleter?q=
-        showSearchSuggestions: true
+
+  bookmarks.yaml: |
+    - AI / Ollama:
+      - Ollama:
+        - abbr: Ol
+          href: https://ollama.com/search
+          icon: 'https://ollama.com/public/ollama.png'
+      - Hugging Face:
+        - abbr: HF
+          href: https://huggingface.co/
+          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+      - PapersWithCode:
+        - abbr: PC
+          href: https://paperswithcode.com/
+          icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+
+    - "K8s/Talos":
+      - Awesome K8s:
+        - abbr: AK
+          href: https://github.com/tomhuang12/awesome-k8s-resources/blob/main/readme.md
+          icon: 'https://octodex.github.com/images/adventure-cat.png'
+      - K8s Reference Homepage:
+        - abbr: K8
+          href: https://kubernetes.io/docs/reference/
+          icon: 'https://kubernetes.io/images/wheel.svg'
+      - Talos Image Factory:
+        - href: "https://factory.talos.dev/"
+          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
+          abbr: IF
+      - Talos Machine Config API:
+        - abbr: TA
+          href: https://docs.siderolabs.com/talos/v1.11/reference/configuration/v1alpha1/config
+          icon: 'https://mintlify.s3.us-west-1.amazonaws.com/siderolabs-fe86397c/images/talos.svg'
+
+    - Misc Tools:
+      - key.br:
+        - icon: 'https://www.keybr.com/assets/a4de433bd238eb45.png'
+          href: "https://www.keybr.com/"
+      - Oryx:
+        - icon: 'https://configure.zsa.io/assets/oryx-logo-navbar-LAgSxL-X.png'
+          href: "https://configure.zsa.io/voyager/layouts"
+
+    - General:
+      - Google OAuth:
+        - href: https://console.cloud.google.com/auth/overview?project=home-k8s-oidc
+          abbr: GO
+          icon: https://www.gstatic.com/pantheon/images/gcpIconGallery.svg
+      - OSI Networking Model:
+        - abbr: OM
+          href: https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/
+          icon: https://www.cloudflare.com/favicon.ico
+      - Logout:
+        - abbr: LO
+          href: https://oauth2.rannet.duckdns.org/oauth2/sign_out
+          icon: https://oauth2-proxy.github.io/oauth2-proxy/img/logos/OAuth2_Proxy_icon.svg
