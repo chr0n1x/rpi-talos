@@ -78,6 +78,10 @@ argo-cd:
   applicationSet:
     replicas: 2
 
+  dex:
+    pdb:
+      enabled: true
+
   repoServer:
     replicas: 2
 
