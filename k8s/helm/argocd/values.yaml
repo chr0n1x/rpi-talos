@@ -46,6 +46,23 @@ argo-cd:
         g, k8s_automation_user, role:readonly
 
     cm:
+      # if using this for API keys remember to inspect the value in
+      # argocd-secret after generating the token
+      #
+      # e.g. after generating a token, leave page open to copy the token
+      # BUT - immediately run and monitor the following:
+      #
+      #  k get secret argocd-secret -o=yaml | yq r - 'data['accounts.k8s_automation_user.tokens']' | base64 -d
+      #   [{"id":"dc3cd18b-3065-4d6a-ab95-12dc8941ea1a","iat":1762268265}]
+      #
+      # the value above would need to be stored into the
+      # "accounts.k8s_automation_user.tokens" key in vault if using VSO to sync
+      # argocd-secrets (which in this case - yes - since oidc secrets are set up here)
+      #
+      # only AFTER you save that JSON array into whatever vault dir your
+      # argocd-secret is sourced from (see argocd-secret-vso-ref.yaml in
+      # templates) will the token be persisted, THEN you can use the API key
+      # displayed on the generate-token page
       accounts.k8s_automation_user: apiKey
       accounts.k8s_automation_user.enabled: "true"
       # ONLY DO THIS AFTER INITIAL SETUP
