@@ -23,8 +23,8 @@ grafana:
       auth_url: $__file{/etc/secrets/oidc_authentik_secrets/auth_url}
       token_url: $__file{/etc/secrets/oidc_authentik_secrets/token_url}
       api_url: $__file{/etc/secrets/oidc_authentik_secrets/api_url}
-      client_id: ""
-      client_secret: ""
+      client_id: $__file{/etc/secrets/oidc_authentik_secrets/client_id}
+      client_secret: "$__file{/etc/secrets/oidc_authentik_secrets/client_secret}"
       role_attribute_strict: true
       role_attribute_path: contains(groups[*], '**authentik-homelab-group**')
 
