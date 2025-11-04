@@ -1,3 +1,17 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: grafana-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: grafana
+        serviceAccount: grafana
+        audiences:
+          - vault
+
 grafana:
   podDisruptionBudget:
     minAvailable: 1

@@ -8,3 +8,7 @@ dependencies:
   - name: grafana
     version: ~8.13
     repository: https://grafana.github.io/helm-charts
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
