@@ -67,6 +67,7 @@ argo-cd:
       accounts.k8s_automation_user.enabled: "true"
       # ONLY DO THIS AFTER INITIAL SETUP
       accounts.admin.enabled: "false"
+      admin.enabled: "false"
 
       kustomize.buildOptions: --enable-helm
       resource.customizations: |
