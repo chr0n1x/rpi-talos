@@ -1,0 +1,11 @@
+# systemctl enable etcd-defrag.*
+[Unit]
+Description=Defrag etcd Cluster
+
+[Service]
+EnvironmentFile=/etc/systemd/user/etcd-defrag.env
+# TODO: can probably use DynamicUser instead, but I just want this to work
+User=root
+Type=oneshot
+ExecStart=/usr/bin/env
+ExecStart=/bin/bash -c "${REPO_PATH}/etc/scripts/etcd-defrag.bash"

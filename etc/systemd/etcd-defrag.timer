@@ -1,0 +1,11 @@
+# systemctl enable etcd-defrag.*
+[Unit]
+Description=Timer for etcd-defrag
+
+[Timer]
+OnUnitActiveSec=1d
+Unit=etcd-defrag.service
+
+[Install]
+WantedBy=timers.target
+WantedBy=etcd-defrag.service
