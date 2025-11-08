@@ -4,3 +4,4 @@ chroma.log
 
 secrets/
 talos/
+etc/systemd/etcd-defrag.env
