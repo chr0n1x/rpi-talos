@@ -57,7 +57,7 @@ homepage:
     - name: HOMEPAGE_VAR_JELLYFIN_KEY
       valueFrom:
         secretKeyRef:
-          name: immich-jellyfin-secrets
+          name: jellyfin-widget-secrets
           key: api_key
 
   extraClusterRoles:
