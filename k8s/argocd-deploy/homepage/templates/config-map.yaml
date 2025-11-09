@@ -16,6 +16,7 @@ data:
         suggestionUrl: https://searxng.rannet.duckdns.org/autocompleter?q=
         showSearchSuggestions: true
 
+
   settings.yaml: |
     title: "Ran Home, Have We?"
     headerStyle: boxedWidgets
@@ -75,10 +76,13 @@ data:
     - Admin:
       - Cluster Tools:
         - ArgoCD:
-            icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-            description: Deploy ALL the things!
-            href: "https://argocd.rannet.duckdns.org/applications"
-            siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
+            # icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
+            # description: Deploy ALL the things!
+            # siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
+            widget:
+              type: argocd
+              url: "https://argocd.rannet.duckdns.org"
+              key: {{ `{{ ARGOCD_KEY }}` }}
         - Docker Registry:
             icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
             description: Internal LAN Docker Container Registry

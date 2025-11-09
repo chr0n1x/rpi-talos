@@ -44,6 +44,11 @@ homepage:
   env:
     - name: HOMEPAGE_ALLOWED_HOSTS
       value: "home.k8s:30443,home.k8s:30080,rannet.duckdns.org"
+    - name: ARGOCD_KEY
+      valueFrom:
+        secretKeyRef:
+          name: argocd-widget-secrets
+          key: api_key
 
   extraClusterRoles:
     - apiGroups:
