@@ -23,8 +23,6 @@ widgetConfigs:
     path: homepage/widgets/filebrowser
   - name: paperless-ngx
     path: homepage/widgets/paperless-ngx
-  - name: filebrowser
-    path: homepage/widgets/filebrowser
 
 homepage:
   # required for above
