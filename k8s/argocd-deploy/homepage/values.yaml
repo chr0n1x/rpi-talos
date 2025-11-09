@@ -23,6 +23,8 @@ widgetConfigs:
     path: homepage/widgets/filebrowser
   - name: paperless-ngx
     path: homepage/widgets/paperless-ngx
+  - name: filebrowser
+    path: homepage/widgets/filebrowser
 
 homepage:
   # required for above
@@ -64,6 +66,16 @@ homepage:
         secretKeyRef:
           name: paperless-ngx-widget-secrets
           key: api_key
+    - name: HOMEPAGE_VAR_FILEBROWSER_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: filebrowser-widget-secrets
+          key: username
+    - name: HOMEPAGE_VAR_FILEBROWSER_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: filebrowser-widget-secrets
+          key: password
 
   extraClusterRoles:
     - apiGroups:

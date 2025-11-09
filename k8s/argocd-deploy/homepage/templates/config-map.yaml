@@ -55,11 +55,6 @@ data:
             enableUser: true
             enableMediaControl: false
             expandOneStreamToTwoRows: false
-      - Kiwix:
-          icon: 'https://kiwix.org/android-chrome-512x512.png'
-          description: Kiwix self-hosted wiki, backed by Samba/NAS
-          href: https://wiki.rannet.duckdns.org
-          ping: https://wiki.rannet.duckdns.org
       - Immich:
           icon: 'https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo-stacked-light.svg'
           description: Photo/Video Storage
@@ -70,17 +65,23 @@ data:
             url: "https://immich.rannet.duckdns.org"
             key: {{ `{{HOMEPAGE_VAR_IMMICH_KEY}}` }}
             version: 2
+      - Kiwix:
+          icon: 'https://kiwix.org/android-chrome-512x512.png'
+          description: Kiwix self-hosted wiki, backed by Samba/NAS
+          href: https://wiki.rannet.duckdns.org
+          ping: https://wiki.rannet.duckdns.org
 
-      - Open WebUI:
-          icon: 'https://ollama.com/public/ollama.png'
-          description: LLMs in-cluster via open-webui
-          href: https://open-webui.rannet.duckdns.org
-          siteMonitor: "https://open-webui.rannet.duckdns.org/health"
       - OpenMediaVault File Browser:
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
           description: OMV Web-based Browser
           href: "https://nas.rannet-edge.duckdns.org/"
           ping: "https://nas.rannet-edge.duckdns.org/"
+          widget:
+            type: filebrowser
+            url: "https://nas.rannet-edge.duckdns.org/"
+            username: {{ `{{HOMEPAGE_VAR_FILEBROWSER_USERNAME}}` }}
+            password: {{ `{{HOMEPAGE_VAR_FILEBROWSER_PASSWORD}}` }}
+
       - PaperlessNGX:
           icon: 'https://avatars.githubusercontent.com/u/99562962?s=280&v=4'
           description: "PDF doc/ref storage"
@@ -90,6 +91,12 @@ data:
             type: paperlessngx
             url: https://paperless-ngx.rannet.duckdns.org
             key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY}}` }}
+
+      - Open WebUI:
+          icon: 'https://ollama.com/public/ollama.png'
+          description: LLMs in-cluster via open-webui
+          href: https://open-webui.rannet.duckdns.org
+          siteMonitor: "https://open-webui.rannet.duckdns.org/health"
 
 
     - Admin:
