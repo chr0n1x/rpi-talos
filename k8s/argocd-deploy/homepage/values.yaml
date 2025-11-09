@@ -23,6 +23,8 @@ widgetConfigs:
     path: homepage/widgets/filebrowser
   - name: paperless-ngx
     path: homepage/widgets/paperless-ngx
+  - name: pihole
+    path: homepage/widgets/pihole
 
 homepage:
   # required for above
@@ -74,6 +76,11 @@ homepage:
         secretKeyRef:
           name: filebrowser-widget-secrets
           key: password
+    - name: HOMEPAGE_VAR_PIHOLE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: pihole-widget-secrets
+          key: api_key
 
   extraClusterRoles:
     - apiGroups:

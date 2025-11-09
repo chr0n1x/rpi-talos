@@ -173,6 +173,11 @@ data:
             description: Pi-Hole, LocalDNS
             href: "https://pihole.rannet-edge.duckdns.org/admin/"
             ping: "https://pihole.rannet-edge.duckdns.org/"
+            widget:
+              type: pihole
+              url: "https://pihole.rannet-edge.duckdns.org/"
+              version: 6
+              key: {{ `{{HOMEPAGE_VAR_PIHOLE_KEY}}` | quote }}
         - PiSugar Monitor:
             icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
             description: PiSugar LiIon Battery Monitor
