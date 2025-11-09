@@ -54,6 +54,11 @@ homepage:
         secretKeyRef:
           name: immich-widget-secrets
           key: api_key
+    - name: HOMEPAGE_VAR_JELLYFIN_KEY
+      valueFrom:
+        secretKeyRef:
+          name: immich-jellyfin-secrets
+          key: api_key
 
   extraClusterRoles:
     - apiGroups:
