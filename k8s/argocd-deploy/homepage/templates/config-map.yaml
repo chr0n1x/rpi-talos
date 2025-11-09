@@ -73,13 +73,13 @@ data:
 
       - 'OpenMediaVault File Browser':
           icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
-          description: OMV Web-based Browser
+          description: 'OMV Web-based Browser'
           href: "https://nas.rannet-edge.duckdns.org/"
           ping: "https://nas.rannet-edge.duckdns.org/"
           widget:
             type: filebrowser
-            username: {{ `{{HOMEPAGE_VAR_FILEBROWSER_USERNAME}}` }}
-            password: {{ `{{HOMEPAGE_VAR_FILEBROWSER_PASSWORD}}` }}
+            username: {{ `{{HOMEPAGE_VAR_FILEBROWSER_USERNAME}}` | quote }}
+            password: {{ `{{HOMEPAGE_VAR_FILEBROWSER_PASSWORD}}` | quote }}
             url: "https://nas.rannet-edge.duckdns.org/"
 
       - PaperlessNGX:
