@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 # utility script to
 # 1. fetch the etcd cluster status based on all kubectl nodes
