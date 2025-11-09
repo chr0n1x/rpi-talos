@@ -78,6 +78,7 @@ data:
         - ArgoCD:
             icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
             description: Deploy ALL the things!
+            href: "https://argocd.rannet.duckdns.org"
             siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
             widget:
               type: argocd
