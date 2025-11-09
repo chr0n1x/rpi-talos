@@ -86,6 +86,10 @@ data:
           description: "PDF doc/ref storage"
           href: https://paperless-ngx.rannet.duckdns.org
           ping: https://paperless-ngx.rannet.duckdns.org
+          widget:
+            type: paperlessngx
+            url: https://paperless-ngx.rannet.duckdns.org
+            key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY_KEY}}` }}
 
 
     - Admin:

@@ -59,6 +59,11 @@ homepage:
         secretKeyRef:
           name: jellyfin-widget-secrets
           key: api_key
+    - name: HOMEPAGE_VAR_PAPERLESSNGX_KEY
+      valueFrom:
+        secretKeyRef:
+          name: paperless-ngx-widget-secrets
+          key: api_key
 
   extraClusterRoles:
     - apiGroups:
