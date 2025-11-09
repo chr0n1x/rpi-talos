@@ -56,6 +56,12 @@ data:
           description: Photo/Video Storage
           href: https://immich.rannet.duckdns.org
           siteMonitor: "https://immich.rannet.duckdns.org/api/server/ping"
+          widget:
+            type: immich
+            url: "https://immich.rannet.duckdns.org"
+            key: {{ `{{HOMEPAGE_VAR_IMMICH_KEY}}` }}
+            version: 2
+
       - Open WebUI:
           icon: 'https://ollama.com/public/ollama.png'
           description: LLMs in-cluster via open-webui

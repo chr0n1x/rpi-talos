@@ -49,6 +49,11 @@ homepage:
         secretKeyRef:
           name: argocd-widget-secrets
           key: api_key
+    - name: HOMEPAGE_VAR_IMMICH_KEY
+      valueFrom:
+        secretKeyRef:
+          name: immich-widget-secrets
+          key: api_key
 
   extraClusterRoles:
     - apiGroups:
