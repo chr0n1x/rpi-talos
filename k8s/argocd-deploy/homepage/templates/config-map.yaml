@@ -84,12 +84,12 @@ data:
 
       - PaperlessNGX:
           icon: 'https://avatars.githubusercontent.com/u/99562962?s=280&v=4'
-          description: "PDF doc/ref storage"
-          href: https://paperless-ngx.rannet.duckdns.org
-          ping: https://paperless-ngx.rannet.duckdns.org
+          description: 'PDF doc/ref storage'
+          href: 'https://paperless-ngx.rannet.duckdns.org'
+          ping: 'https://paperless-ngx.rannet.duckdns.org'
           widget:
             type: paperlessngx
-            url: https://paperless-ngx.rannet.duckdns.org
+            url: 'https://paperless-ngx.rannet.duckdns.org'
             key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY}}` }}
 
       - Open WebUI:
