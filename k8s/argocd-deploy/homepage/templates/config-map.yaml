@@ -62,7 +62,7 @@ data:
             url: "https://jellyfin.rannet-edge.duckdns.org/"
             key: {{ `{{HOMEPAGE_VAR_JELLYFIN_KEY}}` }}
             enableBlocks: true
-            enableNowPlaying: true
+            enableNowPlaying: false
             enableUser: true
             enableMediaControl: false
             expandOneStreamToTwoRows: false
