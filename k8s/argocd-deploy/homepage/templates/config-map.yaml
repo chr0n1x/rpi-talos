@@ -89,7 +89,7 @@ data:
           widget:
             type: paperlessngx
             url: https://paperless-ngx.rannet.duckdns.org
-            key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY_KEY}}` }}
+            key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY}}` }}
 
 
     - Admin:
