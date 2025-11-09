@@ -163,11 +163,11 @@ data:
             icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
             description: Free domain provider; Sign in via GitHub.
             href: "https://www.duckdns.org/"
-        - PeaNUT:
-            icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
-            description: PeaNUT NUT-Server UI
-            href: "https://nut.rannet-edge.duckdns.org/"
-            siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
+        # - PeaNUT:
+        #     icon: 'https://raw.githubusercontent.com/Brandawg93/PeaNUT/main/src/app/icon.svg'
+        #     description: PeaNUT NUT-Server UI
+        #     href: "https://nut.rannet-edge.duckdns.org/"
+        #     siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
         - Pi-Hole:
             icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
             description: Pi-Hole, LocalDNS
