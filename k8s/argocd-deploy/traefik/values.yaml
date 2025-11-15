@@ -3,6 +3,10 @@ traefik:
   deployment:
     replicas: 1
 
+  service:
+    loadBalancerSourceRanges:
+      - 192.168.86.33
+
   ports:
     traefik:
       expose:
