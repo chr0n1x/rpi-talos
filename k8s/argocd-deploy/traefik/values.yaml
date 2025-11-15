@@ -1,9 +1,9 @@
 traefik:
-  # hostNetwork: true
+  hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
-  # nodeSelector:
-  #   kubernetes.io/hostname: nyx
+  nodeSelector:
+    kubernetes.io/hostname: px-talos-worker-gpu-101
   priorityClassName: system-node-critical
 
   deployment:
