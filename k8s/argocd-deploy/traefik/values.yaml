@@ -1,8 +1,12 @@
 traefik:
-  # additionalArguments:
-  #   - --enable-gateway-api
-  #   - --experimental.kubernetesIngressNGINX
-  #   - --providers.kubernetesIngressNGINX
+  hostNetwork: true
+  deployment:
+    replicas: 1
+
+  ports:
+    traefik:
+      expose:
+        default: true
 
   providers:
     kubernetesCRD:
@@ -27,24 +31,3 @@ traefik:
       matchRule: Host(`localhost`)
       entryPoints:
         - web
-
-  # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#install-with-argo-rollouts
-  deployment:
-    replicas: 2
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 4
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 90
-      - type: Resource
-        resource:
-          name: memory
-          target:
-            type: Utilization
-            averageUtilization: 90
