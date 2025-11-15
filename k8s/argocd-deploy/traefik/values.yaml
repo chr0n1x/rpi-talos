@@ -39,6 +39,6 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
-      matchRule: Host(`localhost`)
+      matchRule: (Host(`localhost`) || Host(`*.rannet.duckdns.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
         - web
