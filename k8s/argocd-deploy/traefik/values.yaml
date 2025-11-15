@@ -1,8 +1,13 @@
 traefik:
-  extraArgs:
+  additionalArguments:
     - --enable-gateway-api
     - --experimental.kubernetesIngressNGINX
     - --providers.kubernetesIngressNGINX
+
+  gateway:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
 
   # TODO: hook into authentik
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
