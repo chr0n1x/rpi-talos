@@ -4,16 +4,27 @@ traefik:
   #   - --experimental.kubernetesIngressNGINX
   #   - --providers.kubernetesIngressNGINX
 
+  providers:
+    kubernetesCRD:
+      ingressClass: "traefik"
+
   gateway:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+    listeners:
+      web:
+        namespacePolicy:
+          from: All
 
   # TODO: hook into authentik
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
   ingressRoute:
     dashboard:
       enabled: true
+      matchRule: Host(`localhost`)
+      entryPoints:
+        - web
 
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#install-with-argo-rollouts
   deployment:
