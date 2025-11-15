@@ -16,4 +16,4 @@ ingress-nginx:
     resources:
       requests:
         cpu: 2
-        memory: 8Gi
+        memory: 5Gi
