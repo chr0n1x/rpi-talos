@@ -1,9 +1,9 @@
 traefik:
-  hostNetwork: true
+  # hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
-  nodeSelector:
-    kubernetes.io/hostname: nyx
+  # nodeSelector:
+  #   kubernetes.io/hostname: nyx
   priorityClassName: system-node-critical
 
   deployment:
@@ -11,8 +11,6 @@ traefik:
 
   service:
     type: ClusterIP
-    # loadBalancerIP: 192.168.86.33
-    # clusterIP: 192.168.86.33
 
   ports:
     traefik:
