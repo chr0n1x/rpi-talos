@@ -1,0 +1,41 @@
+traefik:
+
+  # TODO: hook into authentik
+  # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
+  ingressRoute:
+    dashboard:
+      enabled: true
+
+  # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#install-with-argo-rollouts
+  deployment:
+    replicas: 0
+  autoscaling:
+    enabled: true
+    minReplicas: 5
+    maxReplicas: 50
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 80
+    scaleTargetRef:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Rollout
+  extraObjects:
+    - apiVersion: argoproj.io/v1alpha1
+      kind: Rollout
+      metadata:
+        name: "{{ template \"traefik.fullname\" . }}"
+      spec:
+        workloadRef:
+          apiVersion: apps/v1
+          kind: Deployment
+          name: "{{ template \"traefik.fullname\" . }}"
+        strategy:
+          canary:
+            steps:
+            - setWeight: 10
+            - pause:
+                duration: 5m

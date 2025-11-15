@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: trivy
+version: 1.0.0
+description: traefik wrapper chart
+type: application
+
+dependencies:
+  - name: traefik
+    version: ~37
+    repository: https://traefik.github.io/charts
