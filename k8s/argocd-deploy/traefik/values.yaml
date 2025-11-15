@@ -1,8 +1,8 @@
 traefik:
-  additionalArguments:
-    - --enable-gateway-api
-    - --experimental.kubernetesIngressNGINX
-    - --providers.kubernetesIngressNGINX
+  # additionalArguments:
+  #   - --enable-gateway-api
+  #   - --experimental.kubernetesIngressNGINX
+  #   - --providers.kubernetesIngressNGINX
 
   gateway:
     enabled: true
