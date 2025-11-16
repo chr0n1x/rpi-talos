@@ -19,6 +19,15 @@ traefik:
     traefik:
       expose:
         default: true
+    websecure:
+      hostPort: 443
+      tls:
+        certResolver: duckdns-letsencrypt-prod
+        domains:
+          - "rannet.duckdns.org"
+          - "*.rannet.duckdns.org"
+          - "rannet01.duckdns.org"
+          - "*.rannet01.duckdns.org"
 
   providers:
     kubernetesCRD:
