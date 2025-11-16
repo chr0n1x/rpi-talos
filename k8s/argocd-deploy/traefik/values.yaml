@@ -1,3 +1,6 @@
+# k port-forward -n traefik pods/traefik-whatever 8080:8000
+# http://localhost:8080/dashboard/
+
 traefik:
   hostNetwork: true
   progressDeadlineSeconds: 360
@@ -37,6 +40,6 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
-      matchRule: (Host(`localhost`) || Host(`*.rannet.duckdns.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      matchRule: (Host(`localhost`) || Host(`*.rannet.duckdns.org`) || Host(`*.rannet01.duckdns.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
         - web
