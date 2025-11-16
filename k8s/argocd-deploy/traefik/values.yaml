@@ -82,3 +82,6 @@ traefik:
       entryPoints:
         - websecure
         - web
+      services:
+        - name: traefik
+          port: websecure
