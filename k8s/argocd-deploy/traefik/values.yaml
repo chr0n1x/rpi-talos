@@ -69,16 +69,10 @@ traefik:
 
   # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
-    enabled: false
+    enabled: enable
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
-      traefik:
-        port: 8080
-        protocol: HTTP
-        namespacePolicy:
-          from: All
-
       web:
         port: 80
         protocol: HTTP
@@ -88,7 +82,6 @@ traefik:
       websecure:
         port: 443
         protocol: HTTPS
-        hostname: "*.rannet01.duckdns.org"
         mode: Terminate
         # https://gateway-api.sigs.k8s.io/reference/spec/#secretobjectreference
         certificateRefs:
