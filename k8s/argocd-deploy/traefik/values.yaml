@@ -98,3 +98,12 @@ traefik:
       entryPoints:
         - websecure
         - web
+      tls:
+        certResolver: duckdns-letsencrypt-prod
+        domains:
+          - main: "rannet.duckdns.org"
+            sans:
+              - traefik.rannet.duckdns.org
+          - main: "rannet01.duckdns.org"
+            sans:
+              - traefik.rannet01.duckdns.org
