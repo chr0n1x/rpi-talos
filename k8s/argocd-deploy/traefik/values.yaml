@@ -69,7 +69,7 @@ traefik:
 
   # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
-    enabled: enable
+    enabled: true
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
