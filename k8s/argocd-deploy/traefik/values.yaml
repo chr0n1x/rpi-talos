@@ -43,9 +43,6 @@ traefik:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
       tls:
         secretName: traefik-dashboard-cert
-        hosts:
-          - traefik.rannet.duckdns.org
-          - traefik.rannet01.duckdns.org
       enabled: true
       matchRule: (Host(`localhost`) || HostRegexp(`.+\.rannet\.duckdns\.org`) || HostRegexp(`.+\.rannet01\.duckdns\.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
