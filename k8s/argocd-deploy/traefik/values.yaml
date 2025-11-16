@@ -1,4 +1,6 @@
 traefik:
+  api:
+    dashboard: true
   providers:
     kubernetesGateway:
       enabled: true
