@@ -40,19 +40,19 @@ traefik:
     kubernetesGateway:
       enabled: true
 
+  # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
-      # web:
-      #   namespacePolicy:
-      #     from: All
       websecure:
         port: 443
         protocol: HTTPS
+        # https://gateway-api.sigs.k8s.io/reference/spec/#secretobjectreference
         certificateRefs:
-          - traefik-dashboard-cert
+          - name: traefik-dashboard-cert
+            type: Secret
         namespacePolicy:
           from: All
 
