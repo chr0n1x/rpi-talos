@@ -17,7 +17,6 @@ traefik:
     type: ClusterIP
     externalIPs:
       - 192.168.86.60
-      - 192.168.86.33
 
   ports:
     # k port-forward -n traefik pods/traefik-whatever 8080:8000
