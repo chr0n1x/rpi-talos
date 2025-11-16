@@ -3,6 +3,13 @@ traefik:
     kubernetesGateway:
       enabled: true
 
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      add:
+        - NET_BIND_SERVICE
+    readOnlyRootFilesystem: true
+
   hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
