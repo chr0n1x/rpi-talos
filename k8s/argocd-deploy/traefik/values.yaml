@@ -30,6 +30,10 @@ traefik:
     replicas: 1
   updateStrategy:
     type: Replace
+  autoscaling:
+    enabled:
+    minReplicas: 1
+    maxReplicas: 1
 
   ports:
     traefik:
