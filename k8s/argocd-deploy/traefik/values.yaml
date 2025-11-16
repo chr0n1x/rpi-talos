@@ -48,6 +48,9 @@ traefik:
       web:
         namespacePolicy:
           from: All
+      websecure:
+        namespacePolicy:
+          from: All
 
   # TODO: hook into authentik
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
