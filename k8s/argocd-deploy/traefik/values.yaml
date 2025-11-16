@@ -45,9 +45,9 @@ traefik:
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
-      web:
-        namespacePolicy:
-          from: All
+      # web:
+      #   namespacePolicy:
+      #     from: All
       websecure:
         port: 443
         protocol: tcp
