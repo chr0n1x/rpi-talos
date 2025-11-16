@@ -102,10 +102,10 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
-      matchRule: (Host(`192.168.86.60`) || Host(`traefik.rannet01.duckdns.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      # matchRule: (Host(`192.168.86.60`) || Host(`traefik.rannet01.duckdns.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
         - websecure
         - web
-      services:
-        - name: traefik
-          port: 443
+      # services:
+      #   - name: traefik
+      #     port: 443
