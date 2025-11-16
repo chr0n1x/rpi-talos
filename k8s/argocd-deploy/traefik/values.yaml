@@ -10,6 +10,9 @@ traefik:
     kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
 
+  service:
+    type: NodePort
+
   securityContext:
     capabilities:
       add:
