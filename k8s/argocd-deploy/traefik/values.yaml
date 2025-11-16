@@ -55,9 +55,11 @@ traefik:
         port: 443
         protocol: HTTPS
         # https://gateway-api.sigs.k8s.io/reference/spec/#secretobjectreference
+        mode: Terminate
         certificateRefs:
           - name: traefik-dashboard-cert
             type: Secret
+            group: ''
         namespacePolicy:
           from: All
 
