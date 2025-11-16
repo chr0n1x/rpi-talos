@@ -7,7 +7,7 @@ traefik:
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
-    kubernetes.io/hostname: px-talos-worker-gpu-101
+    kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
 
   deployment:
