@@ -58,7 +58,6 @@ traefik:
         mode: Terminate
         certificateRefs:
           - name: traefik-dashboard-cert
-            type: Secret
             group: ''
         namespacePolicy:
           from: All
