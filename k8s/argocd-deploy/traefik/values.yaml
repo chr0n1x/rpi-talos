@@ -1,4 +1,8 @@
 traefik:
+  providers:
+    kubernetesGateway:
+      enabled: true
+
   hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
@@ -18,6 +22,10 @@ traefik:
     traefik:
       expose:
         default: false
+    web:
+      port: 8000
+      expose:
+        default: true
     websecure:
       port: 443
       hostPort: 443
@@ -31,14 +39,6 @@ traefik:
           - main: "rannet01.duckdns.org"
             sans:
               - traefik.rannet01.duckdns.org
-          # - "*.rannet.duckdns.org"
-          # - "*.rannet01.duckdns.org"
-
-  providers:
-    kubernetesCRD:
-      ingressClass: "traefik"
-    kubernetesGateway:
-      enabled: true
 
   # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
@@ -46,6 +46,9 @@ traefik:
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
+      web:
+        port: 8000
+        protocol: HTTP
       websecure:
         port: 443
         protocol: HTTPS
@@ -60,10 +63,6 @@ traefik:
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
   ingressRoute:
     dashboard:
-      # annotations:
-      #   cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      # tls:
-      #   secretName: traefik-dashboard-cert
       enabled: true
       matchRule: (Host(`localhost`) || HostRegexp(`.+\.rannet\.duckdns\.org`) || HostRegexp(`.+\.rannet01\.duckdns\.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
