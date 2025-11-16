@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: traefik-dashboard-cert
   dnsNames:
-    - "traefik.rannet.duckdns.org"
+    - "rannet01.duckdns.org"
     - "traefik.rannet01.duckdns.org"
   issuerRef:
     kind: ClusterIssuer
