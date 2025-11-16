@@ -80,4 +80,5 @@ traefik:
       enabled: true
       matchRule: (Host(`localhost`) || HostRegexp(`.+\.rannet\.duckdns\.org`) || HostRegexp(`.+\.rannet01\.duckdns\.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
+        - websecure
         - web
