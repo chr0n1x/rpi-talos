@@ -19,7 +19,7 @@ traefik:
       expose:
         default: false
     websecure:
-      port: websecure
+      port: 443
       hostPort: 443
       containerPort: 8443
       tls:
@@ -49,7 +49,7 @@ traefik:
         namespacePolicy:
           from: All
       websecure:
-        port: 443
+        port: websecure
         namespacePolicy:
           from: All
 
