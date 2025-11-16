@@ -7,9 +7,16 @@ traefik:
 
   certificatesResolvers:
     duckdns-letsencrypt-prod:
-      email: "heilong24@gmail.com"
-      entryPoint: "websecure"
-      storage: "acme.json"
+      acme:
+        email: "heilong24@gmail.com"
+        caServer: https://acme-v02.api.letsencrypt.org/directory
+        dnsChallenge:
+          provider: duckdns
+        storage: /data/acme.json
+    # duckdns-letsencrypt-prod:
+    #   email: "heilong24@gmail.com"
+    #   entryPoint: "websecure"
+    #   storage: "acme.json"
 
   # DEADGE
   hostNetwork: true
