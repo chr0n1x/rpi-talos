@@ -21,6 +21,11 @@ traefik:
     replicas: 1
 
   ports:
+    traefik:
+      port: 8080
+      containerPort: 8080
+      protocol: TCP
+
     web:
       port: 80
       containerPort: 8000
@@ -45,6 +50,12 @@ traefik:
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
+      traefik:
+        port: 8080
+        protocol: HTTP
+        namespacePolicy:
+          from: All
+
       web:
         port: 80
         protocol: HTTP
