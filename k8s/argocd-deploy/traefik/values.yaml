@@ -5,6 +5,8 @@ traefik:
     kubernetesGateway:
       enabled: true
 
+  certificatesResolvers: {}
+
   # DEADGE
   hostNetwork: true
   progressDeadlineSeconds: 360
@@ -58,7 +60,7 @@ traefik:
       port: 443
       containerPort: 8443
       tls:
-        certResolver: duckdns-letsencrypt-prod
+        # certResolver: duckdns-letsencrypt-prod
         domains:
           - main: "rannet.duckdns.org"
             sans:
