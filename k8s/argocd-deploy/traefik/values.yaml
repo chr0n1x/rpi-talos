@@ -104,4 +104,4 @@ traefik:
         - web
       services:
         - name: traefik
-          port: websecure
+          port: 443
