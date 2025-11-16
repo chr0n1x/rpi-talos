@@ -25,8 +25,12 @@ traefik:
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
-          - "rannet.duckdns.org"
-          - "rannet01.duckdns.org"
+          - main: "rannet.duckdns.org"
+            sans:
+              - traefik.rannet.duckdns.org
+          - main: "rannet01.duckdns.org"
+            sans:
+              - traefik.rannet01.duckdns.org
           # - "*.rannet.duckdns.org"
           # - "*.rannet01.duckdns.org"
 
