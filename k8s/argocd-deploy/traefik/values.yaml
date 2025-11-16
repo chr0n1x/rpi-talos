@@ -21,6 +21,7 @@ traefik:
         default: true
     websecure:
       hostPort: 443
+      containerPort: 8000
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
@@ -48,10 +49,10 @@ traefik:
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#publish-and-protect-traefik-dashboard-with-basic-auth
   ingressRoute:
     dashboard:
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      tls:
-        secretName: traefik-dashboard-cert
+      # annotations:
+      #   cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+      # tls:
+      #   secretName: traefik-dashboard-cert
       enabled: true
       matchRule: (Host(`localhost`) || HostRegexp(`.+\.rannet\.duckdns\.org`) || HostRegexp(`.+\.rannet01\.duckdns\.org`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
