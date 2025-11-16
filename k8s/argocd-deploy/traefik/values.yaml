@@ -19,17 +19,10 @@ traefik:
   ports:
     # k port-forward -n traefik pods/traefik-whatever 8080:8000
     # http://localhost:8080/dashboard/
-    traefik:
-      expose:
-        default: false
-    web:
-      port: 8000
-      expose:
-        default: true
     websecure:
-      port: 443
+      port: 8443
       hostPort: 443
-      containerPort: 443
+      containerPort: 8443
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
@@ -46,9 +39,6 @@ traefik:
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
-      web:
-        port: 8000
-        protocol: HTTP
       websecure:
         port: 443
         protocol: HTTPS
