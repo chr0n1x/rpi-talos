@@ -49,6 +49,7 @@ traefik:
         namespacePolicy:
           from: All
       websecure:
+        port: 443
         namespacePolicy:
           from: All
 
