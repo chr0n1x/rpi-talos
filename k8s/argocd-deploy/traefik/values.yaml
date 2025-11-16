@@ -101,7 +101,7 @@ traefik:
         - websecure
         - web
       tls:
-        certResolver: duckdns-letsencrypt-prod
+        secretName: traefik-dashboard-cert
         domains:
           - main: "rannet.duckdns.org"
             sans:
