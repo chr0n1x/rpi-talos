@@ -3,7 +3,7 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  # hostNetwork: true
+  hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
@@ -21,7 +21,7 @@ traefik:
     # http://localhost:8080/dashboard/
     websecure:
       port: 443
-      containerPort: 443
+      containerPort: 8443
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
