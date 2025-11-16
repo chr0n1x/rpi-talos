@@ -58,7 +58,7 @@ traefik:
       port: 443
       containerPort: 8443
       tls:
-        certResolver: traefik-dashboard-cert
+        certResolver: duckdns-letsencrypt-prod
         domains:
           - main: "rannet.duckdns.org"
             sans:
@@ -101,7 +101,7 @@ traefik:
         - websecure
         - web
       tls:
-        certResolver: traefik-dashboard-cert
+        certResolver: duckdns-letsencrypt-prod
         domains:
           - main: "rannet.duckdns.org"
             sans:
