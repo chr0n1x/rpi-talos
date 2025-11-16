@@ -50,7 +50,7 @@ traefik:
       #     from: All
       websecure:
         port: 443
-        protocol: tcp
+        protocol: HTTPS
         namespacePolicy:
           from: All
 
