@@ -19,7 +19,7 @@ traefik:
       expose:
         default: false
     websecure:
-      port: 8443
+      port: websecure
       hostPort: 443
       containerPort: 8443
       tls:
