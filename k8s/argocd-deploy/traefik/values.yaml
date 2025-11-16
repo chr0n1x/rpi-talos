@@ -1,6 +1,3 @@
-# k port-forward -n traefik pods/traefik-whatever 8080:8000
-# http://localhost:8080/dashboard/
-
 traefik:
   hostNetwork: true
   progressDeadlineSeconds: 360
@@ -16,12 +13,15 @@ traefik:
     type: ClusterIP
 
   ports:
+    # k port-forward -n traefik pods/traefik-whatever 8080:8000
+    # http://localhost:8080/dashboard/
     traefik:
       expose:
-        default: true
+        default: false
     websecure:
-      # hostPort: 443
-      # containerPort: 443
+      port: 8443
+      hostPort: 443
+      containerPort: 8443
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
