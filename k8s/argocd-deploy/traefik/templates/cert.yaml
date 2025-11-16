@@ -10,5 +10,5 @@ spec:
     - "traefik.rannet.duckdns.org"
     - "traefik.rannet01.duckdns.org"
   issuerRef:
-    kind: Issuer
+    kind: ClusterIssuer
     name: duckdns-letsencrypt-prod
