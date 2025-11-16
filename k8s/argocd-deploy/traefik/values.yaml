@@ -39,7 +39,11 @@ traefik:
       port: 80
       containerPort: 8000
       protocol: TCP
-      redirectTo: websecure
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
 
     websecure:
       port: 443
