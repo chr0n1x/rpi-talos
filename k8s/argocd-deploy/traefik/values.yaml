@@ -58,7 +58,7 @@ traefik:
       port: 443
       containerPort: 8443
       tls:
-        certResolver: duckdns-letsencrypt-prod
+        certResolver: traefik-dashboard-cert
         domains:
           - main: "rannet.duckdns.org"
             sans:
@@ -95,11 +95,13 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
       entryPoints:
         - websecure
         - web
       tls:
-        certResolver: duckdns-letsencrypt-prod
+        certResolver: traefik-dashboard-cert
         domains:
           - main: "rannet.duckdns.org"
             sans:
