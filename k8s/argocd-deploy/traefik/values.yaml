@@ -20,7 +20,7 @@ traefik:
         default: false
     websecure:
       port: 443
-      hostPort: 443
+      hostPort: 8443
       containerPort: 8443
       tls:
         certResolver: duckdns-letsencrypt-prod
