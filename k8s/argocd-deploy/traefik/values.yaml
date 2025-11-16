@@ -5,12 +5,14 @@ traefik:
     kubernetesGateway:
       enabled: true
 
+  hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
     kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
 
+  # here to get the damn thing to sync
   service:
     type: NodePort
 
@@ -56,7 +58,7 @@ traefik:
 
   # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
-    enabled: true
+    enabled: false
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
     listeners:
