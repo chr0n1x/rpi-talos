@@ -3,7 +3,7 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  podSecurityContext:
+  securityContext:
     allowPrivilegeEscalation: false
     capabilities:
       add:
