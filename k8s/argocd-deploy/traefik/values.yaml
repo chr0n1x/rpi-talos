@@ -5,7 +5,11 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  certificatesResolvers: {}
+  certificatesResolvers:
+    duckdns-letsencrypt-prod:
+      email: "heilong24@gmail.com"
+      entryPoint: "websecure"
+      storage: "acme.json"
 
   # DEADGE
   hostNetwork: true
