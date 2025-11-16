@@ -10,6 +10,10 @@ traefik:
     kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
 
+  securityContext:
+    runAsUser: 0
+  runAsUser: 0
+
   # k port-forward -n traefik pods/traefik-whatever 8080:8000
   # http://localhost:8080/dashboard/
   deployment:
