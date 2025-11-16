@@ -3,11 +3,9 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  securityContext:
+  podSecurityContext:
     allowPrivilegeEscalation: false
     capabilities:
-      drop:
-        - ALL
       add:
         - NET_BIND_SERVICE
     readOnlyRootFilesystem: true
