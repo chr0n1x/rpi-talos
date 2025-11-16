@@ -51,6 +51,8 @@ traefik:
       websecure:
         port: 443
         protocol: HTTPS
+        certificateRefs:
+          - traefik-dashboard-cert
         namespacePolicy:
           from: All
 
