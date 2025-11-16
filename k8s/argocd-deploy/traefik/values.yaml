@@ -3,14 +3,6 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  securityContext:
-    allowPrivilegeEscalation: true
-    capabilities:
-      add:
-        - NET_BIND_SERVICE
-      drop: []
-    readOnlyRootFilesystem: true
-
   hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
@@ -29,7 +21,7 @@ traefik:
     # http://localhost:8080/dashboard/
     websecure:
       port: 443
-      containerPort: 8443
+      containerPort: 443
       tls:
         certResolver: duckdns-letsencrypt-prod
         domains:
