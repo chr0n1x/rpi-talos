@@ -5,12 +5,23 @@ traefik:
     kubernetesGateway:
       enabled: true
 
+  # DEADGE
   hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
     kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
+  securityContext:
+    readOnlyRootFilesystem: true
+    runAsGroup: 0
+    runAsNonRoot: false
+    runAsUser: 0
+    capabilities:
+      add:
+        - "NET_BIND_SERVICE"
+      drop:
+        - "ALL"
 
   # here to get the damn thing to sync
   service:
