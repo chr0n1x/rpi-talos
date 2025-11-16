@@ -10,17 +10,21 @@ traefik:
     kubernetes.io/hostname: rpi-storage-cluster-01
   priorityClassName: system-node-critical
 
-  deployment:
-    replicas: 1
-
   service:
     type: ClusterIP
     externalIPs:
       - 192.168.86.60
 
+  # k port-forward -n traefik pods/traefik-whatever 8080:8000
+  # http://localhost:8080/dashboard/
+  deployment:
+    replicas: 1
+
   ports:
-    # k port-forward -n traefik pods/traefik-whatever 8080:8000
-    # http://localhost:8080/dashboard/
+    web:
+      port: 80
+      protocol: HTTP
+
     websecure:
       port: 443
       containerPort: 8443
