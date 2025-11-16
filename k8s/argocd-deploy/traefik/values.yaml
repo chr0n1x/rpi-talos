@@ -5,7 +5,6 @@ traefik:
     kubernetesGateway:
       enabled: true
 
-  hostNetwork: true
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
@@ -13,18 +12,9 @@ traefik:
   priorityClassName: system-node-critical
 
   service:
-    type: NodePort
-
-  securityContext:
-    readOnlyRootFilesystem: true
-    runAsGroup: 0
-    runAsNonRoot: false
-    runAsUser: 0
-    capabilities:
-      add:
-      - "NET_BIND_SERVICE"
-      drop:
-      - "ALL"
+    type: ClusterIP
+    externalIPs:
+      - 192.168.86.60
 
   # k port-forward -n traefik pods/traefik-whatever 8080:8000
   # http://localhost:8080/dashboard/
@@ -33,7 +23,7 @@ traefik:
   updateStrategy:
     type: Recreate
   autoscaling:
-    enabled:
+    enabled: true
     minReplicas: 1
     maxReplicas: 1
 
@@ -87,8 +77,9 @@ traefik:
       websecure:
         port: 443
         protocol: HTTPS
-        # https://gateway-api.sigs.k8s.io/reference/spec/#secretobjectreference
+        hostname: "*.rannet01.duckdns.org"
         mode: Terminate
+        # https://gateway-api.sigs.k8s.io/reference/spec/#secretobjectreference
         certificateRefs:
           - name: traefik-dashboard-cert
             group: ''
