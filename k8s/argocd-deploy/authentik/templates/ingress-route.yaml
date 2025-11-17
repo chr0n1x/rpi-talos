@@ -20,4 +20,6 @@ spec:
   tls:
     domains:
     - main: authentik.rannet.duckdns.org
+      sans:
+        - localhost
     secretName: authentik-cert
