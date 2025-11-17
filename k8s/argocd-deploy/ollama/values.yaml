@@ -97,22 +97,7 @@ open-webui:
       memory: 4Gi
 
   ingress:
-    class: nginx
-    enabled: true
-    host: open-webui.rannet.duckdns.org
-    tls: true
-    existingSecret: open-webui-tls
-    annotations:
-      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-      nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      nginx.ingress.kubernetes.io/auth-url: https://my-oauth2-proxy-url/oauth2/auth
-      nginx.ingress.kubernetes.io/auth-signin: https://my-oauth2-proxy-url/oauth2/start
-      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-      nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
+    enabled: false
 
   # TODO: figure out what to do with this one; using cnpg below
   persistence:
@@ -158,21 +143,7 @@ open-webui:
         memory: "30Gi"
 
     ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-        nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      hosts:
-        - host: ollama.rannet.duckdns.org
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: ollama-backend-tls-cert
-          hosts:
-            - ollama.rannet.duckdns.org
+      enabled: false
     runtimeClassName: nvidia
     ollama:
       # these for some reason stall the container; processes will literally hang
