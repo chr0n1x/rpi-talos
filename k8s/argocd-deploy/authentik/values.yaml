@@ -51,6 +51,8 @@ authentik:
     enabled: true
 
   server:
+    service:
+      externalTrafficPolicy: Local
     replicas: 2
     resources:
       requests:
