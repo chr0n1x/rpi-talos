@@ -3,7 +3,7 @@ traefik-ingress:
     - dns: kiwix.rannet.duckdns.org
       services:
         - kind: Service
-          name: kiwix
+          name: kiwix-svc
           port: http
 
 persistence:
