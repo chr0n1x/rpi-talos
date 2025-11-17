@@ -33,7 +33,7 @@ traefik:
   progressDeadlineSeconds: 360
   minReadySeconds: 30
   nodeSelector:
-    kubernetes.io/hostname: rpi-storage-cluster-01
+    kubernetes.io/hostname: nyx
   priorityClassName: system-node-critical
   securityContext:
     readOnlyRootFilesystem: true
