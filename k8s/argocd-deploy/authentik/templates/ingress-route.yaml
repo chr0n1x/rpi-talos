@@ -16,7 +16,7 @@ spec:
     services:
     - kind: Service
       name: authentik-app-server
-      port: https
+      port: http
   tls:
     domains:
     - main: authentik.rannet.duckdns.org
