@@ -1,3 +1,12 @@
+traefik-ingress:
+  dnsNames:
+    - dns: argocd.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: argo-cd-argocd-server
+          port: http
+
+
 argocdSecret:
   mount: in-cluster
   path: argocd/argocd-secret
