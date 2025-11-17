@@ -117,32 +117,7 @@ homepage:
         - list
 
 
+  # using traefik ingressroute
   ingress:
     main:
-      enabled: true
-      # labels:
-        # This label will enable discover of this deployment in Homepage
-        # gethomepage.dev/enabled: "true"
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-
-        gethomepage.dev/description: Dynamically Detected Homepage
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Cluster Management
-        gethomepage.dev/icon: homepage.png
-        gethomepage.dev/name: Homepage
-
-      ingressClassName: "nginx"
-      hosts:
-        - host: "rannet.duckdns.org"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - "rannet.duckdns.org"
-          secretName: homepage-cert
+      enabled: false
