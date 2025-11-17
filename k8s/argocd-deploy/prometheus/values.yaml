@@ -1,3 +1,11 @@
+traefik-ingress:
+  dnsNames:
+    - dns: prometheus.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: prometheus-server
+          port: http
+
 # NOTE: at some point I did a
 #
 #  kubectl label namespace monitoring pod-security.kubernetes.io/enforce=privileged
@@ -26,20 +34,4 @@ prometheus:
     persistentVolume:
       size: 64Gi
     ingress:
-      enabled: true
-      tls:
-        - hosts:
-            - prometheus.rannet.duckdns.org
-          secretName: prometheus-cert
-      hosts:
-        - prometheus.rannet.duckdns.org
-      ingressClassName: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-        nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-        nginx.ingress.kubernetes.io/ssl-passthrough: "false"
-        nginx.ingress.kubernetes.io/auth-url: https://oauth2.rannet.duckdns.org/oauth2/auth
-        nginx.ingress.kubernetes.io/auth-signin: https://oauth2.rannet.duckdns.org/oauth2/start
-        nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-        nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
+      enabled: false
