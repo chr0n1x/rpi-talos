@@ -109,7 +109,7 @@ argo-cd:
     ingress:
       enabled: true
       hostname: argocd.rannet.duckdns.org
-      ingressClassName: nginx
+      ingressClassName: traefik
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
       pathType: Prefix
