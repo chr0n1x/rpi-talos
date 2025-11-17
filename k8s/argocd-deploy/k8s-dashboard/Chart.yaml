@@ -8,3 +8,7 @@ dependencies:
   - name: kubernetes-dashboard
     version: ~7.11
     repository: https://kubernetes.github.io/dashboard/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
