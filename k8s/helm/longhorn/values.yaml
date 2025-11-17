@@ -1,3 +1,12 @@
+traefik-ingress:
+  dnsNames:
+    - dns: longhorn.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: longhorn-frontend
+          port: http
+
+
 # set in helmfile.yaml, required to create secret
 backupTarget:
   cifs:

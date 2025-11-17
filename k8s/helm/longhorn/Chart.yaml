@@ -19,3 +19,7 @@ dependencies:
   - name: longhorn
     version: ~1.8.1
     repository: https://charts.longhorn.io
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
