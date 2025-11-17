@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+  name: argocd-traefik-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+  - websecure
+  - web
+  routes:
+  - kind: Rule
+    match: Host(`argocd.rannet.duckdns.org`) && PathRegexp(`.*`)
+    services:
+    - kind: Service
+      name: argo-cd-argocd-server
+      port: 80
+  tls:
+    domains:
+    - main: argocd.rannet.duckdns.org
+    secretName: argocd-cert
