@@ -127,15 +127,11 @@ traefik:
       enabled: true
       annotations:
         cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+      matchRule: Host(`traefik.rannet.duckdns.org`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       entryPoints:
         - websecure
         - web
       tls:
         secretName: traefik-dashboard-cert
         domains:
-          - main: "rannet.duckdns.org"
-            sans:
-              - traefik.rannet.duckdns.org
-          - main: "rannet01.duckdns.org"
-            sans:
-              - traefik.rannet01.duckdns.org
+          - main: "traefik.rannet.duckdns.org"
