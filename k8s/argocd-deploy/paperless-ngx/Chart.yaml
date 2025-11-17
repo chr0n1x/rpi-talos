@@ -16,3 +16,7 @@ dependencies:
   - name: vault-auth
     version: ~1
     repository: file://../../helm/vault-auth
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

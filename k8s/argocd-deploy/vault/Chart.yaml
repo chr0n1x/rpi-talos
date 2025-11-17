@@ -11,3 +11,7 @@ dependencies:
   - name: vault
     version: ~0.31
     repository: https://helm.releases.hashicorp.com
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

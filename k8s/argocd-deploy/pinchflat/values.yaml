@@ -1,3 +1,11 @@
+traefik-ingress:
+  dnsNames:
+    - dns: pinchflat.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: pinchflat-svc
+          port: http
+
 pinchflat:
   namespace: pinchflat
 

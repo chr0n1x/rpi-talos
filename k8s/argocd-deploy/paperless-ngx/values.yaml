@@ -1,3 +1,11 @@
+traefik-ingress:
+  dnsNames:
+    - dns: paperless-ngx.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: paperless-ngx
+          port: http
+
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
   instances: 2

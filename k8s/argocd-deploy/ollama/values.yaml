@@ -1,3 +1,11 @@
+traefik-ingress:
+  dnsNames:
+    - dns: open-webui.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: open-webui
+          port: http
+
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
   instances: 2

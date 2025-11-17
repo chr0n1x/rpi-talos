@@ -1,3 +1,11 @@
+traefik-ingress:
+  dnsNames:
+    - dns: kiwix.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: kiwix
+          port: http
+
 persistence:
   # auto-created via SMB
   volumeName: pvc-1780b073-7e94-40f9-b005-db27fbe6d912

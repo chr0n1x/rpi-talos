@@ -8,3 +8,7 @@ dependencies:
   - name: pinchflat
     repository: https://chr0n1x.github.io/pinchflat-helm-chart
     version: ~0.2
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

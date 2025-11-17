@@ -3,3 +3,8 @@ name: kiwix
 version: 1.0.0
 description: kiwix server w/ SMB integration
 type: application
+
+dependencies:
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

@@ -1,5 +1,15 @@
+traefik-ingress:
+  dnsNames:
+    - dns: vault.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: vault
+          port: http
+
+
 global:
   enabled: true
+
   # monkastare
   tlsDisable: true
   resources:
@@ -22,19 +32,7 @@ vault:
       enabled: false
       # replicas: 3
     ingress:
-      enabled: true
-      ingressClassName: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-        nginx.ingress.kubernetes.io/proxy-body-size: 8m
-        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      hosts:
-        - host: vault.rannet.duckdns.org
-      tls:
-        - hosts:
-            - vault.rannet.duckdns.org
-          secretName: vault-tls
+      enabled: false
 
   # resources:
   #   requests:

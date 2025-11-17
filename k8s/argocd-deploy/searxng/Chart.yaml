@@ -8,3 +8,7 @@ dependencies:
   - name: searxng
     version: ~1
     repository: https://chr0n1x.github.io/searxng-helm-chart
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

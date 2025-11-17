@@ -1,3 +1,12 @@
+traefik-ingress:
+  dnsNames:
+    - dns: searxng.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: searxng
+          port: http
+
+
 searxng:
   namespace: searxng
 
