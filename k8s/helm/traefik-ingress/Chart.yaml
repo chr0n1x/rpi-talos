@@ -1,0 +1,6 @@
+---
+apiVersion: 1.0.0
+name: traefik-ingress
+version: 1.0.0
+description: stupid chart that bundles a cert w/ an ingres-route
+type: application

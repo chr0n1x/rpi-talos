@@ -1,0 +1,39 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    {{- with .issuerRef }}
+    cert-manager.io/cluster-issuer: {{ .name | default "duckdns-letsencrypt-prod" }}
+    {{- end }}
+  name: {{ .Release.Name }}-traefik-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  # TODO: match these up w/ the traefik installation somehow
+  entryPoints:
+  - websecure
+  - web
+  routes:
+  {{- range $cfg := .Values.dnsNames }}
+  - kind: Rule
+    match: Host(`{{ $cfg.dns }}`) && PathRegexp(`.*`)
+    services:
+    {{- with $cfg.services }}
+{{ toYaml . | indent 4 }}
+    {{- end }}
+  {{- end }}
+
+  # TODO: make this block optional
+  tls:
+    secretName: {{ .Release.Name }}-cert
+    domains:
+    {{- range $cfg := .Values.dnsNames }}
+    - main: {{ $cfg.dns }}
+      {{- if .sans }}
+      sans:
+
+      {{- with .sans }}
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- end }}
+    {{- end }}
