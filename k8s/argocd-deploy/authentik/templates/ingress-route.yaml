@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
+  name: authentik-traefik-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+  - websecure
+  - web
+  routes:
+  - kind: Rule
+    match: Host(`authentik.rannet.duckdns.org`) && PathRegexp(`.*`)
+    services:
+    - kind: Service
+      name: authentik-app-server
+      port: https
+  tls:
+    domains:
+    - main: authentik.rannet.duckdns.org
+    secretName: authentik-cert

@@ -1,0 +1,15 @@
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: authentik-cert-manager-ref
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: authentik-cert
+  dnsNames:
+    - "authentik.rannet.duckdns.org"
+  issuerRef:
+    kind: ClusterIssuer
+    name: duckdns-letsencrypt-prod
+
