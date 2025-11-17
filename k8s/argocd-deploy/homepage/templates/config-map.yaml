@@ -261,7 +261,7 @@ data:
         - abbr: OM
           href: https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/
           icon: https://www.cloudflare.com/favicon.ico
-      - Logout:
-        - abbr: LO
-          href: https://oauth2.rannet.duckdns.org/oauth2/sign_out
-          icon: https://oauth2-proxy.github.io/oauth2-proxy/img/logos/OAuth2_Proxy_icon.svg
+      # - Logout:
+      #   - abbr: LO
+      #     href: https://oauth2.rannet.duckdns.org/oauth2/sign_out
+      #     icon: https://oauth2-proxy.github.io/oauth2-proxy/img/logos/OAuth2_Proxy_icon.svg
