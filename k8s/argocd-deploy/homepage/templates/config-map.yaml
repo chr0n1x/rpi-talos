@@ -193,6 +193,12 @@ data:
             description: Nginx Proxy Manager Admin Panel
             href: "https://admin.rannet-edge.duckdns.org/"
             ping: "https://admin.rannet-edge.duckdns.org/"
+        - Traefik:
+            icon: 'https://raw.githubusercontent.com/traefik/traefik/refs/heads/master/docs/content/assets/img/traefik.logo.png'
+            href: "https://traefik.rannet.duckdns.org/dashboard/"
+            widget:
+              type: traefik
+              url: "https://traefik.rannet.duckdns.org"
         - Twingate:
             description: Zero-Trust Network
             href: "https://auth.twingate.com/"
