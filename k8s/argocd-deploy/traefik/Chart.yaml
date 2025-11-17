@@ -8,3 +8,7 @@ dependencies:
   - name: traefik
     version: ~37
     repository: https://traefik.github.io/charts
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

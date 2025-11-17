@@ -1,3 +1,17 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: traefik-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: traefik
+        serviceAccount: traefik
+        audiences:
+          - vault
+
 traefik:
   api:
     dashboard: true
@@ -6,17 +20,13 @@ traefik:
       enabled: true
 
   certificatesResolvers:
-    duckdns-letsencrypt-prod:
+    duckdns-letsencrypt:
       acme:
         email: "heilong24@gmail.com"
-        caServer: https://acme-v02.api.letsencrypt.org/directory
+        storage: /data/acme.json
         dnsChallenge:
           provider: duckdns
-        storage: /data/acme.json
-    # duckdns-letsencrypt-prod:
-    #   email: "heilong24@gmail.com"
-    #   entryPoint: "websecure"
-    #   storage: "acme.json"
+          delayBeforeCheck: 120
 
   # DEADGE
   hostNetwork: true
@@ -50,6 +60,13 @@ traefik:
     enabled: true
     minReplicas: 1
     maxReplicas: 1
+  env:
+    - name: DUCKDNS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: env-secrets
+          key: DUCKDNS_TOKEN
+
 
   ports:
     traefik:
@@ -71,7 +88,7 @@ traefik:
       port: 443
       containerPort: 8443
       tls:
-        # certResolver: duckdns-letsencrypt-prod
+        certResolver: duckdns-letsencrypt
         domains:
           - main: "rannet.duckdns.org"
             sans:
