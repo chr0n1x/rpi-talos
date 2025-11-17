@@ -158,7 +158,7 @@ data:
             description: Prometheus Dashboard
             href: "https://prometheus.rannet.duckdns.org"
 
-      - "Network/Hardware Management":
+      - "Network/Hardware":
         - DuckDNS:
             icon: 'https://www.duckdns.org/img/ducky_icon_small.png'
             description: Free domain provider; Sign in via GitHub.
