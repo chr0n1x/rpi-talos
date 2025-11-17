@@ -53,6 +53,7 @@ authentik:
   server:
     service:
       externalTrafficPolicy: Local
+      type: NodePort
     replicas: 2
     resources:
       requests:
