@@ -33,19 +33,4 @@ pinchflat:
       existingVolumeName: pvc-42119381-2dda-4b70-8039-a3e8517a9595
 
   ingress:
-    enabled: true
-    class: nginx
-    host: pinchflat.rannet.duckdns.org
-    tls:
-      - hosts:
-          - pinchflat.rannet.duckdns.org
-        secretName: pinchflat-cert
-    annotations:
-      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/auth-url: https://oauth2.rannet.duckdns.org/oauth2/auth
-      nginx.ingress.kubernetes.io/auth-signin: https://oauth2.rannet.duckdns.org/oauth2/start
-      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-      nginx.ingress.kubernetes.io/auth-request-redirect: "https://$host:$server_port$request_uri$args"
+    enabled: false
