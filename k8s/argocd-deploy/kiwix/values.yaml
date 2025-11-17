@@ -1,6 +1,6 @@
 traefik-ingress:
   dnsNames:
-    - dns: kiwix.rannet.duckdns.org
+    - dns: wiki.rannet.duckdns.org
       services:
         - kind: Service
           name: kiwix-svc
