@@ -10,8 +10,6 @@ spec:
     {{- range $cfg := .Values.dnsNames }}
     - {{ $cfg.dns }}
     {{- end }}
-  {{- with .issuerRef }}
   issuerRef:
-    kind: {{ .kind | default "ClusterIssuer" }}
-    name: {{ .name | default "duckdns-letsencrypt-prod" }}
-  {{- end }}
+    kind: {{ (.Values.issuerRef).kind | default "ClusterIssuer" }}
+    name: {{ (.Values.issuerRef).name | default "duckdns-letsencrypt-prod" }}

@@ -1,3 +1,12 @@
+traefik-ingress:
+  dnsNames:
+    - dns: immich.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: immich-server
+          port: http
+
+
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
   instances: 2
@@ -78,20 +87,7 @@ immich:
       - name: REDIS_HOSTNAME
         value: immich-valkey
 
+    # traefik
     ingress:
       main:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-          nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        hosts:
-          - host: immich.rannet.duckdns.org
-            paths:
-              - path: "/"
-        tls:
-          - hosts:
-            - immich.rannet.duckdns.org
-            secretName: immich-cert
+        enabled: false

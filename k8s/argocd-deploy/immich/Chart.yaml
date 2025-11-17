@@ -12,3 +12,7 @@ dependencies:
   - name: valkey
     version: ~0.7
     repository: https://valkey.io/valkey-helm/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
