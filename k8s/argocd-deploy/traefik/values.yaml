@@ -69,6 +69,7 @@ traefik:
 
 
   ports:
+    metrics: {} # oooo I hate this chart so much
     traefik:
       port: 8080
       containerPort: 8080
