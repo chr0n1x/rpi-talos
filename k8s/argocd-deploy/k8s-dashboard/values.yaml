@@ -4,7 +4,7 @@ traefik-ingress:
       services:
         - kind: Service
           name: k8s-dashboard-kong-proxy
-          port: kong-proxy-tls
+          port: kong-proxy-http
 
 
 kubernetes-dashboard:
@@ -16,6 +16,12 @@ kubernetes-dashboard:
           memory: 1Gi
         limits:
           memory: 2Gi
+
+  # I aint dealin with SANS...yet
+  kong:
+    proxy:
+      http:
+        enabled: true
 
   # opens an ingress to the same service that the demo/setup docs for the
   # dashboard proxies to:
@@ -34,8 +40,6 @@ kubernetes-dashboard:
 
   app:
     mode: dashboard
-    tls:
-      secretName: k8s-dashboard-cert
     # traefik
     ingress:
       enabled: false
