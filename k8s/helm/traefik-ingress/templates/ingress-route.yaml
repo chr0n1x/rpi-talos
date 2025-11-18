@@ -16,7 +16,14 @@ spec:
   routes:
   {{- range $cfg := .Values.dnsNames }}
   - kind: Rule
+    {{- with $cfg.priority }}
+    priority: {{ . }}
+    {{- end }}
+    {{- if $cfg.path }}
+    match: Host(`{{ $cfg.dns }}`) && {{ $cfg.path }}
+    {{- else }}
     match: Host(`{{ $cfg.dns }}`) && PathRegexp(`.*`)
+    {{- end }}
     services:
     {{- with $cfg.services }}
 {{ toYaml . | indent 4 }}
