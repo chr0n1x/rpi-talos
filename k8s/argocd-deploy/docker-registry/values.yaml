@@ -8,7 +8,7 @@ traefik-ingress:
     # nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     - dns: docker.rannet.duckdns.org
       priority: 10
-      path: "PathRegexp(`/v2/.*`)"
+      path: "PathPrefix(`/v2`)"
       services:
         - kind: Service
           name: docker-registry-docker-registry-ui-registry-server
@@ -16,6 +16,7 @@ traefik-ingress:
 
     - dns: docker.rannet.duckdns.org
       priority: 20
+      hostnameOnly: true
       services:
         - kind: Service
           name: docker-registry-docker-registry-ui-user-interface
