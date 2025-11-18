@@ -4,7 +4,7 @@ traefik-ingress:
       services:
         - kind: Service
           name: k8s-dashboard-kong-proxy
-          port: kong-proxy-http
+          port: kong-proxy
 
 
 kubernetes-dashboard:
