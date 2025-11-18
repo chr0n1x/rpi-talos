@@ -54,6 +54,9 @@ traefik:
   # http://localhost:8080/dashboard/
   deployment:
     replicas: 1
+  # I fking hate this chart
+  annotations:
+    prometheus.io/port: ''
   updateStrategy:
     type: Recreate
   autoscaling:
