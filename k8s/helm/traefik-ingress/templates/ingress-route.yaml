@@ -22,7 +22,11 @@ spec:
     {{- if $cfg.path }}
     match: Host(`{{ $cfg.dns }}`) && {{ $cfg.path }}
     {{- else }}
+      {{- if $cfg.hostnameOnly }}
+    match: Host(`{{ $cfg.dns }}`)
+      {{- else }}
     match: Host(`{{ $cfg.dns }}`) && PathRegexp(`.*`)
+      {{- end }}
     {{- end }}
     services:
     {{- with $cfg.services }}
