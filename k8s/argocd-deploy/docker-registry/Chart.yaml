@@ -22,3 +22,7 @@ dependencies:
   - name: docker-registry-ui
     version: ~1.1
     repository: https://helm.joxit.dev
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
