@@ -1,4 +1,12 @@
-chart-museu:
+traefik-ingress:
+  dnsNames:
+    - dns: chart-museum.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: chart-museum-chartmuseum
+          port: http
+
+chartmuseum:
   replicaCount: 1
   strategy:
     type: RollingUpdate
