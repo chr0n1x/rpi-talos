@@ -72,6 +72,11 @@ traefik:
           name: env-secrets
           key: DUCKDNS_TOKEN
 
+  metrics:
+    enabled: false
+    prometheus:
+      entryPoint:
+        port: null
 
   ports:
     metrics: null # oooo I hate this chart so much
