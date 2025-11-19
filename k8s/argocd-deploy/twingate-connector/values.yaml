@@ -1,0 +1,18 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: twingate-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: twingate
+        serviceAccount: twingate
+        audiences:
+          - vault
+
+connector:
+  image:
+    tag: 1
+  existingSecret: env-secrets

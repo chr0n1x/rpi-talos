@@ -91,16 +91,3 @@ releases:
         args:
           - -c
           - ./scripts/argocd-complete.sh
-
-  - name: twingate
-    namespace: twingate
-    chart: ./helm/twingate
-    values:
-      - helmfile/twingate.gotmpl
-    hooks:
-      - events:
-          - prepare
-        command: bash
-        args:
-          - -c
-          - 'rm helm/twingate/Chart.lock || :'
