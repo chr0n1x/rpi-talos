@@ -36,41 +36,6 @@ releases:
           - -c
           - 'rm helm/cert-manager-duckdns/Chart.lock || :'
 
-  # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    chart: ./helm/ingress-nginx
-    createNamespace: true
-    # post validation hooks can sometimes be slow
-    # use script below to validate
-    disableValidationOnInstall: true
-    hooks:
-      - events:
-          - prepare
-        command: bash
-        args:
-          - ./scripts/ingress-nginx-prep.sh
-      - events:
-          - cleanup
-        command: bash
-        args:
-          - ./scripts/ingress-nginx-wait.sh
-
-  - name: oauth2-proxy
-    namespace: oauth2-proxy
-    chart: ./helm/oauth2-proxy
-    createNamespace: true
-    disableValidationOnInstall: true
-    values:
-      - helmfile/oauth2-proxy.gotmpl
-    hooks:
-      - events:
-          - prepare
-        command: bash
-        args:
-          - -c
-          - 'rm helm/oauth2-proxy/Chart.lock || :'
-
   - name: smb-csi
     namespace: kube-system
     chart: ./helm/smb-csi
@@ -106,6 +71,8 @@ releases:
         args:
           - ./scripts/longhorn-prepare.sh
 
+  # INITIAL SEED INSTALL - self manages after this point
+  # assuming that vault is installed and configured properly
   - name: argocd
     namespace: argocd
     chart: ./helm/argocd

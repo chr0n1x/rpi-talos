@@ -11,14 +11,6 @@ longhorn:
     ingressClassName: nginx
     annotations:
       cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/auth-url: https://oauth2.rannet.duckdns.org/oauth2/auth
-      nginx.ingress.kubernetes.io/auth-signin: https://oauth2.rannet.duckdns.org/oauth2/start
-      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Groups
-      nginx.ingress.kubernetes.io/auth-request-redirect: $scheme://$host:$server_port$request_uri$is_args$args
-
 backupTarget:
   cifs:
     enabled: true
