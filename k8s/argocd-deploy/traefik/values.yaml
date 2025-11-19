@@ -54,11 +54,6 @@ traefik:
   # http://localhost:8080/dashboard/
   deployment:
     replicas: 1
-  # I fking hate this chart
-  # annotations:
-  #   prometheus.io/port: ''
-  # podAnnotations:
-  #   prometheus.io/port: false
   updateStrategy:
     type: Recreate
   autoscaling:
@@ -75,12 +70,11 @@ traefik:
   # oooo I hate this chart so much
   metrics:
     enabled: false
-    prometheus:
-      entryPoint: ''
 
   ports:
     # oooo I hate this chart so much
-    metrics: null
+    metrics:
+      port: 9001
 
     traefik:
       port: 8080
