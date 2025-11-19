@@ -8,7 +8,10 @@ traefik-ingress:
 
 docker-registry:
 
+  updateStrategy: Replace
+
   persistence:
+    accessMode: ReadWriteMany
     storageClass: longhorn
     enabled: true
     size: 16Gi
