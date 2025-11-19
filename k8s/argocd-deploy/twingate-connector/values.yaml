@@ -13,6 +13,7 @@ vault-auth:
           - vault
 
 connector:
-  image:
-    tag: 1
-  existingSecret: env-secrets
+  connector:
+    image:
+      tag: 1
+    existingSecret: env-secrets
