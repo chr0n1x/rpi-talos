@@ -80,8 +80,7 @@ traefik:
 
   ports:
     # oooo I hate this chart so much
-    metrics:
-      port: ''
+    metrics: {}
 
     traefik:
       port: 8080
