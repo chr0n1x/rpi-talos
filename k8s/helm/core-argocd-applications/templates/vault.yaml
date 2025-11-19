@@ -24,6 +24,7 @@ spec:
       # REEEEEEE
       # https://github.com/argoproj/argo-cd/issues/11143
     - kind: StatefulSet
+      group: apps
       jqPathExpressions:
         - .spec.volumeClaimTemplates[]
         - .spec.volumeClaimTemplates[].apiVersion
