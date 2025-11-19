@@ -19,6 +19,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
+
+  ignoreDifferences:
+    - kind: StatefulSet
+      jsonPointers:
+        # REEEEEEE
+        - /spec/volumeClaimTemplates
+
   syncPolicy:
     syncOptions:
       - ServerSideApply=true

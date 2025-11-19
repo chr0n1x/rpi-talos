@@ -56,9 +56,9 @@ traefik:
     replicas: 1
   # I fking hate this chart
   annotations:
-    prometheus.io/port: ''
+    prometheus.io/port: null
   podAnnotations:
-    prometheus.io/port: ''
+    prometheus.io/port: null
   updateStrategy:
     type: Recreate
   autoscaling:
