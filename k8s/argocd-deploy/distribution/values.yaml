@@ -3,12 +3,13 @@ traefik-ingress:
     - dns: registry.rannet.duckdns.org
       services:
         - kind: Service
-          name: harbor
-          port: http
+          name: distribution-docker-registry
+          port: http-5000
 
-distribution:
+docker-registry:
 
   persistence:
+    storageClass: longhorn
     enabled: true
     size: 16Gi
 
