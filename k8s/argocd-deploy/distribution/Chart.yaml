@@ -5,7 +5,7 @@ description: distribution; docker registry wrapper chart
 type: application
 
 dependencies:
-  - name: distribution
+  - name: docker-registry
     version: ~3
     repository: https://twuni.github.io/docker-registry.helm
 
