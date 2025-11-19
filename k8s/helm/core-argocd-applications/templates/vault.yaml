@@ -21,10 +21,13 @@ spec:
     namespace: vault
 
   ignoreDifferences:
+      # REEEEEEE
+      # https://github.com/argoproj/argo-cd/issues/11143
     - kind: StatefulSet
-      jsonPointers:
-        # REEEEEEE
-        - /spec/volumeClaimTemplates
+      jqPathExpressions:
+        - .spec.volumeClaimTemplates[].apiVersion
+        - .spec.volumeClaimTemplates[].kind
+        - .spec.volumeClaimTemplates[].metadata.creationTimestamp
 
   syncPolicy:
     syncOptions:
