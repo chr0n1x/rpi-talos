@@ -1,0 +1,130 @@
+chart-museu:
+  replicaCount: 1
+  strategy:
+    type: RollingUpdate
+  image:
+    repository: ghcr.io/helm/chartmuseum
+    tag: v0.16.3
+  env:
+    open:
+      # storage backend, can be one of: local, alibaba, amazon, google, microsoft, oracle
+      STORAGE: local
+      DEPTH: 0
+      DEBUG: false
+      LOG_JSON: false
+      DISABLE_STATEFILES: false
+      ENABLE_METRICS: false
+      DISABLE_API: false
+      # allow chart versions to be re-uploaded
+      ALLOW_OVERWRITE: true
+      AUTH_ANONYMOUS_GET: true
+      INDEX_LIMIT: 0
+      CACHE: redis
+      # address of Redis service (host:port)
+      CACHE_REDIS_ADDR: chart-museum-valkey:6379
+      CACHE_REDIS_DB: valkey
+      BEARER_AUTH: false
+    secret:
+    # existingSecret:
+    # existingSecretMappings:
+    #   # username for basic http authentication
+    #   BASIC_AUTH_USER:
+    #   # password for basic http authentication
+    #   BASIC_AUTH_PASS:
+    #   # GCP service account json file
+    #   GOOGLE_CREDENTIALS_JSON:
+    #   # Redis requirepass server configuration
+    #   CACHE_REDIS_PASSWORD:
+
+  deployment:
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  service:
+    type: ClusterIP
+    externalTrafficPolicy: Local
+    externalPort: 8080
+
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 100m
+  #    memory: 128Mi
+  #  requests:
+  #    cpu: 80m
+  #    memory: 64Mi
+
+  probes:
+    liveness:
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+    livenessHttpGetConfig:
+      scheme: HTTP
+    readiness:
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+    readinessHttpGetConfig:
+      scheme: HTTP
+
+  serviceAccount:
+    create: true
+    name: "chart-museum-svc-acc"
+    automountServiceAccountToken: true
+
+  securityContext:
+    enabled: true
+    fsGroup: 1000
+    # Optionally, specify supplementalGroups and/or
+    # runAsNonRoot for security purposes
+    runAsNonRoot: true
+    supplementalGroups: [1000]
+
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 4Gi
+    path: /storage
+    # A manually managed Persistent Volume and Claim
+    # Requires persistence.enabled: true
+    # If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+
+    storageClass: "longhorn"
+    # volumeName:
+    # pv:
+    #   enabled: false
+    #   pvname:
+    #   capacity:
+    #     storage: 8Gi
+    #   accessMode: ReadWriteOnce
+    #   nfs:
+    #     server:
+    #     path:
+
+  ## Init containers parameters:
+  ## volumePermissions: Change the owner of the persistent volume mountpoint to RunAsUser:fsGroup
+  ##
+  # volumePermissions:
+  #   image:
+  #     registry: docker.io
+  #     repository: bitnami/minideb
+  #     tag: buster
+  #     pullPolicy: Always
+      ## Optionally specify an array of imagePullSecrets.
+      ## Secrets must be manually created in the namespace.
+      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+      ##
+      # pullSecrets:
+      #   - myRegistryKeySecretName
+
+  ## Ingress for load balancer
+  ingress:
+    enabled: false
