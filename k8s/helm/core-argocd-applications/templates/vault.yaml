@@ -25,6 +25,7 @@ spec:
       # https://github.com/argoproj/argo-cd/issues/11143
     - kind: StatefulSet
       jqPathExpressions:
+        - .spec.volumeClaimTemplates[]
         - .spec.volumeClaimTemplates[].apiVersion
         - .spec.volumeClaimTemplates[].kind
         - .spec.volumeClaimTemplates[].metadata.creationTimestamp
