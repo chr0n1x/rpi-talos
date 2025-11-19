@@ -18,7 +18,7 @@ chartmuseum:
       # storage backend, can be one of: local, alibaba, amazon, google, microsoft, oracle
       STORAGE: local
       DEPTH: 0
-      DEBUG: false
+      DEBUG: true
       LOG_JSON: false
       DISABLE_STATEFILES: false
       ENABLE_METRICS: false
