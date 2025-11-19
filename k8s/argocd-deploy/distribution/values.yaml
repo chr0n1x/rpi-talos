@@ -1,0 +1,16 @@
+traefik-ingress:
+  dnsNames:
+    - dns: registry.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: harbor
+          port: http
+
+distribution:
+
+  persistence:
+    enabled: true
+    size: 16Gi
+
+  garbageCollect:
+    enabled: true

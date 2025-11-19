@@ -1,0 +1,14 @@
+apiVersion: 1.0.0
+name: distribution
+version: 1.0.0
+description: distribution; docker registry wrapper chart
+type: application
+
+dependencies:
+  - name: distribution
+    version: ~3
+    repository: https://twuni.github.io/docker-registry.helm
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
