@@ -16,4 +16,5 @@ connector:
   connector:
     image:
       tag: 1
+    network: rannet
     existingSecret: env-secrets
