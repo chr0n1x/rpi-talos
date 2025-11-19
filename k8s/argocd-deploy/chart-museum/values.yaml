@@ -30,7 +30,7 @@ chartmuseum:
       CACHE: redis
       # address of Redis service (host:port)
       CACHE_REDIS_ADDR: chart-museum-valkey:6379
-      CACHE_REDIS_DB: valkey
+      CACHE_REDIS_DB: ''
       BEARER_AUTH: false
     secret:
     # existingSecret:
