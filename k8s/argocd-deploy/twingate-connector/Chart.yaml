@@ -8,3 +8,7 @@ dependencies:
   - name: connector
     version: ~0.1
     repository: https://twingate.github.io/helm-charts
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
