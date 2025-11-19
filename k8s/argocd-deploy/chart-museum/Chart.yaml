@@ -5,9 +5,13 @@ description: chart-museum wrapper chart
 type: application
 
 dependencies:
-  - name: chart-museum
+  - name: chartmuseum
     version: ~3
     repository: https://chartmuseum.github.io/charts
+
+  - name: valkey
+    version: ~0.7
+    repository: https://valkey.io/valkey-helm/
 
   - name: traefik-ingress
     version: ~1
