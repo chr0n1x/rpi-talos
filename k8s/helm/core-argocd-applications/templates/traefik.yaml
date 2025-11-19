@@ -18,6 +18,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
+
+  ignoreDifferences:
+    - kind: Deployment
+      jsonPointers:
+        # REEEEEEE
+        - /spec/template/metadata/annotations/prometheus.io~1port
+
   syncPolicy:
     automated:
       selfHeal: true
