@@ -9,7 +9,7 @@ traefik-ingress:
 docker-registry:
 
   updateStrategy:
-    type: Replace
+    type: Recreate
 
   persistence:
     accessMode: ReadWriteMany
