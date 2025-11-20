@@ -27,8 +27,17 @@ docker-registry:
       value: none
 
   proxy:
-    # remoteurl: https://ghcr.io
+    # by default will use docker.io & lets us pull from docker.io and/or
+    # quay.io images. swap to remoteurl & secretRef below to pull from ghcr
+    # instead. AFTER pulling from GHCR and reverting BACK to docker.io/quay.io
+    # the images pulled from ghcr will still be available
+    #
+    # this is awkwardly cobbled together because distribution itself does not
+    # support multiple pull-throughs/proxies
+    #
+    # https://github.com/distribution/distribution/issues/3725
     enabled: true
+    # remoteurl: https://ghcr.io
     # secretRef: ghcr-creds
 
   updateStrategy:
