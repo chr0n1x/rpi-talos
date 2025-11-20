@@ -1,3 +1,18 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: distribution-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: distribution
+        serviceAccount: registries-svc-acc
+        audiences:
+          - vault
+
+
 traefik-ingress:
   dnsNames:
     - dns: registry.rannet.duckdns.org
@@ -14,6 +29,7 @@ docker-registry:
   proxy:
     remoteurl: ghcr.io
     enabled: true
+    secretRef: ghcr-creds
 
   updateStrategy:
     type: Recreate
