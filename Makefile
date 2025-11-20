@@ -223,8 +223,39 @@ install-kubeadm:
 	  run through doc above
 	kubeadm token create --print-join-command
 
-.ONESHELL := push-cm-charts
+# requires gum for pretty console logs
+# github.com/charmbracelet/gum
+#
+# helm
+# https://helm.sh/docs/intro/install/
+#
+# chartmuseum helm plugin
+# https://github.com/chartmuseum/helm-push
+#
+# e.g.:
+#
+#   helm repo add my.chartmuseum https://chart-museum.my.subdomain.duckdns.org
+#   CHART_DIR=k8s/helm CHART_MUSEUM_NAME=my.chartmuseum make push-cm-charts
+#   CHART_DIR=k8s/argocd-deploy CHART_MUSEUM_NAME=my.chartmuseum make push-cm-charts
+#
+# after pushing you can
+#
+#   helm search repo
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir := $(dir $(mkfile_path))
 push-cm-charts:
-	for dir in $$(ls k8s/helm); do
-		ls $$dir
+	if [ -z "$$CHART_MUSEUM_NAME" ]; then exit 1; fi
+	if [ -z "$$CHART_DIR" ]; then exit 1; fi
+	@for dir in $$(ls $(abspath $$CHART_DIR)); do \
+		chartDir="$(abspath $$CHART_DIR)/$$dir" ; \
+		echo "Attempting to push chart deps in $${chartDir} ..." ; \
+		cd $${chartDir} ; \
+		gum spin --spinner dot --title "fetching dependencies..." -- \
+		  helm dep up && echo "✅ helm dependencies update" ; \
+		for tgz in $$(ls charts/*.tgz); do \
+			gum spin --spinner dot --title "pushing $$tgz ..." -- \
+				helm cm-push $$tgz $$CHART_MUSEUM_NAME ; \
+		  echo "✅ helm cm-push $$tgz $$CHART_MUSEUM_NAME" ; \
+	    done ; \
+		cd $(mkfile_dir) ; \
 	done
