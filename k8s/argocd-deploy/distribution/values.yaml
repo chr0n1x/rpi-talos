@@ -19,9 +19,9 @@ docker-registry:
 
   persistence:
     accessMode: ReadWriteMany
-    storageClass: longhorn
+    storageClass: smb
     enabled: true
-    size: 16Gi
+    size: 32Gi
 
   garbageCollect:
     enabled: true
