@@ -12,6 +12,7 @@ docker-registry:
       value: none
 
   proxy:
+    remoteurl: ghcr.io
     enabled: true
 
   updateStrategy:

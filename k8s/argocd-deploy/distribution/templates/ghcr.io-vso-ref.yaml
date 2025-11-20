@@ -1,0 +1,15 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: ghcr-secrets-vaultsecret-ref
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: kv-v2
+  mount: in-cluster
+  path: registries/distribution/ghcr
+  destination:
+    name: ghcr-creds
+    create: true
+  refreshAfter: 30s
+  vaultAuthRef: {{ .Release.Namespace -}}/distribution-vso-connection-auth
