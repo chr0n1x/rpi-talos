@@ -7,7 +7,7 @@ vault-auth:
       method: kubernetes
       mount: in-cluster
       config:
-        role: k8s-registries
+        role: registries
         serviceAccount: registries-svc-acc
         audiences:
           - vault
