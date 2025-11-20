@@ -27,7 +27,7 @@ docker-registry:
       value: none
 
   proxy:
-    remoteurl: ghcr.io
+    remoteurl: https://ghcr.io
     enabled: true
     secretRef: ghcr-creds
 
