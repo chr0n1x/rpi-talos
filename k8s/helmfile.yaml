@@ -1,4 +1,14 @@
 releases:
+  - name: distribution
+    namespace: registries
+    chart: ./argocd-deploy/distribution
+    createNamespace: true
+
+  - name: chart-museum
+    namespace: registries
+    chart: ./argocd-deploy/chart-museum
+    createNamespace: true
+
   - name: cert-manager
     namespace: cert-manager
     chart: ./helm/cert-manager

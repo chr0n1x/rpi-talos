@@ -112,12 +112,6 @@ data:
               type: argocd
               url: "https://argocd.rannet.duckdns.org"
               key: {{ `{{HOMEPAGE_VAR_ARGOCD_KEY}}` }}
-        - Docker Registry:
-            icon: 'https://www.docker.com/wp-content/uploads/2024/01/icon-docker-square.svg'
-            description: Internal LAN Docker Container Registry
-            href: "https://docker.rannet.duckdns.org"
-            siteMonitor: "https://docker.rannet.duckdns.org/v2/"
-            ping: "https://docker.rannet.duckdns.org"
         - Grafana:
             icon: 'https://grafana.com/static/img/menu/grafana2.svg'
             description: Grafana Dashboard

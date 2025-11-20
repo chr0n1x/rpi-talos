@@ -222,3 +222,9 @@ install-kubeadm:
 	KUBERNETES_VERSION_VERSION=v1.30
 	  run through doc above
 	kubeadm token create --print-join-command
+
+.ONESHELL := push-cm-charts
+push-cm-charts:
+	for dir in $$(ls k8s/helm); do
+		ls $$dir
+	done
