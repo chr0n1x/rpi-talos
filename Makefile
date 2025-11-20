@@ -259,3 +259,31 @@ push-cm-charts:
 	    done ; \
 		cd $(mkfile_dir) ; \
 	done
+
+# REFERENCE COMMAND ONLY
+# assumes that you have distribution installed and properly set up
+# as a proxy
+#
+# this command will download ALL images present on the cluster, but instead of
+#
+# 	ghcr.io/foo/bar:latest
+#
+# will instead download
+#
+# 	$REGISTRY_DOMAIN/foo/bar:latest
+#
+# where REGISTRY_DOMAIN is the domain of your distroless installation
+# https://github.com/distribution/distribution
+#
+# note that the command may need a grep in there somewhere, as the distroless
+# chart in THIS repository only supports ONE pull-through proxy (i.e.: when you
+# attempt to pull $REGISTRY_DOMAIN/foo/bar:latest, it will instead pull THROUGH
+# <proxyURL>/foo/bar:latest instead)
+pull-through-cluster-images:
+	if [ -z "$$REGISTRY_DOMAIN" ]; then exit 1; fi
+	for image in $$(kubectl get deployments --all-namespaces -o json | \
+	                jq -r ".items[] | (.spec.template.spec.containers[].image)" | \
+	                sort | uniq); do \
+	    echo "podman pull $$REGISTRY_DOMAIN/$$image" ; \
+	    podman pull $$REGISTRY_DOMAIN/$$image ; \
+	done
