@@ -30,3 +30,9 @@ spec:
     - kind: Secret
       jqPathExpressions:
         - .data.haSharedSecret
+
+    - kind: Deployment
+      group: apps
+      jqPathExpressions:
+        - .spec.template.metadata.annotations.checksum~1config
+        - .spec.template.metadata.annotations.checksum~1secret
