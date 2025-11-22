@@ -1,9 +1,0 @@
-dependencies:
-- name: longhorn
-  repository: https://charts.longhorn.io
-  version: 1.8.2
-- name: traefik-ingress
-  repository: file://../../helm/traefik-ingress
-  version: 1.0.0
-digest: sha256:248679a97dc328765549177116d785c58892cfbcda9b882a7f73f43ea08321ae
-generated: "2025-11-16T23:13:44.366670536-05:00"

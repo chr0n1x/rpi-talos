@@ -3,14 +3,6 @@ longhorn:
   defaultSettings:
     backupTarget: {{ requiredEnv "CIFS_HOST_SHARE" }}
     backupTargetCredentialSecret: cifs-backup-target-creds
-  ingress:
-    enabled: true
-    host: longhorn.{{ requiredEnv "HOMELAB_DOMAIN" }}
-    tls: true
-    tlsSecret: longhorn-cert
-    ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: duckdns-letsencrypt-prod
 backupTarget:
   cifs:
     enabled: true

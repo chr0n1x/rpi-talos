@@ -17,9 +17,13 @@ type: application
 
 dependencies:
   - name: longhorn
-    version: ~1.8.1
+    version: ~1.10
     repository: https://charts.longhorn.io
 
   - name: traefik-ingress
     version: ~1
     repository: file://../../helm/traefik-ingress
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
