@@ -15,7 +15,7 @@ vault-auth:
       mount: in-cluster
       config:
         role: longhorn
-        serviceAccount: longhorn
+        serviceAccount: longhorn-service-account
         audiences:
           - vault
 
