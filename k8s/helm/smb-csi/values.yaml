@@ -1,4 +1,18 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: smb-csi-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: smb-csi
+        # just choosing arbitrary svc acc for now
+        serviceAccount: smb-csi
+        audiences:
+          - vault
+
 smb:
-  hostShare: mysmbhost/share-name
-  username: mysbuser
-  password: mysmbuser-pw
+  # remember to replace this with something real
+  hostShare: //nas.lan/k8s.smb-csi-share
