@@ -8,3 +8,7 @@ dependencies:
   - name: csi-driver-smb
     version: ~1.9
     repository: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
