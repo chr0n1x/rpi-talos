@@ -1,0 +1,35 @@
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: cert-manager-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: cert-manager
+        # just choosing arbitrary svc acc for now
+        serviceAccount: cert-manager
+        audiences:
+          - vault
+
+cert-manager:
+  crds:
+    enabled: true
+
+  # https://cert-manager.io/docs/usage/certificate/#cleaning-up-secrets-when-certificates-are-deleted
+  extraArgs:
+    # use this if you DONT want secret deletion to also nuke the cert
+    # - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53 --enable-certificate-owner-ref}"
+    # TODO: quad9?
+    - "{--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53}"
+
+cert-manager-duckdns-webhook:
+  token:
+    existingSecretName: cert-manager-cert-manager-duckdns-webhook
+  clusterIssuer:
+    email: heilong24@gmail.com
+    production:
+      create: true
+    staging:
+      create: true

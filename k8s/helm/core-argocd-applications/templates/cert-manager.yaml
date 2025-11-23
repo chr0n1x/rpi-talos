@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: {{ .Values.argocd.namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: {{ .Values.repo.url }}
+    path: k8s/helm/cert-manager
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - ../values.yaml
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    # if installing without helmfile, make sure to look at the manual steps in
+    # scripts/cert-manager-prep.sh
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
+    automated:
+      selfHeal: false
+      prune: false
