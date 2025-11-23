@@ -8,8 +8,7 @@ vault-auth:
       mount: in-cluster
       config:
         role: smb-csi
-        # just choosing arbitrary svc acc for now
-        serviceAccount: smb-csi
+        serviceAccount: csi-smb-controller-sa
         audiences:
           - vault
 
