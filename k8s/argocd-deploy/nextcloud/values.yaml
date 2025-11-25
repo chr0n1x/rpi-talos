@@ -29,8 +29,16 @@ nextcloud:
     host: nextcloud.rannet.duckdns.org
     extraEnv:
       # startup install generates tables w/ an account called oc_admin
-      - name: POSTGRES_USER
-        value: nextcloud
+      - name: NEXTCLOUD_ADMIN_USER
+        valueFrom:
+          secretKeyRef:
+            key: username
+            name: nextcloud-db-superuser
+      - name: NEXTCLOUD_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: nextcloud-db-superuser
 
   # postgres things
   internalDatabase:
