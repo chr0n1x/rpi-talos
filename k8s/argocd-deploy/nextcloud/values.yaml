@@ -30,7 +30,7 @@ nextcloud:
     # startup install generates tables w/ an account called oc_admin
     existingSecret:
       secretName: nextcloud-db-superuser
-      userKey: username
+      usernameKey: username
       passwordKey: password
 
   # postgres things
