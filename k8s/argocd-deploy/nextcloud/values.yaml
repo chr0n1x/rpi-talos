@@ -31,7 +31,7 @@ nextcloud:
     existingSecret:
       secretName: nextcloud-db-superuser
       userKey: username
-      passwordKey: username
+      passwordKey: password
 
   # postgres things
   internalDatabase:
