@@ -25,6 +25,9 @@ cnpg:
   instances: 2
 
 nextcloud:
+  nextcloud:
+    host: nextcloud.rannet.duckdns.org
+
   # postgres things
   internalDatabase:
     enabled: false
