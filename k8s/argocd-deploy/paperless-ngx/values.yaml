@@ -76,7 +76,9 @@ paperless-ngx:
     # svc automatically pulled in from valkey chart
     PAPERLESS_REDIS: redis://paperless-ngx-valkey
 
-    PAPERLESS_CSRF_TRUSTED_ORIGINS: paperless-ngx.rannet.duckdns.org
+    # omfg
+    PAPERLESS_CSRF_TRUSTED_ORIGINS: https://paperless-ngx.rannet.duckdns.org
+    PAPERLESS_URL: https://paperless-ngx.rannet.duckdns.org
 
   ingress:
     main:
