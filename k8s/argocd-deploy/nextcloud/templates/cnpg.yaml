@@ -18,6 +18,12 @@ spec:
         passwordSecret:
           name: nextcloud-postgres-user
 
+      - name: oc_admin
+        superuser: false
+        login: true
+        passwordSecret:
+          name: nextcloud-ocadmin-postgres-user
+
   bootstrap:
     initdb:
       database: nextcloud
