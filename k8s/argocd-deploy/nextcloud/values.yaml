@@ -35,7 +35,7 @@ nextcloud:
     database: nextcloud
     existingSecret:
       enabled: true
-      secretName: nextcloud-super-user
+      secretName: nextcloud-db-superuser
       usernameKey: username
       passwordKey: password
 
