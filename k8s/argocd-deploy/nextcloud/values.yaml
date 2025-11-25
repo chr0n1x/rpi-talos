@@ -27,6 +27,10 @@ cnpg:
 nextcloud:
   nextcloud:
     host: nextcloud.rannet.duckdns.org
+    extraEnv:
+      # startup install generates tables w/ an account called oc_admin
+      - name: POSTGRES_USER
+        value: nextcloud
 
   # postgres things
   internalDatabase:
