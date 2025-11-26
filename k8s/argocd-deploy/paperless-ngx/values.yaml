@@ -27,6 +27,10 @@ vault-auth:
 
 
 paperless-ngx:
+  image:
+    repository: ghcr.io/paperless-ngx/paperless-ngx
+    tag: 2.20.0
+
   serviceAccount:
     create: true
     name: paperless-ngx-sa
