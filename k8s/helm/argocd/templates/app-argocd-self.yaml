@@ -26,6 +26,6 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
-    automated: {}
+    automated:
       selfHeal: true
       prune: false
