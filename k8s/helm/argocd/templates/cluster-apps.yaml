@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: core-applications
+  name: cluster-apps
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/managed-by: Helm
@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: {{ .Values.thisRepoURL }}
-    path: k8s/helm/core-argocd-applications
+    path: k8s/helm/cluster-apps
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
