@@ -112,6 +112,10 @@ data:
               type: argocd
               url: "https://argocd.rannet.duckdns.org"
               key: {{ `{{HOMEPAGE_VAR_ARGOCD_KEY}}` }}
+        - Gogs:
+            icon: 'https://raw.githubusercontent.com/gogs/gogs/refs/heads/main/public/img/favicon.png'
+            description: Gogs Git Server
+            href: "https://git.rannet.duckdns.org/"
         - Grafana:
             icon: 'https://grafana.com/static/img/menu/grafana2.svg'
             description: Grafana Dashboard
