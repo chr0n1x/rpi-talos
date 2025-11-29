@@ -5,8 +5,8 @@ metadata:
   name: gogs
   namespace: {{ .Release.Namespace }}
 spec:
-  imageName: {{- .Values.cnpg.image }}
-  instances: {{- .Values.cnpg.instances | default 1 }}
+  imageName: {{ .Values.cnpg.image }}
+  instances: {{ .Values.cnpg.instances | default 1 }}
 
   enableSuperuserAccess: true
 
