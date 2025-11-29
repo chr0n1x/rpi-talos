@@ -1,0 +1,14 @@
+traefik-ingress:
+  dnsNames:
+    - dns: gogs.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: gogs-svc
+          port: http
+
+gogs:
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClass: longhorn
+    # existingVolumeName: pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2
