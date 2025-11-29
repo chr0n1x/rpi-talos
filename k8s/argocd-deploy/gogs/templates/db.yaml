@@ -13,6 +13,9 @@ spec:
   managed:
     roles:
       - name: {{ .Values.cnpg.roleName }}
+        connectionLimit: -1
+        ensure: present
+        inherit: true
         superuser: true
         login: true
         passwordSecret:
