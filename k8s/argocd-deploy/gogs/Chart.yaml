@@ -7,7 +7,7 @@ type: application
 dependencies:
   - name: gogs
     repository: https://chr0n1x.github.io/gogs-helm-chart
-    version: 0.0.2
+    version: 0.0.3
 
   - name: traefik-ingress
     version: ~1
