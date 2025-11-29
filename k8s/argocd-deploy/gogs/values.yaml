@@ -33,4 +33,4 @@ gogs:
     enabled: true
     size: 2Gi
     storageClass: longhorn
-    existingVolumeName: pvc-64c3266e-968d-4147-99af-b0cd7325b873
+    # existingVolumeName: pvc-64c3266e-968d-4147-99af-b0cd7325b873
