@@ -1,6 +1,6 @@
 traefik-ingress:
   dnsNames:
-    - dns: gogs.rannet.duckdns.org
+    - dns: git.rannet.duckdns.org
       services:
         - kind: Service
           name: gogs-svc
