@@ -10,6 +10,7 @@ cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
   size: 2Gi
   storageClass: longhorn
+  roleName: gogs
 
 gogs:
   deployment:
