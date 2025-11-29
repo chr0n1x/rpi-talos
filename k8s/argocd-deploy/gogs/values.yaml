@@ -6,7 +6,29 @@ traefik-ingress:
           name: gogs-svc
           port: http
 
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  size: 2Gi
+  storageClass: longhorn
+
 gogs:
+  deployment:
+    extraEnvVars:
+      - name: DATABASE_TYPE
+        value: postgres
+      - name: DATABASE_HOST
+        value: gogs-db-rw
+      - name: DATABASE_USER
+        valueFrom:
+          secretKeyRef:
+            name: gogs-superuser
+            key: username
+      - name: DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: gogs-superuser
+            key: password
+
   persistence:
     enabled: true
     size: 2Gi
