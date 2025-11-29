@@ -17,7 +17,7 @@ gogs:
       - name: DATABASE_TYPE
         value: postgres
       - name: DATABASE_HOST
-        value: gogs-rw
+        value: gogs-rw:5432
       - name: DATABASE_USER
         valueFrom:
           secretKeyRef:
