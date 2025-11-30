@@ -27,6 +27,7 @@ cnpg:
   roleName: gitea
 
 gitea:
+  image: gitea/gitea:1.25-rootless
   deployment:
     env:
       - name: GITEA__DOMAIN
