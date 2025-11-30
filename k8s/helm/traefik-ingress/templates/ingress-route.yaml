@@ -11,8 +11,12 @@ metadata:
 spec:
   # TODO: match these up w/ the traefik installation somehow
   entryPoints:
+  {{- if .Values.entryPoints }}
+{{ .Values.entryPoints | toYaml | indent 4 }}
+  {{- else }}
   - websecure
   - web
+  {{- end }}
   routes:
   {{- range $cfg := .Values.dnsNames }}
   - kind: Rule
