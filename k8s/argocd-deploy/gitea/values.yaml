@@ -67,6 +67,8 @@ gitea:
         scopes: "email profile"
     server:
       ROOT_URL: https://gitea.rannet.duckdns.org
+      SSH_DOMAIN: gitea.rannet.duckdns.org
+      DOMAIN: gitea.rannet.duckdns.org
     cache:
       PROVIDER: redis
       HOST: gitea-valkey
