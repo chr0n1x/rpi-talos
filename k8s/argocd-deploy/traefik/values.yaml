@@ -93,7 +93,7 @@ traefik:
 
     ssh:
       port: 22
-      containerPort: 2222
+      containerPort: 22
       tls:
         certResolver: duckdns-letsencrypt
         domains:
