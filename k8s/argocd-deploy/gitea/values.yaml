@@ -87,7 +87,7 @@ gitea:
     # and the OIDC mapping will still exist
     admin:
       existingSecret: gitea-superuser
-      email: heilong24@gmail.com
+      email: rannetadm@gmail.com
     queue:
       TYPE: level
 
