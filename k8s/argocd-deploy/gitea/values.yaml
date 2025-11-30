@@ -29,13 +29,13 @@ cnpg:
 gitea:
   deployment:
     env:
-      - NAME: GITEA__DATABASE__DB_TYPE
+      - name: GITEA__DATABASE__DB_TYPE
         value: postgres
-      - NAME: GITEA__DATABASE__HOST
+      - name: GITEA__DATABASE__HOST
         value: gitea-rw:5432
-      - NAME: GITEA__DATABASE__NAME
+      - name: GITEA__DATABASE__NAME
         value: gitea
-      - NAME: GITEA__DATABASE__USER
+      - name: GITEA__DATABASE__USER
         valueFrom:
           secretKeyRef:
             name: gitea-superuser
