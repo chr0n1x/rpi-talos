@@ -58,6 +58,7 @@ gitea:
             name: gitea-superuser
             key: password
 
+      # https://github.com/go-gitea/gitea/issues/16674#issuecomment-1503878857
       - name: GITEA__oauth2_client__ENABLE_AUTO_REGISTRATION
         value: "true"
       - name: GITEA__oauth2_client__ACCOUNT_LINKING
