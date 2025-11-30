@@ -26,6 +26,16 @@ cnpg:
   storageClass: longhorn
   roleName: gitea
 
+# disable for gitea chart, use my own
+valkey-cluster:
+  enabled: false
+valkey:
+  enabled: false
+postgres:
+  enabled: false
+postgres-ha:
+  enabled: false
+
 gitea:
   deployment:
     env:
@@ -62,12 +72,3 @@ gitea:
       ADAPTER: memory
     queue:
       TYPE: level
-
-  valkey-cluster:
-    enabled: false
-  valkey:
-    enabled: false
-  postgres:
-    enabled: false
-  postgres-ha:
-    enabled: false
