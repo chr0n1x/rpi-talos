@@ -31,13 +31,13 @@ gitea:
     env:
       - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
-      - name: GITEA__DATABASE__DB_TYPE
+      - name: GITEA__database__DB_TYPE
         value: postgres
-      - name: GITEA__DATABASE__HOST
+      - name: GITEA__database__HOST
         value: gitea-rw:5432
-      - name: GITEA__DATABASE__NAME
+      - name: GITEA__database__NAME
         value: gitea
-      - name: GITEA__DATABASE__USER
+      - name: GITEA__database__USER
         valueFrom:
           secretKeyRef:
             name: gitea-superuser
