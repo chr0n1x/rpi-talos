@@ -51,10 +51,10 @@ gitea:
             name: gitea-superuser
             key: password
 
-      - name: GITEA__cache__ADAPTER
-        value: redis
-      - name: GITEA__cache__HOST
-        value: gitea-valkey
+      # - name: GITEA__cache__ADAPTER
+      #   value: redis
+      # - name: GITEA__cache__HOST
+      #   value: gitea-valkey
 
       - name: GITEA__session__PROVIDER
         value: redis
@@ -75,6 +75,9 @@ gitea:
         autoDiscoverUrl: "https://authentik.rannet.duckdns.org/application/o/gitea/.well-known/openid-configuration"
         iconUrl: "https://authentik.rannet.duckdns.org/static/dist/assets/icons/icon.png"
         scopes: "email profile"
+    cache:
+      PROVIDER: redis
+      HOST: gitea-valkey
     admin:
       existingSecret: gitea-superuser
       email: heilong24@gmail.com
