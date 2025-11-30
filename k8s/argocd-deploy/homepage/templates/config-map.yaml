@@ -112,14 +112,6 @@ data:
               type: argocd
               url: "https://argocd.rannet.duckdns.org"
               key: {{ `{{HOMEPAGE_VAR_ARGOCD_KEY}}` }}
-        - Gitea:
-            icon: 'https://docs.gitea.com/img/gitea.svg'
-            description: Gitea
-            href: "https://gitea.rannet.duckdns.org/"
-        - Gogs:
-            icon: 'https://raw.githubusercontent.com/gogs/gogs/refs/heads/main/public/img/favicon.png'
-            description: Gogs Git Server
-            href: "https://git.rannet.duckdns.org/"
         - Grafana:
             icon: 'https://grafana.com/static/img/menu/grafana2.svg'
             description: Grafana Dashboard
@@ -145,12 +137,20 @@ data:
             icon: 'https://www.datocms-assets.com/2885/1679087583-devdot-vault_dm.png'
             siteMonitor: "https://vault.rannet.duckdns.org/"
 
-      - "Apps/Media":
+      - "Tools":
         - Authentik:
             icon: 'https://goauthentik.io/img/icon.png'
             description: IdP for RanNet
             href: "https://authentik.rannet.duckdns.org"
             siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
+        - Gitea:
+            widget:
+              type: gitea
+              url: "https://gitea.rannet.duckdns.org/"
+              key: {{ `{{HOMEPAGE_VAR_GITEA_API_KEY}}` | quote }}
+            icon: 'https://docs.gitea.com/img/gitea.svg'
+            description: Gitea
+            href: "https://gitea.rannet.duckdns.org/"
         - OpenMediaVault:
             icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
             description: NAS Management

@@ -25,6 +25,8 @@ widgetConfigs:
     path: homepage/widgets/paperless-ngx
   - name: pihole
     path: homepage/widgets/pihole
+  - name: gitea
+    path: homepage/widgets/gitea
 
 homepage:
   # required for above
@@ -81,6 +83,11 @@ homepage:
         secretKeyRef:
           name: pihole-widget-secrets
           key: api_key
+    - name: HOMEPAGE_VAR_GITEA_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: gitea-widget-secrets
+          key: pat
 
   extraClusterRoles:
     - apiGroups:
