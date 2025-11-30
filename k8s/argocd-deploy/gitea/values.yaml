@@ -2,16 +2,12 @@ traefik-ingress:
   entryPoints:
     - websecure
     - web
-    - ssh
   dnsNames:
     - dns: gitea.rannet.duckdns.org
       services:
         - kind: Service
           name: gitea-http
           port: http
-        - kind: Service
-          name: gitea-ssh
-          port: ssh
 
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default

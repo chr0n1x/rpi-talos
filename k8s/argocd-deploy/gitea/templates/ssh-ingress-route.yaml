@@ -1,0 +1,14 @@
+---
+kind: IngressRouteTCP
+apiVersion: traefik.io/v1alpha1
+metadata:
+  name: gitea-ssh-ingressroute
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+    - ssh
+  routes:
+  - match: HostSNI(`*`)
+    services:
+    - name: gitea-ssh
+      port: 22
