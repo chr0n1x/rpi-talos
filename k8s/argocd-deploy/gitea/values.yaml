@@ -29,6 +29,8 @@ cnpg:
 gitea:
   deployment:
     env:
+      - name: GITEA__DOMAIN
+        value: gitea.rannet.duckdns.org
       - name: GITEA__DATABASE__DB_TYPE
         value: postgres
       - name: GITEA__DATABASE__HOST
