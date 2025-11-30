@@ -61,6 +61,7 @@ gitea:
     size: 16Gi
     storageClass: smb
 
+  # https://docs.gitea.com/administration/config-cheat-sheet
   gitea:
     oauth:
       - name: "RanNet-OIDC"
