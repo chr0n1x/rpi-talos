@@ -51,16 +51,6 @@ gitea:
             name: gitea-superuser
             key: password
 
-      # - name: GITEA__cache__ADAPTER
-      #   value: redis
-      # - name: GITEA__cache__HOST
-      #   value: gitea-valkey
-
-      - name: GITEA__session__PROVIDER
-        value: redis
-      - name: GITEA__session__HOST
-        value: gitea-valkey
-
   persistence:
     enabled: true
     size: 16Gi
@@ -78,6 +68,9 @@ gitea:
     cache:
       PROVIDER: redis
       HOST: gitea-valkey
+    session:
+      PROVIDER: redis
+      PROVIDER_CONFIG: redis://gitea-valkey:6379/sessions?prefix={session}
     admin:
       existingSecret: gitea-superuser
       email: heilong24@gmail.com
