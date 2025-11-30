@@ -34,6 +34,14 @@ gitea:
     env:
       - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
+
+      - name: ROOT_URL
+        value: https://gitea.rannet.duckdns.org
+      - name: SSH_DOMAIN
+        value: gitea.rannet.duckdns.org
+      - name: DOMAIN
+        value: gitea.rannet.duckdns.org
+
       - name: GITEA__database__DB_TYPE
         value: postgres
       - name: GITEA__database__HOST
@@ -65,10 +73,6 @@ gitea:
         autoDiscoverUrl: "https://authentik.rannet.duckdns.org/application/o/gitea/.well-known/openid-configuration"
         iconUrl: "https://authentik.rannet.duckdns.org/static/dist/assets/icons/icon.png"
         scopes: "email profile"
-    server:
-      ROOT_URL: https://gitea.rannet.duckdns.org
-      SSH_DOMAIN: gitea.rannet.duckdns.org
-      DOMAIN: gitea.rannet.duckdns.org
     cache:
       PROVIDER: redis
       HOST: gitea-valkey
