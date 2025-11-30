@@ -35,11 +35,11 @@ gitea:
       - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
 
-      - name: ROOT_URL
+      - name: GITEA__ROOT_URL
         value: https://gitea.rannet.duckdns.org
-      - name: SSH_DOMAIN
+      - name: GITEA__SSH_DOMAIN
         value: gitea.rannet.duckdns.org
-      - name: DOMAIN
+      - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
 
       - name: GITEA__database__DB_TYPE
