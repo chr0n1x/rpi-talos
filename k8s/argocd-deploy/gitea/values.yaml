@@ -5,6 +5,9 @@ traefik-ingress:
         - kind: Service
           name: gitea-http
           port: http
+        - kind: Service
+          name: gitea-ssh
+          port: ssh
 
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
