@@ -34,12 +34,9 @@ gitea:
     env:
       - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
-
       - name: GITEA__ROOT_URL
         value: https://gitea.rannet.duckdns.org
       - name: GITEA__SSH_DOMAIN
-        value: gitea.rannet.duckdns.org
-      - name: GITEA__DOMAIN
         value: gitea.rannet.duckdns.org
 
       - name: GITEA__database__DB_TYPE
