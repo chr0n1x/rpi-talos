@@ -78,11 +78,6 @@ gitea:
     admin:
       existingSecret: gitea-superuser
       email: heilong24@gmail.com
-    # TODO: use valkey included in official chart
-    session:
-      PROVIDER: memory
-    cache:
-      ADAPTER: memory
     queue:
       TYPE: level
 
