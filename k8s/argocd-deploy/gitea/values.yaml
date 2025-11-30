@@ -77,6 +77,9 @@ gitea:
     session:
       PROVIDER: redis
       PROVIDER_CONFIG: redis://gitea-valkey:6379/sessions?prefix={session}
+    # when first signing in with OIDC above, gitea will ask for you to link THIS account
+    # so use the secret username/password in here; you can change the username in gitea
+    # and the OIDC mapping will still exist
     admin:
       existingSecret: gitea-superuser
       email: heilong24@gmail.com
