@@ -65,6 +65,8 @@ gitea:
         autoDiscoverUrl: "https://authentik.rannet.duckdns.org/application/o/gitea/.well-known/openid-configuration"
         iconUrl: "https://authentik.rannet.duckdns.org/static/dist/assets/icons/icon.png"
         scopes: "email profile"
+    server:
+      ROOT_URL: https://gitea.rannet.duckdns.org
     cache:
       PROVIDER: redis
       HOST: gitea-valkey
