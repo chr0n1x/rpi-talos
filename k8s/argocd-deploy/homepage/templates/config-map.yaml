@@ -116,6 +116,7 @@ data:
             icon: 'https://grafana.com/static/img/menu/grafana2.svg'
             description: Grafana Dashboard
             href: "https://grafana.rannet.duckdns.org"
+            ping: "https://grafana.rannet.duckdns.org"
         - K8s Dashboard:
             icon: 'https://kubernetes.io/images/wheel.svg'
             description: K8s dashboard
@@ -125,9 +126,11 @@ data:
             icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
             description: Longhorn Persistent Store Dashboard
             href: "https://longhorn.rannet.duckdns.org"
+            ping: "https://longhorn.rannet.duckdns.org"
         - Traefik:
             icon: 'https://raw.githubusercontent.com/traefik/traefik/refs/heads/master/docs/content/assets/img/traefik.logo.png'
             href: "https://traefik.rannet.duckdns.org/dashboard/"
+            ping: "https://traefik.rannet.duckdns.org/dashboard/"
             widget:
               type: traefik
               url: "https://traefik.rannet.duckdns.org"
@@ -151,6 +154,7 @@ data:
             icon: 'https://docs.gitea.com/img/gitea.svg'
             description: Gitea
             href: "https://gitea.rannet.duckdns.org/"
+            ping: "https://gitea.rannet.duckdns.org/"
         - OpenMediaVault:
             icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
             description: NAS Management
@@ -165,6 +169,7 @@ data:
             icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
             description: Prometheus Dashboard
             href: "https://prometheus.rannet.duckdns.org"
+            ping: "https://prometheus.rannet.duckdns.org"
 
       - "Network/Hardware":
         - DuckDNS:
