@@ -56,6 +56,11 @@ gitea:
             name: gitea-superuser
             key: password
 
+      - name: GITEA__oauth2_client__ENABLE_AUTO_REGISTRATION
+        value: true
+      - name: GITEA__oauth2_client__ACCOUNT_LINKING
+        value: auto
+
   persistence:
     enabled: true
     size: 16Gi
