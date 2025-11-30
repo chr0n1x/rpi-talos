@@ -91,6 +91,19 @@ traefik:
           scheme: https
           permanent: true
 
+    ssh:
+      port: 22
+      containerPort: 2222
+      tls:
+        certResolver: duckdns-letsencrypt
+        domains:
+          - main: "rannet.duckdns.org"
+            sans:
+              - traefik.rannet.duckdns.org
+          - main: "rannet01.duckdns.org"
+            sans:
+              - traefik.rannet01.duckdns.org
+
     websecure:
       port: 443
       containerPort: 8443
