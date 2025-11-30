@@ -1,0 +1,59 @@
+traefik-ingress:
+  dnsNames:
+    - dns: gitea.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: gitea-svc
+          port: http
+
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  size: 2Gi
+  storageClass: longhorn
+  roleName: gitea
+
+gitea:
+  deployment:
+    env:
+      - NAME: GITEA__DATABASE__DB_TYPE
+        value: postgres
+      - NAME: GITEA__DATABASE__HOST
+        value: gitea-rw:5432
+      - NAME: GITEA__DATABASE__NAME
+        value: gitea
+      - NAME: GITEA__DATABASE__USER
+        valueFrom:
+          secretKeyRef:
+            name: gitea-superuser
+            key: username
+      - name: GITEA__database__PASSWD
+        valueFrom:
+          secretKeyRef:
+            name: gitea-superuser
+            key: password
+
+  persistence:
+    enabled: true
+    size: 16Gi
+    storageClass: smb
+
+  gitea:
+    admin:
+      existingSecret: gitea-superuser
+      email: heilong24@gmail.com
+    # TODO: use valkey included in official chart
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level
+
+  valkey-cluster:
+    enabled: false
+  valkey:
+    enabled: false
+  postgres:
+    enabled: false
+  postgres-ha:
+    enabled: false

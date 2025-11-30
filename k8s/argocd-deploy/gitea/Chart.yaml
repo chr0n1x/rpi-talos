@@ -1,0 +1,24 @@
+
+apiVersion: 1.0.0
+name: gitea
+version: 0.0.1
+description: gitea wrapper chart
+type: application
+
+dependencies:
+  - name: gitea
+    repository: https://dl.gitea.com/charts/
+    version: ~10
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
+
+
+  - name: valkey
+    version: ~0.7
+    repository: https://valkey.io/valkey-helm/
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

@@ -1,0 +1,38 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gitea
+  namespace: {{ .Release.Namespace }}
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: {{ .Values.cnpg.instances | default 1 }}
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: {{ .Values.cnpg.roleName }}
+        connectionLimit: -1
+        ensure: present
+        inherit: true
+        superuser: true
+        login: true
+        passwordSecret:
+          name: gitea-postgres-user
+
+  bootstrap:
+    # https://docs.gitea.com/installation/database-prep
+    initdb:
+      database: giteadb
+      owner: gitea
+      secret:
+        name: gitea-postgres-user
+  storage:
+    {{- with .Values.cnpg.size }}
+    size: {{ . }}
+    {{- end }}
+
+    {{- with .Values.cnpg.storageClass }}
+    storageClass: {{ . }}
+    {{- end }}

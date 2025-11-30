@@ -112,6 +112,10 @@ data:
               type: argocd
               url: "https://argocd.rannet.duckdns.org"
               key: {{ `{{HOMEPAGE_VAR_ARGOCD_KEY}}` }}
+        - Gitea:
+            icon: 'https://docs.gitea.com/img/gitea.svg'
+            description: Gitea
+            href: "https://gitea.rannet.duckdns.org/"
         - Gogs:
             icon: 'https://raw.githubusercontent.com/gogs/gogs/refs/heads/main/public/img/favicon.png'
             description: Gogs Git Server
