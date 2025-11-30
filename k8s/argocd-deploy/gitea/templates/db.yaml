@@ -23,8 +23,9 @@ spec:
 
   bootstrap:
     # https://docs.gitea.com/installation/database-prep
+    # but the app needs...gitea?
     initdb:
-      database: giteadb
+      database: gitea
       owner: gitea
       secret:
         name: gitea-postgres-user
