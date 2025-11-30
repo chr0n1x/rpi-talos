@@ -3,8 +3,22 @@ traefik-ingress:
     - dns: gitea.rannet.duckdns.org
       services:
         - kind: Service
-          name: gitea-svc
+          name: gitea-http
           port: http
+
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: gitea-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: gitea
+        serviceAccount: gitea
+        audiences:
+          - vault
 
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
