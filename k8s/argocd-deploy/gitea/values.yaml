@@ -28,6 +28,8 @@ cnpg:
   roleName: gitea
 
 gitea:
+  strategy:
+    type: Recreate
   image:
     fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
   deployment:
