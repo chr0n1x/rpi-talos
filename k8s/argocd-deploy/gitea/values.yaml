@@ -28,7 +28,7 @@ cnpg:
 
 gitea:
   image:
-    tag: docker.gitea.com/gitea:1.25.2-rootless
+    tag: docker.gitea.com/gitea:1.25.2
   deployment:
     env:
       - name: GITEA__DOMAIN
