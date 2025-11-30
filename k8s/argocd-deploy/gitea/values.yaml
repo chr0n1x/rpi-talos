@@ -70,5 +70,5 @@ gitea:
     enabled: false
   postgres:
     enabled: false
-  postgres-ha:
+  postgresql-ha:
     enabled: false
