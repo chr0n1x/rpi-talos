@@ -32,11 +32,11 @@ gitea:
     fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
   deployment:
     env:
-      - name: GITEA__DOMAIN
+      - name: GITEA__server__DOMAIN
         value: gitea.rannet.duckdns.org
-      - name: GITEA__ROOT_URL
+      - name: GITEA__server__ROOT_URL
         value: https://gitea.rannet.duckdns.org
-      - name: GITEA__SSH_DOMAIN
+      - name: GITEA__server__SSH_DOMAIN
         value: gitea.rannet.duckdns.org
 
       - name: GITEA__database__DB_TYPE
