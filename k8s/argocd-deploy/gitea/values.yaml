@@ -28,7 +28,7 @@ cnpg:
 
 gitea:
   image:
-    tag: docker.gitea.com/gitea:1.25.2
+    fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
   deployment:
     env:
       - name: GITEA__DOMAIN
