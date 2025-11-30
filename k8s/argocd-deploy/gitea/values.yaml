@@ -16,6 +16,7 @@ vault-auth:
       mount: in-cluster
       config:
         role: gitea
+        # note: this is actually made by cnpg
         serviceAccount: gitea
         audiences:
           - vault
@@ -50,12 +51,30 @@ gitea:
             name: gitea-superuser
             key: password
 
+      - name: GITEA__cache__ADAPTER
+        value: redis
+      - name: GITEA__cache__HOST
+        value: gitea-valkey
+
+      - name: GITEA__session__PROVIDER
+        value: redis
+      - name: GITEA__session__HOST
+        value: gitea-valkey
+
   persistence:
     enabled: true
     size: 16Gi
     storageClass: smb
 
   gitea:
+    oauth:
+      - name: "RanNet OIDC"
+        provider: "openidConnect"
+        # match up with secret name in this chart
+        existingSecret: authentik-oidc-secret
+        autoDiscoverUrl: "https://authentik.rannet.duckdns.org/application/o/gitea/.well-known/openid-configuration"
+        iconUrl: "https://authentik.rannet.duckdns.org/static/dist/assets/icons/icon.png"
+        scopes: "email profile"
     admin:
       existingSecret: gitea-superuser
       email: heilong24@gmail.com
