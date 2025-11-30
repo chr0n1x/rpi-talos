@@ -63,7 +63,7 @@ gitea:
 
   gitea:
     oauth:
-      - name: "RanNet OIDC"
+      - name: "RanNet-OIDC"
         provider: "openidConnect"
         # match up with secret name in this chart
         existingSecret: authentik-oidc-secret
