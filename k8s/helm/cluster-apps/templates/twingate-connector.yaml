@@ -20,7 +20,8 @@ spec:
     namespace: twingate-connector
   syncPolicy:
     automated:
-      selfHeal: true
+      # allow scale down
+      selfHeal: false
       prune: true
     syncOptions:
       - CreateNamespace=true
