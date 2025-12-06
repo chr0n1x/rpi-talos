@@ -9,7 +9,7 @@ traefik-ingress:
 
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
-  instances: 3
+  instances: 2
 
 # note: for this setup - backups are stored into the SMB share
 #
