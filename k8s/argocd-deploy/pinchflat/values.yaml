@@ -13,6 +13,10 @@ pinchflat:
     type: NodePort
 
   deployment:
+    tolerations:
+      - key: kubernetes.io/arch
+        operator: Equal
+        value: arm64
     strategy:
       type: Recreate
     image: registry.rannet.duckdns.org/kieraneglin/pinchflat:latest
