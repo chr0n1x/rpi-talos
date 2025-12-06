@@ -13,6 +13,8 @@ pinchflat:
     type: NodePort
 
   deployment:
+    strategy:
+      type: Recreate
     image: registry.rannet.duckdns.org/kieraneglin/pinchflat:latest
     env:
       TZ: America/New_York
