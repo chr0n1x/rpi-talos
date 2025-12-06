@@ -36,9 +36,9 @@ docker-registry:
     # support multiple pull-throughs/proxies
     #
     # https://github.com/distribution/distribution/issues/3725
-    enabled: true
-    remoteurl: https://ghcr.io
-    secretRef: ghcr-creds
+    enabled: false
+    # remoteurl: https://ghcr.io
+    # secretRef: ghcr-creds
 
   updateStrategy:
     type: Recreate
