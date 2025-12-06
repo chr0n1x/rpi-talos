@@ -13,7 +13,7 @@ pinchflat:
     type: NodePort
 
   deployment:
-    image: ghcr.io/kieraneglin/pinchflat:latest
+    image: registry.rannet.duckdns.org/ghcr.io/kieraneglin/pinchflat:latest
     env:
       TZ: America/New_York
 
