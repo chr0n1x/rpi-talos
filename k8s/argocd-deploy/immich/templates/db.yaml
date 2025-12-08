@@ -36,5 +36,5 @@ spec:
           - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
           - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
   storage:
-    size: 16Gi
+    size: 32Gi
     storageClass: longhorn
