@@ -27,9 +27,11 @@ vault-auth:
 headlamp:
   config:
     baseURL: https://headlamp.rannet.duckdns.org
+
     oidc:
       secretName:
         create: false
+        name: authentik-oidc-secret
       externalSecret:
         enabled: true
         name: authentik-oidc-secret
