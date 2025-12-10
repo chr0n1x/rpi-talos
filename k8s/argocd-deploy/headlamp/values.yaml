@@ -6,7 +6,7 @@ traefik-ingress:
     - dns: headlamp.rannet.duckdns.org
       services:
         - kind: Service
-          name: headlamp-http
+          name: headlamp
           port: http
 
 vault-auth:
