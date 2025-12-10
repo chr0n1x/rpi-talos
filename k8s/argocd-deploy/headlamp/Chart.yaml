@@ -1,0 +1,18 @@
+hpiVersion: 1.0.0
+name: headlamp
+version: 0.0.1
+description: headlamp wrapper chart
+type: application
+
+dependencies:
+  - name: headlamp
+    repository: https://kubernetes-sigs.github.io/headlamp/
+    version: ~0.38
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

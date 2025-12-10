@@ -1,0 +1,33 @@
+traefik-ingress:
+  entryPoints:
+    - websecure
+    - web
+  dnsNames:
+    - dns: headlamp.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: headlamp-http
+          port: http
+
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      # match this up with secret
+      vaultAuthName: headlamp-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: headlamp
+        # note: this is actually made by cnpg
+        serviceAccount: headlamp
+        audiences:
+          - vault
+
+headlamp:
+  config:
+    baseURL: https://headlamp.rannet.duckdns.org
+    oidc:
+      secret:
+        create: false
+        name: authentik-oidc-secret
