@@ -28,6 +28,8 @@ headlamp:
   config:
     baseURL: https://headlamp.rannet.duckdns.org
     oidc:
-      secret:
+      secretName:
         create: false
+      externalSecret:
+        enabled: true
         name: authentik-oidc-secret
