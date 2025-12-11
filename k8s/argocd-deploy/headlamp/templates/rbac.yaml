@@ -1,10 +1,11 @@
 {{- range $email := .Values.adminEmails -}}
+{{- $emailParts := (split "@" $email) -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  {{- $emailParts := (split "@" $email) -}}
   name: headlamp-admin-{{ $emailParts._0 }}
+  namespace: {{ $.Release.Namespace }}
 subjects:
   - kind: User
     name: {{ $email }}
