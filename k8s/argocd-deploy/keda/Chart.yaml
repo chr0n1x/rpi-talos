@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: keda
+version: 1.0.0
+description: keda wrapper chart
+type: application
+
+dependencies:
+  - name: keda
+    version: ~2
+    repository: https://kedacore.github.io/charts
