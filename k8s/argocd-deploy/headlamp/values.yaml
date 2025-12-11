@@ -1,3 +1,6 @@
+adminEmails:
+  - heilong24@gmail.com
+
 traefik-ingress:
   entryPoints:
     - websecure
@@ -25,6 +28,9 @@ vault-auth:
           - vault
 
 headlamp:
+  clusterRoleBinding:
+    create: true
+    clusterRoleName: cluster-admin
   config:
     # baseURL: https://headlamp.rannet.duckdns.org
 
