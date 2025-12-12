@@ -1,3 +1,6 @@
+pdb:
+  enabled: false
+
 traefik-ingress:
   dnsNames:
     - dns: open-webui.rannet.duckdns.org

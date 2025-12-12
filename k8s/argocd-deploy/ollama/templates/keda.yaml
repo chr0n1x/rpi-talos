@@ -1,0 +1,58 @@
+{{- if not .Values.pdb.enabled }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cron-scaledobject-owui
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    name: open-webui
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: EST
+        start: 0 9 * * *
+        end: 0 2 * * *
+        desiredReplicas: "1"
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cron-scaledobject-ollama
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    name: open-webui-ollama
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: EST
+        start: 0 9 * * *
+        end: 0 2 * * *
+        desiredReplicas: "1"
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cron-scaledobject-pipelines
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    name: open-webui-pipelines
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: EST
+        start: 0 9 * * *
+        end: 0 2 * * *
+        desiredReplicas: "1"
+{{- end }}
