@@ -9,7 +9,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: {{ .name }}
-  minReplicaCount: 0
+  minReplicaCount: {{ .minReplicaCount | default $.Values.global.minReplicaCount | default 0 }}
   cooldownPeriod: {{ .cooldownPeriod | default 300 }}
   triggers:
     {{- if .triggers }}

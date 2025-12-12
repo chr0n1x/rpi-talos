@@ -1,8 +1,12 @@
 global:
+  # https://keda.sh/docs/2.18/scalers/cron/#scale-to-0-during-off-hours
   cooldownPeriod: 300
+  # actual scale to 0
+  minReplicaCount: 0
   tz: EST
   start: "0 9 * * *"
   end: "0 22 * * *"
+  # IMPORTANT: must be string :/
   desiredReplicas: "1"
 
 objects:
