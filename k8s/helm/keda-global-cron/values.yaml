@@ -1,17 +1,18 @@
 global:
+  cooldownPeriod: 300
   tz: EST
   start: "0 9 * * *"
   end: "0 22 * * *"
-  desiredReplicas: 2
+  desiredReplicas: "2"
 
 objects:
   - name: deployment-1
-    cooldownPeriod: 300
+    cooldownPeriod: 150 
     cron:
       tz: Asia/Kolkata
       start: "0 0 * * *"
       end: "0 1 * * * *"
-      desiredReplicas: 3
+      desiredReplicas: "3"
 
   # default to single cron in EST, from 9AM to 10PM, scale up to 1
   - name: deployment-est
@@ -24,5 +25,4 @@ objects:
           tz: Asia/Japan
           start: "0 0 * * *"
           end: "0 1 * * * *"
-          desiredReplicas: 5
-
+          desiredReplicas: "5"

@@ -20,7 +20,7 @@ spec:
         timezone: {{ (.cron).tz | default $.Values.global.tz | default "EST" }}
         start: {{ (.cron).start | default $.Values.global.start | default "0 9 * * *" }}
         end: {{ (.cron).end | default $.Values.global.end | default "0 22 * * *" }}
-        desiredReplicas: {{ .desiredReplicas | default $.Values.global.desiredReplicas | default "1" }}
+        desiredReplicas: {{ .desiredReplicas | default $.Values.global.desiredReplicas | default 1 | quote }}
     {{- end }}
 {{- end }}
 {{- end }}
