@@ -4,7 +4,7 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: cron-scaledown-obj-{{ .name }}
+  name: {{ printf "cron-scaledown-obj-%s" .name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
   scaleTargetRef:
