@@ -12,3 +12,7 @@ dependencies:
   - name: valkey
     version: ~0.7
     repository: https://valkey.io/valkey-helm/
+
+  - name: keda-global-cron
+    version: ~1
+    repository: file://../../helm/keda-global-cron

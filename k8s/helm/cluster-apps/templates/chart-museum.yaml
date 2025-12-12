@@ -25,3 +25,9 @@ spec:
     automated:
       selfHeal: true
       prune: true
+
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas

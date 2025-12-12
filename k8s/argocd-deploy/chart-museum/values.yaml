@@ -1,3 +1,9 @@
+keda-global-cron:
+  objects:
+    - name: chart-museum-chartmuseum
+    - name: chart-museum-valkey
+      cooldownPeriod: 420 # blaze it
+
 traefik-ingress:
   dnsNames:
     - dns: chart-museum.rannet.duckdns.org

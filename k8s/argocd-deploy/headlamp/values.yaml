@@ -1,6 +1,10 @@
 adminEmails:
   - heilong24@gmail.com
 
+keda-global-cron:
+  objects:
+    - name: headlamp
+
 traefik-ingress:
   entryPoints:
     - websecure

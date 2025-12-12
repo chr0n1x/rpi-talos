@@ -27,6 +27,10 @@ spec:
       group: apps
       jsonPointers:
         - /spec/template/metadata/annotations/checksum~1config
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas
 
   syncPolicy:
     automated:

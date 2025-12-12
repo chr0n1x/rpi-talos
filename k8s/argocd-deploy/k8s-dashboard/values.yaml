@@ -1,3 +1,10 @@
+keda-global-cron:
+  objects:
+    - name: k8s-dashboard-kong
+    - name: k8s-dashboard-kubernetes-dashboard-api
+    - name: k8s-dashboard-kubernetes-dashboard-metrics-scraper
+    - name: k8s-dashboard-kubernetes-dashboard-web
+
 traefik-ingress:
   dnsNames:
     - dns: k8s-dashboard.rannet.duckdns.org

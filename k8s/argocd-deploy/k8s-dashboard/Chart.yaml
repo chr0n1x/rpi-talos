@@ -12,3 +12,7 @@ dependencies:
   - name: traefik-ingress
     version: ~1
     repository: file://../../helm/traefik-ingress
+
+  - name: keda-global-cron
+    version: ~1
+    repository: file://../../helm/keda-global-cron

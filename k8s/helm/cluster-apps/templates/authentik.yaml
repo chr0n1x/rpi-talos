@@ -16,11 +16,19 @@ spec:
       valueFiles:
         - ../values.yaml
         - values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: authentik
+
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
       selfHeal: true
+
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas

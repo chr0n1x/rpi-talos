@@ -16,3 +16,7 @@ dependencies:
   - name: vault-auth
     version: ~1
     repository: file://../../helm/vault-auth
+
+  - name: keda-global-cron
+    version: ~1
+    repository: file://../../helm/keda-global-cron

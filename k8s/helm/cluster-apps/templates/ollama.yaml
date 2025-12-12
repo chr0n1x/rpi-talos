@@ -15,9 +15,14 @@ spec:
     server: https://kubernetes.default.svc
     namespace: ollama
   syncPolicy:
-    # prune is ok, selfHeal disabled for keda scaling
     automated:
       prune: true
-      # selfHeal: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas
