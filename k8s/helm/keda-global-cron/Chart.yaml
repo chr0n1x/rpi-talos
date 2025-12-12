@@ -1,0 +1,6 @@
+---
+apiVersion: 1.0.0
+name: keda-global-cron
+version: 1.0.0
+description: global scale down cron chart wrapper
+type: application

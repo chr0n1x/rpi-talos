@@ -1,0 +1,28 @@
+global:
+  tz: EST
+  start: "0 9 * * *"
+  end: "0 22 * * *"
+  desiredReplicas: 2
+
+objects:
+  - name: deployment-1
+    cooldownPeriod: 300
+    cron:
+      tz: Asia/Kolkata
+      start: "0 0 * * *"
+      end: "0 1 * * * *"
+      desiredReplicas: 3
+
+  # default to single cron in EST, from 9AM to 10PM, scale up to 1
+  - name: deployment-est
+
+  - name: deployment-custom
+    # same as keda.sha.v1alpha/ScaledObject.spec.triggers
+    triggers:
+      - type: cron
+        metadata:
+          tz: Asia/Japan
+          start: "0 0 * * *"
+          end: "0 1 * * * *"
+          desiredReplicas: 5
+

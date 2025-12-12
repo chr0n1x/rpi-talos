@@ -1,0 +1,26 @@
+{{- range $cron := .Values.objects }}
+{{- with $cron }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cron-scaledown-obj-{{ .name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ .name }}
+  minReplicaCount: 0
+  cooldownPeriod: {{ .cooldownPeriod | default 300 }}
+  triggers:
+    {{- if .triggers }}
+{{ .triggers | toYaml | indent 6 }}
+    {{- else }}
+    - type: cron
+      metadata:
+        timezone: {{ (.cron).tz | default $.Values.global.tz | default "EST" }}
+        start: {{ (.cron).start | default $.Values.global.start | default "0 9 * * *" }}
+        end: {{ (.cron).end | default $.Values.global.end | default "0 22 * * *" }}
+        desiredReplicas: {{ .desiredReplicas | default $.Values.global.desiredReplicas | default "1" }}
+    {{- end }}
+{{- end }}
+{{- end }}
