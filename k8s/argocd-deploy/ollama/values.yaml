@@ -1,3 +1,11 @@
+keda-global-cron:
+  global:
+    desiredReplicas: 1
+  objects:
+    - name: open-webui
+    - name: open-webui-ollama
+    - name: open-webui-pipelines
+
 pdb:
   enabled: false
 
