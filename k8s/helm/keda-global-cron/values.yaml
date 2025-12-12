@@ -3,7 +3,7 @@ global:
   tz: EST
   start: "0 9 * * *"
   end: "0 22 * * *"
-  desiredReplicas: "2"
+  desiredReplicas: "1"
 
 objects:
   - name: deployment-1
@@ -14,7 +14,8 @@ objects:
       end: "0 1 * * * *"
       desiredReplicas: "3"
 
-  # default to single cron in EST, from 9AM to 10PM, scale up to 1
+  # default to single cron in EST, from 9AM to 10PM, that scales
+  # "deployment-est" up to 1
   - name: deployment-est
 
   - name: deployment-custom
