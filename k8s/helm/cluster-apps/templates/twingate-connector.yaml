@@ -20,8 +20,14 @@ spec:
     namespace: twingate-connector
   syncPolicy:
     automated:
-      # allow scale down
-      selfHeal: false
+      selfHeal: true
       prune: true
     syncOptions:
       - CreateNamespace=true
+
+  # allow scale down
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas
