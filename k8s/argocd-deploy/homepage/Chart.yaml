@@ -9,6 +9,10 @@ dependencies:
     version: ~2
     repository: https://jameswynn.github.io/helm-charts
 
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
+
   - name: vault-auth
     version: ~1
     repository: file://../../helm/vault-auth
