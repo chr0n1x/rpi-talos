@@ -7,4 +7,4 @@ type: application
 dependencies:
   - name: lws
     version: ~0.7
-    repository: oci://registry.k8s.io/lws/charts/lws
+    repository: oci://registry.k8s.io/lws/charts
