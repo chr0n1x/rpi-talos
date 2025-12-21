@@ -1,0 +1,10 @@
+apiVersion: 1.0.0
+name: lws
+version: 1.0.0
+description: lws wrapper chart
+type: application
+
+dependencies:
+  - name: lws
+    version: ~0.7
+    repository: oci://registry.k8s.io/lws/charts/lws
