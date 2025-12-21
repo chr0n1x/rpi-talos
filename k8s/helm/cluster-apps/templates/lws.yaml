@@ -15,7 +15,6 @@ spec:
     helm:
       valueFiles:
         - ../values.yaml
-        - values.yaml
 
   destination:
     server: https://kubernetes.default.svc
@@ -23,6 +22,7 @@ spec:
 
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
+      - ServerSideApply=true
+      - CreateNamespace=false
     automated:
       selfHeal: true
