@@ -1,8 +1,9 @@
 keda-global-cron:
   objects:
     - name: open-webui
-    - name: open-webui-ollama
     - name: open-webui-pipelines
+    # leave ollama on to prevent LLMs from being unloaded
+    # - name: open-webui-ollama
 
 pdb:
   enabled: false
