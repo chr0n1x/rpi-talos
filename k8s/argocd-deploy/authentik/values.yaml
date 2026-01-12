@@ -1,10 +1,13 @@
 keda-global-cron:
   objects:
     # scale down to 1 from 10pm to 9am
-    - name: authentik-app-server
+    - name: down-authentik-app-server
+      deploymentName: authentik-app-server
       minReplicaCount: 1
+
     # scale back up to 2 from 9am to 10pm
-    - name: authentik-app-server
+    - name: up-authentik-app-server
+      deploymentName: authentik-app-server
       minReplicaCount: 1
       cron:
         start: "0 22 * * *"

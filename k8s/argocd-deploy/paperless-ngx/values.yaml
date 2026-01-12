@@ -1,9 +1,3 @@
-keda-global-cron:
-  objects:
-    - name: paperless-ngx
-    - name: paperless-ngx-valkey
-      cooldownPeriod: 420
-
 traefik-ingress:
   dnsNames:
     - dns: paperless-ngx.rannet.duckdns.org
