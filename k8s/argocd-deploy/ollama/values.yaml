@@ -43,6 +43,11 @@ vault-auth:
 # if PVCs get stuck in Progressing state:
 # https://github.com/kubernetes-csi/csi-driver-smb/issues/821
 open-webui:
+  websocket:
+    # enabled by default in chart v > 8
+    # disabling ootb redis installation in favor of valkey
+    redis:
+      enabled: false
 
   extraEnvVars:
     - name: DATABASE_HOST
@@ -105,6 +110,11 @@ open-webui:
       value: "true"
     - name: ENABLE_LOGIN_FORM
       value: "false"
+
+    - name: REDIS_URL
+      value: redis://ollama-valkey:6379/0
+    - name: WEBSOCKET_REDIS_URL
+      value: redis://ollama-valkey:6379/0
 
   replicaCount: 1
   resources:
