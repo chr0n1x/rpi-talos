@@ -19,8 +19,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-    - kind: Deployment
-      group: apps
-      jsonPointers:
-        - /spec/replicas
