@@ -48,6 +48,7 @@ open-webui:
     # disabling ootb redis installation in favor of valkey
     redis:
       enabled: false
+    url: redis://ollama-valkey:6379/0
 
   extraEnvVars:
     - name: DATABASE_HOST
@@ -110,11 +111,6 @@ open-webui:
       value: "true"
     - name: ENABLE_LOGIN_FORM
       value: "false"
-
-    - name: REDIS_URL
-      value: redis://ollama-valkey:6379/0
-    - name: WEBSOCKET_REDIS_URL
-      value: redis://ollama-valkey:6379/0
 
   replicaCount: 1
   resources:
