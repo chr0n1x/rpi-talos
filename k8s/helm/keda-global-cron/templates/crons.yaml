@@ -4,11 +4,11 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: {{ printf "cron-scaledown-obj-%s" .name | trunc 63 | trimSuffix "-" }}
+  name: {{ printf "cron-scale-obj-%s" .name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
   scaleTargetRef:
-    name: {{ .name }}
+    name: {{ .deploymentName | default .name }}
   minReplicaCount: {{ .minReplicaCount | default $.Values.global.minReplicaCount | default 0 }}
   cooldownPeriod: {{ .cooldownPeriod | default 300 }}
   triggers:
