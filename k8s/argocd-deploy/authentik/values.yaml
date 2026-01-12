@@ -20,6 +20,21 @@ keda-global-cron:
     # TODO: not sure if want to follow the pattern above
     # see if scaling down actually works, this uses the most resources
     - name: authentik-app-worker
+      minReplicaCount: 1
+      triggers:
+        - type: cron
+          metadata:
+            start: "0 9 * * *"
+            end: "0 22 * * *"
+            desiredReplicas: "2"
+            timezone: EST
+        # scale down to 1 from 10pm to 9am
+        - type: cron
+          metadata:
+            start: "0 22 * * *"
+            end: "0 9 * * *"
+            desiredReplicas: "1"
+            timezone: EST
 
     # valkey required in all cases
 

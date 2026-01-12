@@ -1,3 +1,22 @@
+keda-global-cron:
+  objects:
+    - name: immich-server
+      minReplicaCount: 1
+      triggers:
+        - type: cron
+          metadata:
+            start: "0 9 * * *"
+            end: "0 22 * * *"
+            desiredReplicas: "2"
+            timezone: EST
+        # scale down to 1 from 10pm to 9am
+        - type: cron
+          metadata:
+            start: "0 22 * * *"
+            end: "0 9 * * *"
+            desiredReplicas: "1"
+            timezone: EST
+
 traefik-ingress:
   dnsNames:
     - dns: immich.rannet.duckdns.org
