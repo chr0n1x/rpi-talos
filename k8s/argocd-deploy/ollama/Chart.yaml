@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: open-webui
-    version: ~8
+    version: ~10
     repository: https://helm.openwebui.com/
 
   - name: vault-auth
