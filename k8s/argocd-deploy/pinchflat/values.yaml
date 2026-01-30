@@ -17,7 +17,7 @@ pinchflat:
       kubernetes.io/arch: arm64
     strategy:
       type: Recreate
-    image: registry.rannet.duckdns.org/kieraneglin/pinchflat:latest
+    image: registry.rannet.duckdns.org/ghcr.io/kieraneglin/pinchflat:latest
     env:
       TZ: America/New_York
 
