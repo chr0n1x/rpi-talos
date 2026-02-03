@@ -8,7 +8,7 @@ dependencies:
   # installation & uninstallation instructions:
   # https://cert-manager.io/docs/installation/helm/#installing-with-helm 
   - name: cert-manager
-    version: ~1.17
+    version: ~1.19
     repository: https://charts.jetstack.io
 
   - name: cert-manager-duckdns-webhook
