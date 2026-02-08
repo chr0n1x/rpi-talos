@@ -51,7 +51,7 @@ immich:
       containers:
         main:
           image:
-            tag: v2.5.2
+            tag: v2.5.5
           env:
             DB_HOSTNAME: immich-rw
             DB_DATABASE_NAME: immich
