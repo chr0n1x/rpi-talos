@@ -46,7 +46,7 @@ mealie:
     - name: OIDC_AUTH_ENABLED
       value: "true"
     - name: OIDC_PROVIDER_NAME
-      value: authentik
+      value: RanNet OIDC
     - name: OIDC_CONFIGURATION_URL
       valueFrom:
         secretKeyRef:
