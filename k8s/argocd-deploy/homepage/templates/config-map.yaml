@@ -52,6 +52,17 @@ data:
             key: {{ `{{HOMEPAGE_VAR_IMMICH_KEY}}` }}
             version: 2
 
+      - Mealie:
+          icon: 'https://mealie.rannet.duckdns.org/favicon.ico'
+          description: Recipe App
+          href: "https://mealie.rannet.duckdns.org/"
+          siteMonitor: "https://mealie.rannet-edge.duckdns.org"
+          widget:
+            type: mealie
+            url: "https://mealie.rannet.duckdns.org/"
+            key: {{ `{{HOMEPAGE_VAR_MEALIE_KEY}}` }}
+            version: 2 # only required if version > 1, defaults to 1
+
       - Jellyfin:
           icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
           description: Jellyfin Media Server
