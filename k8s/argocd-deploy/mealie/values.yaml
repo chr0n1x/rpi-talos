@@ -48,7 +48,7 @@ mealie:
     - name: DB_ENGINE
       value: postgres
     - name: POSTGRES_SERVER
-      value: postgres-rw
+      value: mealie-rw
     - name: POSTGRES_PORT
       value: "5432"
     - name: POSTGRES_DB
