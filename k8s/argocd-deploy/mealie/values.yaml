@@ -13,6 +13,19 @@ traefik-ingress:
           name: mealie-svc
           port: http
 
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      vaultAuthName: mealie-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: mealie
+        serviceAccount: mealie-svc-acc
+        audiences:
+          - vault
+
 mealie:
   namespace: mealie
 
@@ -27,8 +40,10 @@ mealie:
     - name: BASE_URL
       value: https://mealie.rannet.duckdns.org
 
+    # omfg
     - name: ALLOW_SIGNUP
-      value: false
+      value: "false"
+    # authentik things here in a bit
 
     - name: DB_ENGINE
       value: postgres
