@@ -65,10 +65,9 @@ mealie:
     - name: OIDC_SIGNUP_ENABLED
       value: "true"
     - name: OIDC_USER_GROUP
-      value: Home
-    # TODO: change later
+      value: authentik-homelab-group
     - name: OIDC_ADMIN_GROUP
-      value: Home
+      value: "authentik Admins"
     # Optional: The login page will be bypassed and you will be sent directly to
     # your Identity Provider.
     - name: OIDC_AUTO_REDIRECT
