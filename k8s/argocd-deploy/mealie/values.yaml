@@ -44,7 +44,7 @@ mealie:
     - name: ALLOW_SIGNUP
       value: "false"
     - name: OIDC_AUTH_ENABLED
-      value: true
+      value: "true"
     - name: OIDC_PROVIDER_NAME
       value: authentik
     - name: OIDC_CONFIGURATION_URL
