@@ -56,7 +56,7 @@ data:
           icon: 'https://mealie.rannet.duckdns.org/favicon.ico'
           description: Recipe App
           href: "https://mealie.rannet.duckdns.org/"
-          siteMonitor: "https://mealie.rannet-edge.duckdns.org"
+          siteMonitor: "https://mealie.rannet.duckdns.org"
           widget:
             type: mealie
             url: "https://mealie.rannet.duckdns.org/"
