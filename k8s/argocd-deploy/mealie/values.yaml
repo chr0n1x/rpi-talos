@@ -1,0 +1,64 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  roleName: mealie-svc-acc
+  size: 4Gi
+  labels: {}
+  annotations: {}
+
+traefik-ingress:
+  dnsNames:
+    - dns: mealie.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: mealie-svc
+          port: http
+
+mealie:
+  namespace: mealie
+
+  deployment:
+    nodeSelector:
+      kubernetes.io/arch: arm64
+    strategy:
+      type: Recreate
+    extraEnvVars:
+    - name: TZ
+      value: America/New_York
+    - name: BASE_URL
+      value: https://mealie.rannet.duckdns.org
+
+    - name: ALLOW_SIGNUP
+      value: false
+
+    - name: DB_ENGINE
+      value: postgres
+    - name: POSTGRES_SERVER
+      value: postgres-rw
+    - name: POSTGRES_PORT
+      value: 5432
+    - name: POSTGRES_DB
+      value: mealie
+    - name: POSTGRES_USER
+      valueFrom:
+        secretKeyRef:
+          name: mealie-superuser
+          key: username
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mealie-superuser
+          key: password
+
+    - name: PUID
+      value: 1000
+    - name: PGID
+      value: 1000
+
+  persistence:
+    enabled: true
+    size: 8Gi
+    storageClass: smb
+    # for the CSI driver SMB - this chart will create a PVC
+    # which will then trigger the driver to create the PV itself
+    # after your first install, fill in this field with the created PV name
+    # existingVolumeName: pvc-19bbd24e-5933-4a03-a2ce-1a3610f7dbe2
