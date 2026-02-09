@@ -50,7 +50,7 @@ mealie:
     - name: POSTGRES_SERVER
       value: postgres-rw
     - name: POSTGRES_PORT
-      value: 5432
+      value: "5432"
     - name: POSTGRES_DB
       value: mealie
     - name: POSTGRES_USER
@@ -65,9 +65,9 @@ mealie:
           key: password
 
     - name: PUID
-      value: 1000
+      value: "1000"
     - name: PGID
-      value: 1000
+      value: "1000"
 
   persistence:
     enabled: true
