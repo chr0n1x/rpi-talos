@@ -43,7 +43,38 @@ mealie:
     # omfg
     - name: ALLOW_SIGNUP
       value: "false"
-    # authentik things here in a bit
+    - name: OIDC_AUTH_ENABLED
+      value: true
+    - name: OIDC_PROVIDER_NAME
+      value: authentik
+    - name: OIDC_CONFIGURATION_URL
+      valueFrom:
+        secretKeyRef:
+          name: env-secrets
+          key: OIDC_CONFIGURATION_URL
+    - name: OIDC_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: env-secrets
+          key: OIDC_CLIENT_ID
+    - name: OIDC_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: env-secrets
+          key: OIDC_CLIENT_SECRET
+    - name: OIDC_SIGNUP_ENABLED
+      value: "true"
+    - name: OIDC_USER_GROUP
+      value: Home
+    # TODO: change later
+    - name: OIDC_ADMIN_GROUP
+      value: Home
+    # Optional: The login page will be bypassed and you will be sent directly to
+    # your Identity Provider.
+    - name: OIDC_AUTO_REDIRECT
+      value: "true"
+    - name: OIDC_REMEMBER_ME
+      value: "true"
 
     - name: DB_ENGINE
       value: postgres
