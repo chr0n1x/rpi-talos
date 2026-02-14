@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: authentik
-    version: 2025.8.4
+    version: ~2025
     repository: https://charts.goauthentik.io
 
   - name: valkey
