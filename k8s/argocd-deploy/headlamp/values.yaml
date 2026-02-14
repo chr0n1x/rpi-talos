@@ -4,7 +4,7 @@ adminEmails:
 # keda-global-cron:
 #   objects:
 #     - name: headlamp
-#
+
 traefik-ingress:
   entryPoints:
     - websecure
