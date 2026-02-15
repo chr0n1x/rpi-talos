@@ -94,6 +94,13 @@ mealie:
           name: mealie-superuser
           key: password
 
+    - name: OPENAI_BASE_URL
+      value: https://ollama.rannet.duckdns.org/v1
+    - name: OPENAI_API_KEY
+      value: stub
+    - name: OPENAI_MODEL
+      value: hf.co/unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF:Q4_K_XL
+
     - name: PUID
       value: "1000"
     - name: PGID
