@@ -50,10 +50,6 @@ tandoor:
               enabled: true
               type: HTTP
               path: /
-            readiness:
-              enabled: true
-              type: HTTP
-              path: /
 
           # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
           # @default -- See [values.yaml](./values.yaml)
