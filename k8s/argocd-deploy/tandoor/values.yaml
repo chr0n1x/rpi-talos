@@ -51,28 +51,25 @@ tandoor:
 
           # socket takes a WHILE to come up
           probes:
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 360
+                periodSeconds: 60
+                timeoutSeconds: 16
+                failureThreshold: 16
             liveness:
               enabled: true
-              custom: true
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 60
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 8
+              type: HTTP
+              path: /
             readiness:
               enabled: true
-              custom: true
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 60
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 8
+              type: HTTP
+              path: /
 
           # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
           # @default -- See [values.yaml](./values.yaml)
