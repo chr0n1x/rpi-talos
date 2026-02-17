@@ -77,12 +77,23 @@ tandoor:
                 key: SOCIALACCOUNT_PROVIDERS
 
   persistence:
-    tandoorMedia:
+    static:
       # TODO: replace with created SMB after provisioning?
       type: persistentVolumeClaim
       accessMode: ReadWriteMany
       storageClass: smb
-      size: 8Gi
+      size: 4Gi
+      retain: true
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /opt/recipes/staticfiles
+    media:
+      # TODO: replace with created SMB after provisioning?
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
+      storageClass: smb
+      size: 4Gi
       retain: true
       advancedMounts:
         main:   # main controller
