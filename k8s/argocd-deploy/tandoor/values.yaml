@@ -47,7 +47,7 @@ tandoor:
             tag: 2
 
           probes:
-            readniness:
+            readiness:
               enabled: true
               type: HTTP
               path: /
