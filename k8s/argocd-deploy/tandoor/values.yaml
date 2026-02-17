@@ -35,6 +35,9 @@ tandoor:
     main:
 
       type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
       containers:
         main:
           securityContext:
@@ -47,12 +50,12 @@ tandoor:
             tag: 2
 
           probes:
-            readiness:
+            liveness:
               enabled: true
               type: HTTP
               path: /
             # socket takes a WHILE to come up
-            liveness:
+            readiness:
               enabled: true
               custom: true
               spec:
