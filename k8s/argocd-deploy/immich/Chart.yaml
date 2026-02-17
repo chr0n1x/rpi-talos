@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: immich
-    version: ~0.10
+    version: ~0
     repository: https://immich-app.github.io/immich-charts
 
   - name: valkey
