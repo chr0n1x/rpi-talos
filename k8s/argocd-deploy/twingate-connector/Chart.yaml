@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: connector
-    version: ~0.1
+    version: ~0
     repository: https://twingate.github.io/helm-charts
 
   - name: vault-auth
