@@ -35,15 +35,19 @@ headlamp:
   clusterRoleBinding:
     create: true
     clusterRoleName: cluster-admin
+  # apiServer:
+  #   extraArgs:
+  #     - oidc-username-claim=email
+  #     - oidc-groups-claim="authentik Admins"
   config:
     # baseURL: https://headlamp.rannet.duckdns.org
 
     inClusterContextName: homelab
 
-    oidc:
-      secretName:
-        create: false
-        name: authentik-oidc-secret
-      externalSecret:
-        enabled: true
-        name: authentik-oidc-secret
+    # oidc:
+    #   secretName:
+    #     create: false
+    #     name: authentik-oidc-secret
+    #   externalSecret:
+    #     enabled: true
+    #     name: authentik-oidc-secret
