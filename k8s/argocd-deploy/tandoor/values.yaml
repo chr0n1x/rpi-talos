@@ -45,6 +45,15 @@ tandoor:
             pullPolicy: Always
             repository: ghcr.io/tandoorrecipes/recipes
             tag: 2
+          proves:
+            liveness:
+              enabled: true
+              type: HTTP
+              path: /
+            readiness:
+              enabled: true
+              type: HTTP
+              path: /
 
           # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
           # @default -- See [values.yaml](./values.yaml)
