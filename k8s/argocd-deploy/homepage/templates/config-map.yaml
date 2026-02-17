@@ -52,17 +52,6 @@ data:
             key: {{ `{{HOMEPAGE_VAR_IMMICH_KEY}}` }}
             version: 2
 
-      - Mealie:
-          icon: 'https://mealie.rannet.duckdns.org/favicon.ico'
-          description: Recipe App
-          href: "https://mealie.rannet.duckdns.org/"
-          siteMonitor: "https://mealie.rannet.duckdns.org"
-          widget:
-            type: mealie
-            url: "https://mealie.rannet.duckdns.org/"
-            key: {{ `{{HOMEPAGE_VAR_MEALIE_KEY}}` }}
-            version: 2 # only required if version > 1, defaults to 1
-
       - Jellyfin:
           icon: 'https://raw.githubusercontent.com/jellyfin/jellyfin-ux/refs/heads/master/branding/web/icon-transparent.png'
           description: Jellyfin Media Server
@@ -77,6 +66,16 @@ data:
             enableUser: true
             enableMediaControl: false
             expandOneStreamToTwoRows: false
+
+      - Tandoor:
+          icon: 'https://raw.githubusercontent.com/TandoorRecipes/recipes/develop/docs/logo_color.svg'
+          description: Recipe App
+          href: "https://tandoor.rannet.duckdns.org/"
+          siteMonitor: "https://tandoor.rannet.duckdns.org"
+          widget:
+            type: tandoor
+            url: "https://tandoor.rannet.duckdns.org/"
+            key: {{ `{{HOMEPAGE_VAR_TANDOOR_KEY}}` }}
 
       - PaperlessNGX:
           icon: 'https://avatars.githubusercontent.com/u/99562962?s=280&v=4'

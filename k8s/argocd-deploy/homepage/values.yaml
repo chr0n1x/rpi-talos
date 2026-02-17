@@ -35,8 +35,8 @@ widgetConfigs:
     path: homepage/widgets/pihole
   - name: gitea
     path: homepage/widgets/gitea
-  - name: mealie
-    path: homepage/widgets/mealie
+  - name: tandoor
+    path: homepage/widgets/tandoor
 
 homepage:
   # required for above
@@ -98,10 +98,10 @@ homepage:
         secretKeyRef:
           name: gitea-widget-secrets
           key: pat
-    - name: HOMEPAGE_VAR_MEALIE_KEY
+    - name: HOMEPAGE_VAR_TANDOOR_KEY
       valueFrom:
         secretKeyRef:
-          name: mealie-widget-secrets
+          name: tandoor-widget-secrets
           key: api_token
 
   extraClusterRoles:
