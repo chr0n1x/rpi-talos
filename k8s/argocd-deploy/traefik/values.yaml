@@ -85,11 +85,11 @@ traefik:
       port: 80
       containerPort: 8000
       protocol: TCP
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-          permanent: true
+      # redirections:
+      #   entryPoint:
+      #     to: websecure
+      #     scheme: https
+      #     permanent: true
 
     ssh:
       port: 22
