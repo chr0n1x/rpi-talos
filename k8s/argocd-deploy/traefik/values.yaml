@@ -30,8 +30,6 @@ traefik:
 
   # DEADGE
   hostNetwork: true
-  # progressDeadlineSeconds: 360
-  # minReadySeconds: 30
   nodeSelector:
     kubernetes.io/hostname: nyx
   priorityClassName: system-node-critical
@@ -85,37 +83,14 @@ traefik:
       port: 80
       containerPort: 8000
       protocol: TCP
-      # redirections:
-      #   entryPoint:
-      #     to: websecure
-      #     scheme: https
-      #     permanent: true
 
     ssh:
       port: 22
       containerPort: 22
-    #   tls:
-    #     certResolver: duckdns-letsencrypt
-    #     domains:
-    #       - main: "rannet.duckdns.org"
-    #         sans:
-    #           - traefik.rannet.duckdns.org
-    #       - main: "rannet01.duckdns.org"
-    #         sans:
-    #           - traefik.rannet01.duckdns.org
-    #
+
     websecure:
       port: 443
       containerPort: 8443
-      # tls:
-      #   certResolver: duckdns-letsencrypt
-      #   domains:
-      #     - main: "rannet.duckdns.org"
-      #       sans:
-      #         - traefik.rannet.duckdns.org
-      #     - main: "rannet01.duckdns.org"
-      #       sans:
-      #         - traefik.rannet01.duckdns.org
 
   # https://gateway-api.sigs.k8s.io/api-types/httproute/
   gateway:
