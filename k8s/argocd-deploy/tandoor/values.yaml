@@ -45,7 +45,7 @@ tandoor:
             pullPolicy: Always
             repository: ghcr.io/tandoorrecipes/recipes
             tag: 2
-          proves:
+          probes:
             liveness:
               enabled: true
               type: HTTP
