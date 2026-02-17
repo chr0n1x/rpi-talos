@@ -59,6 +59,7 @@ grafana:
 
   persistence:
     enabled: true
+    accessModes: ReadWriteMany
     storageClassName: longhorn
     size: 1Gi
     volumeName: pvc-bd568994-4148-4204-bc40-fcedf7e1f0ce
