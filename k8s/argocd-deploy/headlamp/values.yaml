@@ -39,8 +39,6 @@ headlamp:
     # baseURL: https://headlamp.rannet.duckdns.org
 
     inClusterContextName: homelab
-    extraArgs:
-      - "-oidc-username-claim=email"
 
     oidc:
       secretName:
