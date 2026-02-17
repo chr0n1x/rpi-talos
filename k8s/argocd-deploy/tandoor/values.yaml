@@ -49,12 +49,19 @@ tandoor:
             repository: ghcr.io/tandoorrecipes/recipes
             tag: 2
 
+          # socket takes a WHILE to come up
           probes:
             liveness:
               enabled: true
-              type: HTTP
-              path: /
-            # socket takes a WHILE to come up
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 60
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 8
             readiness:
               enabled: true
               custom: true
