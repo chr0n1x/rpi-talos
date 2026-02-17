@@ -117,7 +117,7 @@ data:
             href: "https://grafana.rannet.duckdns.org"
             ping: "https://grafana.rannet.duckdns.org"
         - K8s Headlamp Dashboard:
-            icon: 'https://raw.githubusercontent.com/kubernetes-sigs/headlamp/de4a619a991b1109264535de7d6ff2d6285637b7/frontend/src/resources/logo-light.svg'
+            icon: 'https://github.com/kubernetes-sigs/headlamp/blob/main/plugins/examples/change-logo/src/icon-small-light.svg'
             description: K8s dashboard
             href: "https://headlamp.rannet.duckdns.org"
             siteMonitor: "https://headlamp.rannet.duckdns.org"
