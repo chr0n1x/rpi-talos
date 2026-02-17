@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: prometheus
-    version: ~27
+    version: ~28
     repository: https://prometheus-community.github.io/helm-charts
 
   - name: traefik-ingress
