@@ -30,8 +30,8 @@ traefik:
 
   # DEADGE
   hostNetwork: true
-  progressDeadlineSeconds: 360
-  minReadySeconds: 30
+  # progressDeadlineSeconds: 360
+  # minReadySeconds: 30
   nodeSelector:
     kubernetes.io/hostname: nyx
   priorityClassName: system-node-critical
