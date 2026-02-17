@@ -98,7 +98,7 @@ tandoor:
       advancedMounts:
         main:   # main controller
           main: # main container
-            - path: /opt/recipes/staticfiles
+            - path: /opt/recipes/mediafiles
 
   service:
     tandoor:
