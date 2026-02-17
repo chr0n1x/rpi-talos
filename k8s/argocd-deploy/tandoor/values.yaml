@@ -51,7 +51,7 @@ tandoor:
 
           # socket takes a WHILE to come up
           # omitting for now because ALLOWED_HOSTS doesn't seem to play nice? iunno
-          probes:
+          # probes:
           #   startup:
           #     enabled: true
           #     custom: true
@@ -67,10 +67,10 @@ tandoor:
           #     enabled: true
           #     type: HTTP
           #     path: /
-            readiness:
-              enabled: true
-              type: HTTP
-              path: /
+          #   readiness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
 
           # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
           # @default -- See [values.yaml](./values.yaml)
