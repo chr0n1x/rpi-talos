@@ -1,0 +1,100 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  roleName: tandoor
+  size: 4Gi
+  instances: 2
+  labels: {}
+  annotations: {}
+
+
+traefik-ingress:
+  dnsNames:
+    - dns: tandoor.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: tandoor-svc
+          port: http
+
+
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      vaultAuthName: tandoor-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: tandoor
+        serviceAccount: tandoor
+        audiences:
+          - vault
+
+
+tandoor:
+  controllers:
+    main:
+
+      type: deployment
+      containers:
+        main:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            # fsGroup: 65534
+          image:
+            pullPolicy: Always
+            repository: ghcr.io/tandoorrecipes/recipes
+            tag: 2
+
+          # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
+          # @default -- See [values.yaml](./values.yaml)
+          env:
+            TZ: America/New_York
+            ALLOWED_HOSTS: tandoor.rannet.duckdns.org
+            DEBUG: "0"
+            TANDOOR_PORT: 8080 # match with svc below
+            # GUNICORN_MEDIA: "0"
+
+            # generated via cnpg
+            DB_ENGINE: django.db.backends.postgresql
+            POSTGRES_HOST: tandoor-rw
+            POSTGRES_DB: tandoor
+            POSTGRES_USER:
+              secretKeyRef:
+                name: tandoor-superuser
+                key: username
+            POSTGRES_PASSWORD:
+              secretKeyRef:
+                name: tandoor-superuser
+                key: password
+
+            # user setup
+            SECRET_KEY: password
+            SOCIAL_PROVIDERS: allauth.socialaccount.providers.openid_connect
+            SOCIALACCOUNT_PROVIDERS:
+               secretKeyRef:
+                name: tandoor-env
+                key: SOCIALACCOUNT_PROVIDERS
+
+  persistence:
+    tandoorMedia:
+      # TODO: replace with created SMB after provisioning?
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
+      storageClass: smb
+      size: 8Gi
+      retain: true
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /opt/recipes/staticfiles
+
+  service:
+    tandoor:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 8080
+        static:
+          port: 80

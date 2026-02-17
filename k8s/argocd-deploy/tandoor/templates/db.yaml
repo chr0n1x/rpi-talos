@@ -1,0 +1,37 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: tandoor
+  namespace: {{ .Release.Namespace }}
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: {{ .Values.cnpg.instances | default 1 }}
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: {{ .Values.cnpg.roleName }}
+        connectionLimit: -1
+        ensure: present
+        inherit: true
+        superuser: true
+        login: true
+        passwordSecret:
+          name: tandoor-postgres-user
+
+  bootstrap:
+    initdb:
+      database: tandoor
+      owner: tandoor-superuser
+      secret:
+        name: tandoor-superuser
+  storage:
+    {{- with .Values.cnpg.size }}
+    size: {{ . }}
+    {{- end }}
+
+    {{- with .Values.cnpg.storageClass }}
+    storageClass: {{ . }}
+    {{- end }}

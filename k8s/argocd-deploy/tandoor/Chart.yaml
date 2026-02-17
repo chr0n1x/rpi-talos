@@ -1,0 +1,20 @@
+---
+apiVersion: 1.0.0
+name: tandoor
+version: 0.0.1
+description: simple tandoor installation
+type: application
+
+dependencies:
+  - name: app-template
+    alias: tandoor
+    version: ~4
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
