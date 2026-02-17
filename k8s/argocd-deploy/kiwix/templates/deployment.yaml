@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: kiwix-serve
-        image: {{ .Values.deployment.image | default "ghcr.io/kiwix/kiwix-serve:3.7.0" }}
+        image: {{ .Values.deployment.image | default "ghcr.io/kiwix/kiwix-serve:3.8.1" }}
         imagePullPolicy: IfNotPresent
         args:
           {{- if .Values.deployment.otherArgs }}
