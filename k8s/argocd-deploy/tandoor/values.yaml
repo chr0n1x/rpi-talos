@@ -46,12 +46,23 @@ tandoor:
             repository: ghcr.io/tandoorrecipes/recipes
             tag: 2
 
-          # uhhh this doesnt seem to play well
-          # probes:
-          #   liveness:
-          #     enabled: true
-          #     type: HTTP
-          #     path: /
+          probes:
+            readniness:
+              enabled: true
+              type: HTTP
+              path: /
+            # socket takes a WHILE to come up
+            liveness:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 60
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 8
 
           # -- environment variables. [[ref]](https://github.com/TandoorRecipes/recipes/blob/master/.env.template).
           # @default -- See [values.yaml](./values.yaml)
