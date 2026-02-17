@@ -116,11 +116,11 @@ data:
             description: Grafana Dashboard
             href: "https://grafana.rannet.duckdns.org"
             ping: "https://grafana.rannet.duckdns.org"
-        - K8s Dashboard:
-            icon: 'https://kubernetes.io/images/wheel.svg'
+        - K8s Headlamp Dashboard:
+            icon: 'https://raw.githubusercontent.com/kubernetes-sigs/headlamp/de4a619a991b1109264535de7d6ff2d6285637b7/frontend/src/resources/logo-light.svg'
             description: K8s dashboard
-            href: "https://k8s-dashboard.rannet.duckdns.org/#/workloads?namespace=_all"
-            siteMonitor: "https://k8s-dashboard.rannet.duckdns.org/status/ready"
+            href: "https://headlamp.rannet.duckdns.org"
+            siteMonitor: "https://headlamp.rannet.duckdns.org"
         - Longhorn:
             icon: 'https://longhorn.io/img/logos/longhorn-icon-color.png'
             description: Longhorn Persistent Store Dashboard
