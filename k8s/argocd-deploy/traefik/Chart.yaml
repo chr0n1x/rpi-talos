@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: traefik
-    version: ~37
+    version: ~39
     repository: https://traefik.github.io/charts
 
   - name: vault-auth
