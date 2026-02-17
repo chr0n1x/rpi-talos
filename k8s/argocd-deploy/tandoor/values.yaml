@@ -50,22 +50,23 @@ tandoor:
             tag: 2
 
           # socket takes a WHILE to come up
+          # omitting for now because ALLOWED_HOSTS doesn't seem to play nice? iunno
           probes:
-            startup:
-              enabled: true
-              custom: true
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 360
-                periodSeconds: 60
-                timeoutSeconds: 16
-                failureThreshold: 16
-            liveness:
-              enabled: true
-              type: HTTP
-              path: /
+          #   startup:
+          #     enabled: true
+          #     custom: true
+          #     spec:
+          #       httpGet:
+          #         path: /
+          #         port: 8080
+          #       initialDelaySeconds: 240
+          #       periodSeconds: 60
+          #       timeoutSeconds: 16
+          #       failureThreshold: 16
+          #   liveness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
             readiness:
               enabled: true
               type: HTTP
