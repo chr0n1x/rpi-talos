@@ -12,7 +12,7 @@ traefik-ingress:
     - dns: tandoor.rannet.duckdns.org
       services:
         - kind: Service
-          name: tandoor-svc
+          name: tandoor
           port: http
 
 
