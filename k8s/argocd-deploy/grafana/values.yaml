@@ -60,12 +60,12 @@ grafana:
   persistence:
     enabled: true
     existingClaim: grafana # I think this is from the ~8 version of the chart
+
+    # below is now to populate the the pvc in templates (to carry over the old
+    # PV w/ the old "grafana" pvc)
     storageClassName: longhorn
-    # even this seems to be excessive
     size: 1Gi
     volumeName: pvc-82b7ece5-d11a-44c4-8e21-f9b4fca70a42
-    accessModes:
-      - ReadWriteMany
 
   datasources:
     datasources.yaml:
