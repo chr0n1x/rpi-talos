@@ -59,7 +59,7 @@ grafana:
 
   persistence:
     enabled: true
-    existingClaim: pvc-82b7ece5-d11a-44c4-8e21-f9b4fca70a42
+    existingClaim: grafana # I think this is from the ~8 version of the chart
     storageClassName: longhorn
     # even this seems to be excessive
     size: 1Gi
