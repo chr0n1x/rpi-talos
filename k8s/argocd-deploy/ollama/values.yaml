@@ -6,13 +6,13 @@ traefik-ingress:
     - dns: open-webui.rannet.duckdns.org
       services:
         - kind: Service
-          name: open-webui
+          name: ollama-open-webui 
           port: http
 
     - dns: ollama.rannet.duckdns.org
       services:
         - kind: Service
-          name: open-webui-ollama
+          name: ollama
           port: http
 
 cnpg:
