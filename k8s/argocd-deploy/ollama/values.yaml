@@ -44,6 +44,8 @@ open-webui:
     url: redis://ollama-valkey:6379/0
 
   extraEnvVars:
+    - name: OLLAMA_BASE_URLS
+      value: ollama:11434
     - name: DATABASE_HOST
       value: owui-db-rw
     - name: DATABASE_NAME
