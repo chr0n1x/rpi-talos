@@ -29,6 +29,7 @@ cnpg:
   size: 2Gi
   storageClass: longhorn
   roleName: gitea
+  instances: 2
 
 gitea:
   strategy:
