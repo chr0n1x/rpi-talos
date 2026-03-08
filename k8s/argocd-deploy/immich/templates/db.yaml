@@ -23,7 +23,7 @@ spec:
         superuser: true
         login: true
         passwordSecret:
-          name: immich-superuser
+          name: immich-postgres-user
   bootstrap:
     initdb:
       database: immich

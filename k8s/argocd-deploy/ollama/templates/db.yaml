@@ -16,7 +16,8 @@ spec:
       - name: owui
         superuser: true
         login: true
-        # not sure if this even works
+        # this secret does not exist on init, so I think cnpg uses some random
+        # secret it generates itself
         passwordSecret:
           name: owui-postgres-user
 
@@ -25,6 +26,8 @@ spec:
       database: owui
       owner: owui
       secret:
+        # this secret is created by cnpg; super important to use THIS one for
+        # bootstrapping or replicas flap
         name: owui-db-superuser
   storage:
     size: 32Gi

@@ -28,7 +28,7 @@ spec:
       database: gitea
       owner: gitea
       secret:
-        name: gitea-postgres-user
+        name: gitea-superuser
   storage:
     {{- with .Values.cnpg.size }}
     size: {{ . }}
