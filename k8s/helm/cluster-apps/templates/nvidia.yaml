@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: nvidia
   namespace: {{ .Values.argocd.namespace }}
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

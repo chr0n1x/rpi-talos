@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: longhorn
   namespace: {{ .Values.argocd.namespace }}
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
