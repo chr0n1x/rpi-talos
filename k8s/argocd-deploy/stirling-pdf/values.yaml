@@ -1,4 +1,4 @@
-traefik-ingress:
+traefik-ing1ress:
   dnsNames:
     - dns: stirling-pdf.rannet.duckdns.org
       services:
@@ -6,8 +6,27 @@ traefik-ingress:
           name: stirling-pdf
           port: http
 
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  instances: 2
 
 stirling-pdf:
+  envs:
+    - name: SYSTEM_DATASOURCE_ENABLECUSTOMDATABASE
+      value: "true"
+    - name: SYSTEM_DATASOURCE_CUSTOMDATABACKENDURL
+      value: "jdbc:postgresql://stirling-pdf-rw:5432/stirling_pdf"
+    - name: SYSTEM_DATASOURCE_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: stirling-superuser
+          key: username
+    - name: SYSTEM_DATASOURCE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: stirling-superuser
+          key: password
+
   persistence:
     enabled: true
     size: 16Gi

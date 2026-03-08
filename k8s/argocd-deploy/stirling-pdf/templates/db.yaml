@@ -1,0 +1,29 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: stirling-pdf
+  namespace: stirling-pdf
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: {{ .Values.cnpg.instances }}
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: stirling-pdf
+        superuser: true
+        login: true
+        passwordSecret:
+          name: stirling-postgres-user
+
+  bootstrap:
+    initdb:
+      database: stirling_pdf
+      owner: stirling-pdf
+      secret:
+        name: stirling-superuser
+  storage:
+    size: 4Gi
+    storageClass: longhorn
