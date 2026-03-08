@@ -19,12 +19,12 @@ stirling-pdf:
     - name: SYSTEM_DATASOURCE_USERNAME
       valueFrom:
         secretKeyRef:
-          name: stirling-superuser
+          name: stirling-pdf-superuser
           key: username
     - name: SYSTEM_DATASOURCE_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: stirling-superuser
+          name: stirling-pdf-superuser
           key: password
 
   persistence:

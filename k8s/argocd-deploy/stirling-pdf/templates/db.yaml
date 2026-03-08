@@ -23,7 +23,7 @@ spec:
       database: stirling_pdf
       owner: stirling-pdf
       secret:
-        name: stirling-superuser
+        name: stirling-pdf-superuser
   storage:
     size: 4Gi
     storageClass: longhorn
