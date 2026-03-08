@@ -6,7 +6,8 @@ description: simple stirling-pdf installation
 type: application
 
 dependencies:
-  - name: stirling-pdf
+  - name: stirling-pdf-chart
+    alias: stirling-pdf
     version: ~3
     repository: https://stirling-tools.github.io/Stirling-PDF-chart
 
