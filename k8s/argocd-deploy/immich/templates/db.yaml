@@ -23,14 +23,13 @@ spec:
         superuser: true
         login: true
         passwordSecret:
-          name: immich-postgres-user
-
+          name: immich-superuser
   bootstrap:
     initdb:
       database: immich
       owner: immich
       secret:
-        name: immich-postgres-user
+        name: immich-superuser
       postInitSQL:
           # only use with vchord.so above
           - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
