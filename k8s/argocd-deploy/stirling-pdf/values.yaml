@@ -1,4 +1,4 @@
-traefik-ing1ress:
+traefik-ingress:
   dnsNames:
     - dns: stirling-pdf.rannet.duckdns.org
       services:
