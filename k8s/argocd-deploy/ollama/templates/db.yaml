@@ -16,8 +16,9 @@ spec:
       - name: owui
         superuser: true
         login: true
+        # not sure if this even works
         passwordSecret:
-          name: owui-db-superuser
+          name: owui-postgres-user
 
   bootstrap:
     initdb:
