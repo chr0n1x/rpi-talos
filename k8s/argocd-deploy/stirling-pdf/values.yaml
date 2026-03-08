@@ -12,6 +12,9 @@ cnpg:
 
 stirling-pdf:
   envs:
+    # https://docs.stirlingpdf.com/Installation/Docker%20Install#simple-deployment-recommended
+    - name: MODE
+      value: BOTH
     - name: SYSTEM_DATASOURCE_ENABLECUSTOMDATABASE
       value: "true"
     - name: SYSTEM_DATASOURCE_CUSTOMDATABACKENDURL
