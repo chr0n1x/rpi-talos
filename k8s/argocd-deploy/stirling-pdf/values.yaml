@@ -1,0 +1,16 @@
+traefik-ingress:
+  dnsNames:
+    - dns: stirling-pdf.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: stirling-pdf
+          port: http
+
+
+stirling-pdf:
+  persistence:
+    enabled: true
+    size: 16Gi
+    storageClass: smb
+    # TODO
+    # volumeName: <>
