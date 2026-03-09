@@ -46,9 +46,9 @@ stirling-pdf:
           name: stirling-pdf-superuser
           key: password
 
-  persistence:
-    enabled: true
-    size: 8Gi
-    storageClass: longhorn
-    # TODO
-    # volumeName: <>
+  # persistence:
+  #   enabled: true
+  #   size: 8Gi
+  #   storageClass: longhorn
+  #   # TODO
+  #   # volumeName: <>
