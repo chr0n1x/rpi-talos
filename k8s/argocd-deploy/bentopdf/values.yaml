@@ -17,10 +17,6 @@ bentopdf:
         unavailable: 1
       containers:
         main:
-          securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            # fsGroup: 65534
           image:
             pullPolicy: Always
             repository: ghcr.io/alam00000/bentopdf-simple
