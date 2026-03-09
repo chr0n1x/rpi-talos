@@ -1,0 +1,59 @@
+traefik-ingress:
+  dnsNames:
+    - dns: bentopdf.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: bentopdf
+          port: http
+
+
+bentopdf:
+  controllers:
+    main:
+
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            # fsGroup: 65534
+          image:
+            pullPolicy: Always
+            repository: ghcr.io/alam00000/bentopdf-simple
+            tag: latest
+
+          # TODO: later
+          # probes:
+          #   startup:
+          #     enabled: true
+          #     custom: true
+          #     spec:
+          #       httpGet:
+          #         path: /
+          #         port: 8080
+          #       initialDelaySeconds: 240
+          #       periodSeconds: 60
+          #       timeoutSeconds: 16
+          #       failureThreshold: 16
+          #   liveness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
+          #   readiness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
+
+  service:
+    bentopdf:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 8080
+        static:
+          port: 80
