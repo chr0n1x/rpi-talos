@@ -145,6 +145,11 @@ data:
             description: IdP for RanNet
             href: "https://authentik.rannet.duckdns.org"
             siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
+        - BentoPDF:
+            icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
+            description: Browser/Client Side ONLY PDF Editor!
+            href: "https://bentopdf.rannet.duckdns.org"
+            siteMonitor: "https://bentopdf.rannet.duckdns.org/"
         - Gitea:
             widget:
               type: gitea

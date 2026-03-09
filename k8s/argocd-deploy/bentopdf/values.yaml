@@ -22,27 +22,26 @@ bentopdf:
             repository: ghcr.io/alam00000/bentopdf-simple
             tag: latest
 
-          # TODO: later
-          # probes:
-          #   startup:
-          #     enabled: true
-          #     custom: true
-          #     spec:
-          #       httpGet:
-          #         path: /
-          #         port: 8080
-          #       initialDelaySeconds: 240
-          #       periodSeconds: 60
-          #       timeoutSeconds: 16
-          #       failureThreshold: 16
-          #   liveness:
-          #     enabled: true
-          #     type: HTTP
-          #     path: /
-          #   readiness:
-          #     enabled: true
-          #     type: HTTP
-          #     path: /
+          probes:
+            startup:
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 16
+                periodSeconds: 60
+                timeoutSeconds: 16
+                failureThreshold: 16
+            liveness:
+              enabled: true
+              type: HTTP
+              path: /
+            readiness:
+              enabled: true
+              type: HTTP
+              path: /
 
   service:
     bentopdf:
