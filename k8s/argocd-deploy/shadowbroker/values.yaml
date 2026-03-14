@@ -6,7 +6,6 @@ traefik-ingress:
           name: shadowbroker-frontend
           port: http
 
-
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
   authMethods:
@@ -69,7 +68,7 @@ shadowbroker:
             tag: latest
 
           env:
-            BACKEND_URL: 'http://backend.shadowbroker.svc.cluster.local:8000'
+            BACKEND_URL: 'http://shadowbroker-backend.shadowbroker.svc.cluster.local:8000'
 
           # probes:
           #   startup:
