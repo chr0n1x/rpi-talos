@@ -3,7 +3,7 @@ traefik-ingress:
     - dns: shadowbroker.rannet.duckdns.org
       services:
         - kind: Service
-          name: frontend
+          name: shadowbroker-frontend
           port: http
 
 
