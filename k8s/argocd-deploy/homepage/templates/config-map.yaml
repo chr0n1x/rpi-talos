@@ -93,6 +93,12 @@ data:
           href: https://wiki.rannet.duckdns.org
           ping: https://wiki.rannet.duckdns.org
 
+      - Shadowbroker:
+          icon: 'https://raw.githubusercontent.com/BigBodyCobain/Shadowbroker/refs/heads/main/frontend/src/app/favicon.ico?raw=true'
+          description: Global Data/Threat Aggregator UI
+          href: https://shadowbroker.rannet.duckdns.org/
+          ping: https://shadowbroker.rannet.duckdns.org/
+
       - Open WebUI:
           icon: 'https://ollama.com/public/ollama.png'
           description: 'LLMs in-cluster via open-webui'
