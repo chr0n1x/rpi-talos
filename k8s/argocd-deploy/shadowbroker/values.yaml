@@ -66,13 +66,13 @@ shadowbroker:
 
 
   service:
-    shadowbroker:
+    backend:
       controller: backend
       type: ClusterIP
       ports:
         http:
           port: 8000
-    shadowbroker:
+    frontend:
       controller: frontend
       type: ClusterIP
       ports:
