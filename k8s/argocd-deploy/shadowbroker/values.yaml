@@ -7,6 +7,21 @@ traefik-ingress:
           port: http
 
 
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      vaultAuthName: shadowbroker-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: shadowbroker
+        serviceAccount: shadowbroker
+        audiences:
+          - vault
+
+
+
 shadowbroker:
   controllers:
 
