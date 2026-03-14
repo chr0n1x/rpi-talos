@@ -39,6 +39,19 @@ shadowbroker:
             pullPolicy: Always
             repository: registry.rannet.duckdns.org/shadowbroker/backend
             tag: latest
+          env:
+            AIS_API_KEY:
+              secretKeyRef:
+              name: shadowbroker-env
+              key: AIS_API_KEY
+            OPENSKY_CLIENT_ID:
+              secretKeyRef:
+              name: shadowbroker-env
+              key: OPENSKY_CLIENT_ID
+            OPENSKY_CLIENT_SECRET:
+              secretKeyRef:
+              name: shadowbroker-env
+              key: OPENSKY_CLIENT_SECRET
 
     frontend:
       type: deployment
