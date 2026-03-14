@@ -1,0 +1,16 @@
+---
+apiVersion: 1.0.0
+name: shadowbroker
+version: 0.0.1
+description: simple shadowbroker installation
+type: application
+
+dependencies:
+  - name: app-template
+    alias: shadowbroker
+    version: ~4
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress

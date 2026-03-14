@@ -1,0 +1,80 @@
+traefik-ingress:
+  dnsNames:
+    - dns: shadowbroker.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: frontend
+          port: http
+
+
+shadowbroker:
+  controllers:
+
+    backend:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          image:
+            pullPolicy: Always
+            repository: registry.rannet.duckdns.org/shadowbroker/backend
+            tag: latest
+
+    frontend:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          image:
+            pullPolicy: Always
+            repository: registry.rannet.duckdns.org/shadowbroker/frontend
+            tag: latest
+
+          env:
+            BACKEND_URL: 'http://backend.shadowbroker.svc.cluster.local:8000'
+
+          # probes:
+          #   startup:
+          #     enabled: true
+          #     custom: true
+          #     spec:
+          #       httpGet:
+          #         path: /
+          #         port: 8000
+          #       initialDelaySeconds: 240
+          #       periodSeconds: 60
+          #       timeoutSeconds: 16
+          #       failureThreshold: 16
+          #   liveness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
+          #   readiness:
+          #     enabled: true
+          #     type: HTTP
+          #     path: /
+
+
+  service:
+    shadowbroker:
+      controller: backend
+      type: ClusterIP
+      ports:
+        http:
+          port: 8000
+    shadowbroker:
+      controller: frontend
+      type: ClusterIP
+      ports:
+        http:
+          port: 3000
