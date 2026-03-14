@@ -1,4 +1,4 @@
-hpiVersion: 1.0.0
+apiVersion: 1.0.0
 name: headlamp
 version: 0.0.1
 description: headlamp wrapper chart

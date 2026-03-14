@@ -21,6 +21,6 @@ spec:
   syncPolicy:
     syncOptions:
       - ServerSideApply=true
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       selfHeal: true
