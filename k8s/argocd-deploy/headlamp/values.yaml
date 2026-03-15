@@ -41,6 +41,7 @@ headlamp:
   #     - oidc-groups-claim="authentik Admins"
   config:
     # baseURL: https://headlamp.rannet.duckdns.org
+    sessionTTL: null
 
     inClusterContextName: homelab
 
