@@ -33,5 +33,7 @@ prometheus:
     # seems to be just about enough for the default 15 day retention window
     persistentVolume:
       size: 64Gi
+    retentionSize: 63GB # iunno give it some wiggle room
+    retention: 60d # not sure if this will work
     ingress:
       enabled: false
