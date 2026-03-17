@@ -16,7 +16,7 @@ traefik-ingress:
           port: http
 
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.2
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:16
   instances: 2
 
 vault-auth:
