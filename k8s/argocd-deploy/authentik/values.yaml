@@ -39,7 +39,8 @@ keda-global-cron:
     # valkey required in all cases
 
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17
+  instances: 3
   roleName: authentik
   labels: {}
   annotations: {}

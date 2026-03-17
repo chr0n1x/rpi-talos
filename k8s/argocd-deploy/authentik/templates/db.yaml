@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.global.namespaceOverride }}
 spec:
   imageName: {{ .Values.cnpg.image }}
-  instances: 2
+  instances: {{ .Values.cnpg.instances }}
 
   enableSuperuserAccess: true
 
