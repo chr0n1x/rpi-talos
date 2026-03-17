@@ -23,5 +23,11 @@ spec:
       - ServerSideApply=true
       - CreateNamespace=true
     automated:
-      selfHeal: false
+      selfHeal: true
       prune: true
+
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas
