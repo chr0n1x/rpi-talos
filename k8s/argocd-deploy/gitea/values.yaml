@@ -25,7 +25,7 @@ vault-auth:
           - vault
 
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17
   size: 2Gi
   storageClass: longhorn
   roleName: gitea

@@ -1,5 +1,5 @@
 cnpg:
-  image: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:17
   roleName: tandoor
   size: 4Gi
   instances: 2
