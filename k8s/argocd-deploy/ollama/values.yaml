@@ -29,7 +29,7 @@ vault-auth:
       mount: in-cluster
       config:
         role: ollama
-        serviceAccount: open-webui-ollama
+        serviceAccount: ollama
         audiences:
           - vault
 
