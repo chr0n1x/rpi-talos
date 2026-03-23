@@ -88,7 +88,7 @@ data:
             key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY}}` }}
 
       - Kiwix:
-          icon: 'https://kiwix.org/android-chrome-512x512.png'
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Kiwix_logo_v3.svg/1280px-Kiwix_logo_v3.svg.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
           href: https://wiki.rannet.duckdns.org
           ping: https://wiki.rannet.duckdns.org
