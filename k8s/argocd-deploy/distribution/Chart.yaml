@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: docker-registry
-    version: ~3
+    version: 3.0.0
     repository: https://twuni.github.io/docker-registry.helm
 
   - name: traefik-ingress

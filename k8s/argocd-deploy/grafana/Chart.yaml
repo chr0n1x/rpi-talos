@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: grafana
-    version: ~11
+    version: 12.1.8
     repository: https://grafana-community.github.io/helm-charts
 
   - name: vault-auth

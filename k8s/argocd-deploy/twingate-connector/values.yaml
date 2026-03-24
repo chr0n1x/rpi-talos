@@ -15,6 +15,6 @@ vault-auth:
 connector:
   connector:
     image:
-      tag: 1
+      tag: 1.85.0
     network: rannet
     existingSecret: env-secrets

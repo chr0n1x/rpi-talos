@@ -9,5 +9,5 @@ type: application
 
 dependencies:
   - name: vault-secrets-operator
-    version: ~1
+    version: 1.3.0
     repository: https://helm.releases.hashicorp.com

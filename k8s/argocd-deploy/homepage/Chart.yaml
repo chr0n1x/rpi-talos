@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: homepage
-    version: ~2
+    version: 2.1.0
     repository: https://jameswynn.github.io/helm-charts
 
   - name: traefik-ingress

@@ -54,10 +54,10 @@ homepage:
 
   image:
     repository: ghcr.io/gethomepage/homepage
-    tag: latest
+    tag: v1.11.0
   env:
     - name: HOMEPAGE_ALLOWED_HOSTS
-      value: "home.k8s:30443,home.k8s:30080,rannet.duckdns.org"
+      value: "localhost:8080,rannet.duckdns.org"
     - name: HOMEPAGE_VAR_ARGOCD_KEY
       valueFrom:
         secretKeyRef:
