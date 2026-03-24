@@ -18,7 +18,7 @@ chartmuseum:
     type: RollingUpdate
   image:
     repository: ghcr.io/helm/chartmuseum
-    tag: v0.16.3
+    tag: 0.16.5
   env:
     open:
       # storage backend, can be one of: local, alibaba, amazon, google, microsoft, oracle
