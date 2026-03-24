@@ -10,7 +10,7 @@ dependencies:
     repository: https://immich-app.github.io/immich-charts
 
   - name: valkey
-    version: ~0.7
+    version: 0.9.3
     repository: https://valkey.io/valkey-helm/
 
   - name: traefik-ingress
