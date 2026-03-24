@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: chartmuseum
-    version: ~3
+    version: 3.10.4
     repository: https://chartmuseum.github.io/charts
 
   - name: valkey
