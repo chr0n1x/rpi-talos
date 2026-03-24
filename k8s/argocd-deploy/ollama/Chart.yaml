@@ -14,7 +14,7 @@ dependencies:
     repository: file://../../helm/vault-auth
 
   - name: valkey
-    version: ~0.7
+    version: 0.9.3
     repository: https://valkey.io/valkey-helm/
 
   - name: traefik-ingress
