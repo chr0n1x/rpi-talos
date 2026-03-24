@@ -8,7 +8,7 @@ type: application
 dependencies:
   - name: app-template
     alias: bentopdf
-    version: ~4
+    version: 4.6.2
     repository: https://bjw-s-labs.github.io/helm-charts/
 
   - name: traefik-ingress
