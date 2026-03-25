@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: paperless-ngx
-    version: ~0.24
+    version: 0.24.1
     repository: https://charts.gabe565.com
 
   - name: valkey
