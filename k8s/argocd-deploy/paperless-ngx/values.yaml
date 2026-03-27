@@ -29,7 +29,7 @@ vault-auth:
 paperless-ngx:
   image:
     repository: ghcr.io/paperless-ngx/paperless-ngx
-    tag: "2.20.8"
+    tag: "2.20.13"
 
   serviceAccount:
     create: true
