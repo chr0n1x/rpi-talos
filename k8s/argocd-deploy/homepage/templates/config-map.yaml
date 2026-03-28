@@ -94,7 +94,7 @@ data:
           ping: https://wiki.rannet.duckdns.org
 
       - Shadowbroker:
-          icon: 'https://raw.githubusercontent.com/BigBodyCobain/Shadowbroker/refs/heads/main/frontend/src/app/favicon.ico?raw=true'
+          icon: 'https://shadowbroker.rannet.duckdns.org/favicon.ico'
           description: Global Data/Threat Aggregator UI
           href: https://shadowbroker.rannet.duckdns.org/
           ping: https://shadowbroker.rannet.duckdns.org/
