@@ -13,6 +13,7 @@
 #   @daily <user> TALOSCONFIG=<path to config> /bin/bash ~/Code/chr0n1x/rpi-talos/etc/scripts/etcd-defrag.bash 
 # 3. or use the systemctl service/timer in ../systemd
 
+PATH=$PATH:/usr/local/bin
 NODES=$(kubectl get nodes -o=wide | grep control | awk '{ print $1 }')
 # LOG_FILE=/tmp/etcd-defrag.log
 
