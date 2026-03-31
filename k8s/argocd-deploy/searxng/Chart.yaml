@@ -6,7 +6,7 @@ type: application
 
 dependencies:
   - name: searxng
-    version: ~1
+    version: 1.0.4
     repository: https://chr0n1x.github.io/searxng-helm-chart
 
   - name: traefik-ingress
