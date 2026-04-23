@@ -47,7 +47,7 @@ tandoor:
           image:
             pullPolicy: Always
             repository: ghcr.io/tandoorrecipes/recipes
-            tag: 2.5.3
+            tag: 2.6.5
 
           # socket takes a WHILE to come up
           # omitting for now because ALLOWED_HOSTS doesn't seem to play nice? iunno
