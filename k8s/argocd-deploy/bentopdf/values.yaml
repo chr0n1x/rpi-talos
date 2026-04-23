@@ -20,7 +20,7 @@ bentopdf:
           image:
             pullPolicy: Always
             repository: ghcr.io/alam00000/bentopdf-simple
-            tag: 2.7.0
+            tag: 2.8.4
 
           probes:
             startup:
