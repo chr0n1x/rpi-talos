@@ -8,3 +8,4 @@ talos/
 # git update-index --no-assume-unchanged ${file}
 # git update-index --assume-unchanged ${file}  # ignore further changes to a file
 etc/systemd/etcd-defrag.env
+etc/scripts/etcd-defrag.bash.log
