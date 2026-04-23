@@ -31,6 +31,8 @@ shadowbroker:
         unavailable: 1
       containers:
         main:
+          nodeSelector:
+            kubernetes.io/arch: arm64
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
@@ -59,6 +61,8 @@ shadowbroker:
         unavailable: 1
       containers:
         main:
+          nodeSelector:
+            kubernetes.io/arch: arm64
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
