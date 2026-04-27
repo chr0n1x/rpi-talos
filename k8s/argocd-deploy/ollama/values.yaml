@@ -140,7 +140,7 @@ open-webui:
   # values ref: https://github.com/otwld/ollama-helm/blob/main/values.yaml
   # https://github.com/open-webui/helm-charts/issues/17#issuecomment-2105195244
   ollama:
-    enabled: true
+    enabled: false # since moved to dedicated llama.cpp server
 
     image:
       tag: latest
