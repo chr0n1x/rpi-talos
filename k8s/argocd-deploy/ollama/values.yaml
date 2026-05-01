@@ -9,11 +9,11 @@ traefik-ingress:
           name: ollama-open-webui 
           port: http
 
-    - dns: ollama.rannet.duckdns.org
-      services:
-        - kind: Service
-          name: ollama
-          port: http
+    # - dns: ollama.rannet.duckdns.org
+    #   services:
+    #     - kind: Service
+    #       name: ollama
+    #       port: http
 
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:16
