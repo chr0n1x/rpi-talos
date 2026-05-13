@@ -211,16 +211,11 @@ data:
               url: "https://pihole.rannet-edge.duckdns.org/"
               version: 6
               key: {{ `{{HOMEPAGE_VAR_PIHOLE_KEY}}` | quote }}
-        - PiSugar Monitor:
-            icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
-            description: PiSugar LiIon Battery Monitor
-            href: "https://pisugar.rannet-edge.duckdns.org/"
-            ping: "https://pisugar.rannet-edge.duckdns.org/"
-        - ProxmoxVE:
-            icon: 'https://www.proxmox.com/favicon.svg'
-            description: Proxmox VE
-            href: "https://proxmox.rannet-edge.duckdns.org/"
-            ping: "https://proxmox.rannet-edge.duckdns.org/"
+        # - PiSugar Monitor:
+        #     icon: 'https://www.pisugar.com/cdn/shop/files/pisugar_logo_10x_4ea3a140-e114-4f95-a296-2e70e38e6399.png?v=1736241909&width=195'
+        #     description: PiSugar LiIon Battery Monitor
+        #     href: "https://pisugar.rannet-edge.duckdns.org/"
+        #     ping: "https://pisugar.rannet-edge.duckdns.org/"
         - NginxPM:
             icon: 'https://nginxproxymanager.com/icon.png'
             description: Nginx Proxy Manager Admin Panel
@@ -231,19 +226,15 @@ data:
             href: "https://auth.twingate.com/"
             icon: 'https://avatars.githubusercontent.com/u/97470429?s=200&v=4?raw=true'
             siteMonitor: 'https://status.twingate.com/api/v2/status.json'
-        - WoLWeb:
-            icon: 'https://m.media-amazon.com/images/I/41N9RhtWh9L.png'
-            description: WoL Web - Wake-on-LAN webapp
-            href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
-            ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
+        # - WoLWeb:
+        #     icon: 'https://m.media-amazon.com/images/I/41N9RhtWh9L.png'
+        #     description: WoL Web - Wake-on-LAN webapp
+        #     href: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
+        #     ping: "https://wolweb.rannet-edge.duckdns.org/wolweb/"
 
 
   bookmarks.yaml: |
     - AI / Ollama:
-      - Ollama:
-        - abbr: Ol
-          href: https://ollama.com/search
-          icon: 'https://ollama.com/public/ollama.png'
       - Hugging Face:
         - abbr: HF
           href: https://huggingface.co/
