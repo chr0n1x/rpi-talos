@@ -8,7 +8,7 @@ type: application
 dependencies:
   - name: gitea
     repository: https://dl.gitea.com/charts/
-    version: 12.5.0
+    version: 12.5.3
 
   - name: traefik-ingress
     version: ~1
