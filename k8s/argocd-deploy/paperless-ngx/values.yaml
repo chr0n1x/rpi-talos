@@ -8,7 +8,7 @@ traefik-ingress:
 
 cnpg:
   image: ghcr.io/tensorchord/cloudnative-vectorchord:17
-  instances: 2
+  instances: 3
 
 
 vault-auth:
