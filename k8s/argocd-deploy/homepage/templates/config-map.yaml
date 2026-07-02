@@ -234,7 +234,7 @@ data:
 
 
   bookmarks.yaml: |
-    - AI / Ollama:
+    - AI:
       - Hugging Face:
         - abbr: HF
           href: https://huggingface.co/
@@ -243,6 +243,10 @@ data:
         - abbr: PC
           href: https://paperswithcode.com/
           icon: 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg'
+      - TransformerExplainer:
+        - abbr: TE
+          href: https://poloclub.github.io/transformer-explainer/
+          icon: 'https://avatars.githubusercontent.com/u/19315506?s=200&v=4'
 
     - "K8s/Talos":
       - Awesome K8s:
