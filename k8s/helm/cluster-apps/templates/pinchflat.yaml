@@ -24,3 +24,9 @@ spec:
       prune: false
     syncOptions:
       - CreateNamespace=true
+
+  ignoreDifferences:
+    - kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/replicas
