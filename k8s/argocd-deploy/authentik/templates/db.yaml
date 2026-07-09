@@ -25,5 +25,5 @@ spec:
       secret:
         name: authentik-postgres-user
   storage:
-    size: 8Gi
+    size: 16Gi
     storageClass: longhorn
