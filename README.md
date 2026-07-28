@@ -29,12 +29,7 @@ _Historical setup notes from the original build are archived in [docs/initial-jo
 
 ## Domains
 
-All services exposed via Traefik + cert-manager DNS-01 challenges on DuckDNS:
-
-```
-rannet.duckdns.org      (internal)
-rannet-edge.duckdns.org (edge-accessible)
-```
+All services exposed via Traefik + cert-manager DNS-01 challenges on DuckDNS.
 
 **Only accessible on LAN!**
 
