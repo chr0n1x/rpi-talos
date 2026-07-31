@@ -47,7 +47,7 @@ degoog:
 
             DEGOOG_SETTINGS_PASSWORDS:
               secretKeyRef:
-                name: degoog-superuser
+                name: degoog-db-superuser
                 key: password
 
   persistence:
