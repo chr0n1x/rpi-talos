@@ -1,0 +1,32 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: degoog-db
+  namespace: degoog
+spec:
+  imageName: {{ .Values.cnpg.image }}
+  instances: {{ .Values.cnpg.instances }}
+
+  enableSuperuserAccess: true
+
+  managed:
+    roles:
+      - name: degoog
+        superuser: true
+        login: true
+        # this secret does not exist on init, so I think cnpg uses some random
+        # secret it generates itself
+        passwordSecret:
+          name: degoog-postgres-user
+
+  bootstrap:
+    initdb:
+      database: degoog
+      owner: degoog
+      secret:
+        name: degoog-db-superuser
+  storage:
+    size: 8Gi
+    storageClass: longhorn
+

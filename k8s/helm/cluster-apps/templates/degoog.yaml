@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: degoog
+  namespace: {{ .Values.argocd.namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: {{ .Values.repo.url }}
+    path: k8s/argocd-deploy/degoog
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - ../values.yaml
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: degoog
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true

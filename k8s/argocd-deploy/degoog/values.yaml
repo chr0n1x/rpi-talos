@@ -1,0 +1,71 @@
+cnpg:
+  image: ghcr.io/tensorchord/cloudnative-vectorchord:18
+  instances: 1
+
+traefik-ingress:
+  dnsNames:
+    - dns: degoog.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: degoog
+          port: http
+
+degoog:
+  controllers:
+    main:
+
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+          image:
+            pullPolicy: Always
+            repository: ghcr.io/degoog-org/degoog
+            tag: 0.23.0
+
+          # -- environment variables. [[ref]](https://github.com/degoog-org/degoog/blob/main/docker-compose-examples/full.yml).
+          # @default -- See [values.yaml](./values.yaml)
+          env:
+            DEGOOG_PUBLIC_INSTANCE: "true"
+            DEGOOG_VALKEY_URL: "redis://degoog-valkey:6379"
+
+            # TODO: degoog does not support separate envvars
+            # DEGOOG_POSTGRES: "postgresql://degoog:changeme@degoog-postgres:5432/degoog"
+            # POSTGRES_USER:
+            #   secretKeyRef:
+            #     name: degoog-superuser
+            #     key: username
+            # POSTGRES_PASSWORD:
+            #   secretKeyRef:
+            #     name: degoog-superuser
+            #     key: password
+
+            DEGOOG_SETTINGS_PASSWORDS:
+              secretKeyRef:
+                name: degoog-superuser
+                key: password
+
+  persistence:
+    static:
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
+      storageClass: longhorn
+      size: 2Gi
+      retain: true
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /app/data
+
+  service:
+    degoog:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 4444

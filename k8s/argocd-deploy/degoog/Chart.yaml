@@ -1,0 +1,24 @@
+---
+apiVersion: 1.0.0
+name: degoog
+version: 0.0.1
+description: simple degoog installation
+type: application
+
+dependencies:
+  - name: app-template
+    alias: degoog
+    version: 5.0.1
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
+  - name: valkey
+    version: 0.10.0
+    repository: https://valkey.io/valkey-helm/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth
