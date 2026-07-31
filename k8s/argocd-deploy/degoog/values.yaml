@@ -23,6 +23,7 @@ degoog:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+            fsGroup: 1000
           image:
             pullPolicy: Always
             repository: ghcr.io/degoog-org/degoog
