@@ -23,7 +23,6 @@ degoog:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
-            fsGroup: 1000
           image:
             pullPolicy: Always
             repository: ghcr.io/degoog-org/degoog
@@ -50,18 +49,6 @@ degoog:
               secretKeyRef:
                 name: degoog-db-superuser
                 key: password
-
-  persistence:
-    static:
-      type: persistentVolumeClaim
-      accessMode: ReadWriteMany
-      storageClass: longhorn
-      size: 2Gi
-      retain: true
-      advancedMounts:
-        main:   # main controller
-          main: # main container
-            - path: /app/data
 
   service:
     degoog:
