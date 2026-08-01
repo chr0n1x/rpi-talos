@@ -13,6 +13,9 @@ spec:
   managed:
     roles:
       - name: degoog
+        inherit: true
+        connectionLimit: -1
+        ensure: present
         superuser: true
         login: true
         # this secret does not exist on init, so I think cnpg uses some random
