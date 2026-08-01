@@ -50,7 +50,7 @@ degoog:
   persistence:
     appdata:
       type: persistentVolumeClaim
-      dataSource:
+      dataSourceRef:
         apiVersion: apps/v1
         kind: Deployment
         name: degoog
