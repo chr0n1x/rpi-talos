@@ -50,18 +50,17 @@ degoog:
   persistence:
     appdata:
       type: persistentVolumeClaim
-      dataSourceRef:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: degoog
-      type: persistentVolumeClaim
+      # dataSourceRef:
+      #   apiVersion: apps/v1
+      #   kind: Deployment
+      #   name: degoog
       accessMode: ReadWriteMany
       size: 2Gi
       retain: true
       advancedMounts:
         main:
           main:
-            - path: /opt/recipes/mediafiles
+            - path: /app/data
 
   service:
     degoog:
