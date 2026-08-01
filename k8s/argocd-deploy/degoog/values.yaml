@@ -30,6 +30,7 @@ degoog:
           env:
             DEGOOG_PUBLIC_INSTANCE: "true"
             DEGOOG_VALKEY_URL: "redis://degoog-valkey:6379"
+            DEGOOG_DISTRUST_PROXY: 0
 
             # TODO: degoog does not support separate envvars
             # DEGOOG_POSTGRES: "postgresql://degoog:changeme@degoog-postgres:5432/degoog"
