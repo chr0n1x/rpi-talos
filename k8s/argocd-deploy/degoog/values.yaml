@@ -20,9 +20,6 @@ degoog:
         unavailable: 1
       containers:
         main:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
           image:
             pullPolicy: Always
             repository: ghcr.io/degoog-org/degoog
@@ -49,6 +46,18 @@ degoog:
               secretKeyRef:
                 name: degoog-db-superuser
                 key: password
+
+  persistence:
+    appdata:
+      type: persistentVolumeClaim
+      dataSource:
+        - apiVersion: apps/v1
+          kind: Deployment
+          name: degoog
+      accessMode: ReadWriteOnce
+      size: 2Gi
+      globalMounts:
+        - path: /app/data
 
   service:
     degoog:
