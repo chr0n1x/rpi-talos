@@ -51,9 +51,9 @@ degoog:
     appdata:
       type: persistentVolumeClaim
       dataSource:
-        - apiVersion: apps/v1
-          kind: Deployment
-          name: degoog
+        apiVersion: apps/v1
+        kind: Deployment
+        name: degoog
       accessMode: ReadWriteOnce
       size: 2Gi
       globalMounts:
