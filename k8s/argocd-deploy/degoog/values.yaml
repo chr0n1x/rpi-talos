@@ -54,10 +54,14 @@ degoog:
         apiVersion: apps/v1
         kind: Deployment
         name: degoog
-      accessMode: ReadWriteOnce
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
       size: 2Gi
-      globalMounts:
-        - path: /app/data
+      retain: true
+      advancedMounts:
+        main:
+          main:
+            - path: /opt/recipes/mediafiles
 
   service:
     degoog:
