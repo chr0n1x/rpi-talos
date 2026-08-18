@@ -1,3 +1,5 @@
+
+
 # rpi-talos
 
 ![rpi k8s cluster via talos!](docs/img/rpi-talos-k8s.jpeg?raw=true)
@@ -35,7 +37,7 @@ All services exposed via Traefik + cert-manager DNS-01 challenges on DuckDNS.
 
 ## Setup Notes/Code
 
-See `talos/README.md` and `Makefile` comments for node bootstrapping. Run `make sync` or `make apply` to deploy all Helm charts via helmfile → ArgoCD.
+See `talos/README.md` and `Makefile` comments for node bootstrapping. Run `make sync` or `make apply` to deploy the platform Helm charts via helmfile → ArgoCD.
 
 Tool validation: `make`
 
