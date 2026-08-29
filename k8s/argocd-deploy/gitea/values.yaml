@@ -34,8 +34,8 @@ cnpg:
 gitea:
   strategy:
     type: Recreate
-  image:
-    fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
+  # image:
+  #   fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
   deployment:
     env:
       - name: GITEA__server__DOMAIN
