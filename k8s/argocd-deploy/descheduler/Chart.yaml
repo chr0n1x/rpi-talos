@@ -1,5 +1,5 @@
 # TODO: rename this
-apiVersion: 1.0.0
+apiVersion: v1
 name: descheduler
 version: 1.0.0
 description: wrapper chart w/ policies for various cleanup services
