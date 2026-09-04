@@ -23,7 +23,7 @@ degoog:
           image:
             pullPolicy: Always
             repository: ghcr.io/degoog-org/degoog
-            tag: 0.23.0
+            tag: 0.25.0
 
           # -- environment variables. [[ref]](https://github.com/degoog-org/degoog/blob/main/docker-compose-examples/full.yml).
           # @default -- See [values.yaml](./values.yaml)
