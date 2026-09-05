@@ -31,7 +31,7 @@ _Historical setup notes from the original build are archived in [docs/initial-jo
 
 All services exposed via Traefik + cert-manager DNS-01 challenges on DuckDNS.
 
-**Only accessible on LAN!**
+**Only accessible on LAN!** (twingate is installed and managed by argocd!)
 
 ## Setup Notes/Code
 
