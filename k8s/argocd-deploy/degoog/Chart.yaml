@@ -12,7 +12,7 @@ dependencies:
     repository: https://bjw-s-labs.github.io/helm-charts/
 
   - name: valkey
-    version: 0.11.0
+    version: 0.12.0
     repository: https://valkey.io/valkey-helm/
 
   - name: traefik-ingress
