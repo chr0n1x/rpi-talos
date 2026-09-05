@@ -87,6 +87,16 @@ data:
             url: 'https://paperless-ngx.rannet.duckdns.org'
             key: {{ `{{HOMEPAGE_VAR_PAPERLESSNGX_KEY}}` }}
 
+      - Gitea:
+          widget:
+            type: gitea
+            url: "https://gitea.rannet.duckdns.org/"
+            key: {{ `{{HOMEPAGE_VAR_GITEA_API_KEY}}` | quote }}
+          icon: 'https://docs.gitea.com/img/gitea.svg'
+          description: Gitea
+          href: "https://gitea.rannet.duckdns.org/"
+          ping: "https://gitea.rannet.duckdns.org/"
+
       - Kiwix:
           icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Kiwix_logo_v3.svg/1280px-Kiwix_logo_v3.svg.png'
           description: Kiwix self-hosted wiki, backed by Samba/NAS
@@ -104,6 +114,12 @@ data:
           description: 'LLMs in-cluster via open-webui'
           href: 'https://open-webui.rannet.duckdns.org'
           siteMonitor: 'https://open-webui.rannet.duckdns.org/health'
+
+      - BentoPDF:
+          icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
+          description: Browser/Client Side ONLY PDF Editor!
+          href: "https://bentopdf.rannet.duckdns.org"
+          siteMonitor: "https://bentopdf.rannet.duckdns.org/"
 
 
     - Admin:
@@ -132,6 +148,11 @@ data:
             description: Longhorn Persistent Store Dashboard
             href: "https://longhorn.rannet.duckdns.org"
             ping: "https://longhorn.rannet.duckdns.org"
+        - Prometheus:
+            icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
+            description: Prometheus Dashboard
+            href: "https://prometheus.rannet.duckdns.org"
+            ping: "https://prometheus.rannet.duckdns.org"
         - Traefik:
             icon: 'https://raw.githubusercontent.com/traefik/traefik/refs/heads/master/docs/content/assets/img/traefik.logo.png'
             href: "https://traefik.rannet.duckdns.org/dashboard/"
@@ -151,20 +172,12 @@ data:
             description: IdP for RanNet
             href: "https://authentik.rannet.duckdns.org"
             siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
-        - BentoPDF:
-            icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
-            description: Browser/Client Side ONLY PDF Editor!
-            href: "https://bentopdf.rannet.duckdns.org"
-            siteMonitor: "https://bentopdf.rannet.duckdns.org/"
-        - Gitea:
-            widget:
-              type: gitea
-              url: "https://gitea.rannet.duckdns.org/"
-              key: {{ `{{HOMEPAGE_VAR_GITEA_API_KEY}}` | quote }}
-            icon: 'https://docs.gitea.com/img/gitea.svg'
-            description: Gitea
-            href: "https://gitea.rannet.duckdns.org/"
-            ping: "https://gitea.rannet.duckdns.org/"
+
+        - Downtify:
+            icon: 'https://downtify.rannet-edge.duckdns.org/favicon.ico'
+            description: Downtify
+            href: "https://downtify.rannet-edge.duckdns.org/monitor"
+
         - OpenMediaVault:
             icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
             description: NAS Management
@@ -185,11 +198,6 @@ data:
             description: Media/Youtube Downloader
             href: https://pinchflat.rannet.duckdns.org
             ping: https://pinchflat.rannet.duckdns.org
-        - Prometheus:
-            icon: 'https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/images/prometheus-logo.svg'
-            description: Prometheus Dashboard
-            href: "https://prometheus.rannet.duckdns.org"
-            ping: "https://prometheus.rannet.duckdns.org"
 
       - "Network/Hardware":
         - DuckDNS:
