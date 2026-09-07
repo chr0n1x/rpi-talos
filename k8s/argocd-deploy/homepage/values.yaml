@@ -54,7 +54,7 @@ homepage:
 
   image:
     repository: ghcr.io/gethomepage/homepage
-    tag: v1.12.3
+    tag: 2.2.0
   env:
     - name: HOMEPAGE_ALLOWED_HOSTS
       value: "localhost:8080,rannet.duckdns.org"
