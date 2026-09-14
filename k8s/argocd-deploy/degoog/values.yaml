@@ -33,7 +33,6 @@ degoog:
             DEGOOG_DISTRUST_PROXY: 0
 
             DEGOOG_POSTGRES_HOST: "postgresql://degoog-postgres:5432"
-            DEGOOG_POSTGRES_SSLMODE: "false"
             DEGOOG_POSTGRES_USER:
               secretKeyRef:
                 name: degoog-db-superuser
