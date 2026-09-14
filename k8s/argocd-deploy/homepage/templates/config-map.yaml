@@ -133,15 +133,6 @@ data:
 
     - Admin:
       - Cluster Tools:
-        - ArgoCD:
-            icon: 'https://argo-cd.readthedocs.io/en/stable/assets/logo.png'
-            description: Deploy ALL the things!
-            href: "https://argocd.rannet.duckdns.org"
-            siteMonitor: "https://argocd.rannet.duckdns.org/healthz"
-            widget:
-              type: argocd
-              url: "https://argocd.rannet.duckdns.org"
-              key: {{ `{{HOMEPAGE_VAR_ARGOCD_KEY}}` }}
         - Grafana:
             icon: 'https://grafana.com/static/img/menu/grafana2.svg'
             description: Grafana Dashboard
