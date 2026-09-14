@@ -124,11 +124,11 @@ data:
           href: 'https://open-webui.rannet.duckdns.org'
           siteMonitor: 'https://open-webui.rannet.duckdns.org/health'
 
-      - BentoPDF:
-          icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
-          description: Browser/Client Side ONLY PDF Editor!
-          href: "https://bentopdf.rannet.duckdns.org"
-          siteMonitor: "https://bentopdf.rannet.duckdns.org/"
+      - Komga:
+          icon: 'https://komga.rannet.duckdns.org/assets/logo-DT2R4lJh.svg'
+          description: eBook Library
+          href: "https://komga.rannet.duckdns.org/"
+          siteMonitor: "https://komga.rannet.duckdns.org/"
 
 
     - Admin:
@@ -172,6 +172,12 @@ data:
             description: IdP for RanNet
             href: "https://authentik.rannet.duckdns.org"
             siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
+
+      - BentoPDF:
+          icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
+          description: Browser/Client Side ONLY PDF Editor!
+          href: "https://bentopdf.rannet.duckdns.org"
+          siteMonitor: "https://bentopdf.rannet.duckdns.org/"
 
         - Downtify:
             icon: 'https://downtify.rannet-edge.duckdns.org/favicon.ico'
