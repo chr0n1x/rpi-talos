@@ -1,0 +1,57 @@
+traefik-ingress:
+  dnsNames:
+    - dns: komga.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: komga
+          port: http
+
+komga:
+  controllers:
+    main:
+
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            pullPolicy: Always
+            repository: ghcr.io/gotson/komga
+            tag: 1.26.3
+
+          env:
+            TZ: America/New_York
+
+  persistence:
+
+    data:
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
+      storageClass: smb
+      size: 8Gi
+      retain: true
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /data
+
+    config:
+      type: persistentVolumeClaim
+      accessMode: ReadWriteMany
+      storageClass: smb
+      size: 8Gi
+      retain: true
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /config
+
+  service:
+    komga:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 25600
