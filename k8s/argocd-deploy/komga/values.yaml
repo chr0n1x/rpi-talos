@@ -37,7 +37,8 @@ komga:
           env:
             KOMGA_DATABASE_CHECKLOCALFILESYSTEM: "FALSE"
             KOMGA_TASKSDB_CHECKLOCALFILESYSTEM: "FALSE"
-            KOMGA_OAUTH2ACCOUNTCREATION : true
+            KOMGA_OAUTH2ACCOUNTCREATION: true
+            KOMGA_OIDCEMAILVERIFICATION: false
             SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/application.yml
             TZ: America/New_York
 
