@@ -37,7 +37,7 @@ komga:
           env:
             KOMGA_DATABASE_CHECKLOCALFILESYSTEM: "FALSE"
             KOMGA_TASKSDB_CHECKLOCALFILESYSTEM: "FALSE"
-            KOMGA_OAUTH2ACCOUNTCREATION : "TRUE"
+            KOMGA_OAUTH2ACCOUNTCREATION : true
             SPRING_CONFIG_ADDITIONAL_LOCATION: file:/oidc/config
             TZ: America/New_York
 
