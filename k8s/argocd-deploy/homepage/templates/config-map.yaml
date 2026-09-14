@@ -173,11 +173,11 @@ data:
             href: "https://authentik.rannet.duckdns.org"
             siteMonitor: "https://authentik.rannet.duckdns.org/-/health/ready/"
 
-      - BentoPDF:
-          icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
-          description: Browser/Client Side ONLY PDF Editor!
-          href: "https://bentopdf.rannet.duckdns.org"
-          siteMonitor: "https://bentopdf.rannet.duckdns.org/"
+        - BentoPDF:
+            icon: 'https://bentopdf.rannet.duckdns.org/images/favicon-no-bg.svg'
+            description: Browser/Client Side ONLY PDF Editor!
+            href: "https://bentopdf.rannet.duckdns.org"
+            siteMonitor: "https://bentopdf.rannet.duckdns.org/"
 
         - Downtify:
             icon: 'https://downtify.rannet-edge.duckdns.org/favicon.ico'
