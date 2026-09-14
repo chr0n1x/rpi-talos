@@ -23,25 +23,25 @@ degoog:
           image:
             pullPolicy: Always
             repository: ghcr.io/degoog-org/degoog
-            tag: 0.25.0
+            tag: 0.26.0
 
           # -- environment variables. [[ref]](https://github.com/degoog-org/degoog/blob/main/docker-compose-examples/full.yml).
           # @default -- See [values.yaml](./values.yaml)
           env:
-            DEGOOG_PUBLIC_INSTANCE: "true"
+            DEGOOG_PUBLIC_INSTANCE: "false"
             DEGOOG_VALKEY_URL: "redis://degoog-valkey:6379"
             DEGOOG_DISTRUST_PROXY: 0
 
-            # TODO: degoog does not support separate envvars
-            # DEGOOG_POSTGRES: "postgresql://degoog:changeme@degoog-postgres:5432/degoog"
-            # POSTGRES_USER:
-            #   secretKeyRef:
-            #     name: degoog-superuser
-            #     key: username
-            # POSTGRES_PASSWORD:
-            #   secretKeyRef:
-            #     name: degoog-superuser
-            #     key: password
+            DEGOOG_POSTGRES_HOST: "postgresql://degoog-postgres:5432"
+            DEGOOG_POSTGRES_SSLMODE: "prefer"
+            DEGOOG_POSTGRES_USER:
+              secretKeyRef:
+                name: degoog-superuser
+                key: username
+            DEGOOG_POSTGRES_PASSWORD:
+              secretKeyRef:
+                name: degoog-superuser
+                key: password
 
             DEGOOG_SETTINGS_PASSWORDS:
               secretKeyRef:
