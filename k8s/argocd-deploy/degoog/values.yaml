@@ -36,11 +36,11 @@ degoog:
             DEGOOG_POSTGRES_SSLMODE: "prefer"
             DEGOOG_POSTGRES_USER:
               secretKeyRef:
-                name: degoog-superuser
+                name: degoog-db-superuser
                 key: username
             DEGOOG_POSTGRES_PASSWORD:
               secretKeyRef:
-                name: degoog-superuser
+                name: degoog-db-superuser
                 key: password
 
             DEGOOG_SETTINGS_PASSWORDS:
