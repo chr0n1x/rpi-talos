@@ -35,10 +35,11 @@ komga:
             tag: 1.26.3
 
           env:
-            TZ: America/New_York
             KOMGA_DATABASE_CHECKLOCALFILESYSTEM: "FALSE"
             KOMGA_TASKSDB_CHECKLOCALFILESYSTEM: "FALSE"
             KOMGA_OAUTH2ACCOUNTCREATION : "TRUE"
+            SPRING_CONFIG_ADDITIONAL_LOCATION: file:/oidc/config
+            TZ: America/New_York
 
   persistence:
 
