@@ -49,7 +49,7 @@ komga:
       advancedMounts:
         main:   # main controller
           main: # main container
-            - path: /oidc
+            - path: /config
 
     data:
       type: persistentVolumeClaim
