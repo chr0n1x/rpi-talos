@@ -42,6 +42,14 @@ komga:
 
   persistence:
 
+    oidc:
+      type: secret
+      name: komga-properties
+      advancedMounts:
+        main:   # main controller
+          main: # main container
+            - path: /oidc
+
     data:
       type: persistentVolumeClaim
       accessMode: ReadWriteMany
