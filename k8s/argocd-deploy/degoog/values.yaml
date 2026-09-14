@@ -32,7 +32,7 @@ degoog:
             DEGOOG_VALKEY_URL: "redis://degoog-valkey:6379"
             DEGOOG_DISTRUST_PROXY: 0
 
-            DEGOOG_POSTGRES_HOST: "postgresql://degoog-postgres:5432"
+            DEGOOG_POSTGRES_HOST: "postgresql://degoog-db-rw:5432"
             DEGOOG_POSTGRES_USER:
               secretKeyRef:
                 name: degoog-db-superuser
