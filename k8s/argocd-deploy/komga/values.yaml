@@ -23,6 +23,8 @@ komga:
 
           env:
             TZ: America/New_York
+            KOMGA_DATABASE_CHECKLOCALFILESYSTEM: "FALSE"
+            KOMGA_TASKSDB_CHECKLOCALFILESYSTEM: "FALSE"
 
   persistence:
 
