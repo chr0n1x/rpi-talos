@@ -6,6 +6,19 @@ traefik-ingress:
           name: komga
           port: http
 
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: on-prem
+      vaultAuthName: komga-vso-connection-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: komga
+        serviceAccount: komga
+        audiences:
+          - vault
+
 komga:
   controllers:
     main:
