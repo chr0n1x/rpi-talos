@@ -59,6 +59,7 @@ data:
           siteMonitor: "https://jellyfin.rannet-edge.duckdns.org/health"
           widget:
             type: jellyfin
+            version: "2"
             url: "https://jellyfin.rannet-edge.duckdns.org/"
             key: {{ `{{HOMEPAGE_VAR_JELLYFIN_KEY}}` }}
             enableBlocks: true
