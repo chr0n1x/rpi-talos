@@ -32,7 +32,7 @@ komga:
           image:
             pullPolicy: Always
             repository: ghcr.io/gotson/komga
-            tag: 1.27.0
+            tag: 1.27.1
 
           env:
             KOMGA_DATABASE_CHECKLOCALFILESYSTEM: "FALSE"
