@@ -9,7 +9,7 @@ type: application
 
 dependencies:
   - name: vault
-    version: 1.6.0
+    version: 0.34.1
     repository: https://helm.releases.hashicorp.com
 
   - name: traefik-ingress
