@@ -13,6 +13,9 @@ vault-auth:
           - vault
 
 traefik:
+  deployment:
+    podAnnotations:
+      descheduler.alpha.kubernetes.io/prefer-no-eviction: "true"
   api:
     dashboard: true
   providers:
@@ -54,10 +57,6 @@ traefik:
     replicas: 1
   updateStrategy:
     type: Recreate
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 1
   env:
     - name: DUCKDNS_TOKEN
       valueFrom:
