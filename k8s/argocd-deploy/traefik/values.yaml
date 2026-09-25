@@ -46,7 +46,8 @@ traefik:
 
   # here to get the damn thing to sync
   service:
-    type: NodePort
+    spec:
+      type: NodePort
 
   # k port-forward -n traefik pods/traefik-whatever 8080:8000
   # http://localhost:8080/dashboard/
