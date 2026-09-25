@@ -1,48 +1,48 @@
 descheduler:
   namespaceOverride: kube-system
-deschedulerPolicy:
-  profiles:
-    - name: default
-      pluginConfig:
-        - name: DefaultEvictor
-          args:
-            noEvictionPolicy: Mandatory
-            podProtections:
-              defaultDisabled:
-              - "PodsWithLocalStorage"
-              extraEnabled:
-              - "PodsWithPVC"
-        - name: RemoveDuplicates
-        - name: RemovePodsHavingTooManyRestarts
-          args:
-            podRestartThreshold: 100
-            includingInitContainers: true
-        - name: RemovePodsViolatingNodeAffinity
-          args:
-            nodeAffinityType:
-            - requiredDuringSchedulingIgnoredDuringExecution
-        - name: RemovePodsViolatingNodeTaints
-        - name: RemovePodsViolatingInterPodAntiAffinity
-        - name: RemovePodsViolatingTopologySpreadConstraint
-        - name: LowNodeUtilization
-          args:
-            thresholds:
-              cpu: 20
-              memory: 20
-              pods: 20
-            targetThresholds:
-              cpu: 50
-              memory: 50
-              pods: 50
-      plugins:
-        balance:
-          enabled:
-            - RemoveDuplicates
-            - RemovePodsViolatingTopologySpreadConstraint
-            - LowNodeUtilization
-        deschedule:
-          enabled:
-            - RemovePodsHavingTooManyRestarts
-            - RemovePodsViolatingNodeTaints
-            - RemovePodsViolatingNodeAffinity
-            - RemovePodsViolatingInterPodAntiAffinity
+  deschedulerPolicy:
+    profiles:
+      - name: default
+        pluginConfig:
+          - name: DefaultEvictor
+            args:
+              noEvictionPolicy: Mandatory
+              podProtections:
+                defaultDisabled:
+                - "PodsWithLocalStorage"
+                extraEnabled:
+                - "PodsWithPVC"
+          - name: RemoveDuplicates
+          - name: RemovePodsHavingTooManyRestarts
+            args:
+              podRestartThreshold: 100
+              includingInitContainers: true
+          - name: RemovePodsViolatingNodeAffinity
+            args:
+              nodeAffinityType:
+              - requiredDuringSchedulingIgnoredDuringExecution
+          - name: RemovePodsViolatingNodeTaints
+          - name: RemovePodsViolatingInterPodAntiAffinity
+          - name: RemovePodsViolatingTopologySpreadConstraint
+          - name: LowNodeUtilization
+            args:
+              thresholds:
+                cpu: 20
+                memory: 20
+                pods: 20
+              targetThresholds:
+                cpu: 50
+                memory: 50
+                pods: 50
+        plugins:
+          balance:
+            enabled:
+              - RemoveDuplicates
+              - RemovePodsViolatingTopologySpreadConstraint
+              - LowNodeUtilization
+          deschedule:
+            enabled:
+              - RemovePodsHavingTooManyRestarts
+              - RemovePodsViolatingNodeTaints
+              - RemovePodsViolatingNodeAffinity
+              - RemovePodsViolatingInterPodAntiAffinity
