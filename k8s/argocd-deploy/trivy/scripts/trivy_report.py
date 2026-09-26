@@ -193,6 +193,7 @@ def diff_reports(current, previous):
             "repo": f"{rep['repo']}:{rep['tag']}",
             "crit": rep["counts"]["CRITICAL"],
             "high": rep["counts"]["HIGH"],
+            "type": ch["type"],
             "prev_crit": ch.get("prev_counts", {}).get("CRITICAL", 0) if ch["type"] == "increased" else None,
             "prev_high": ch.get("prev_counts", {}).get("HIGH", 0) if ch["type"] == "increased" else None,
             "top3": rep["top3"],
@@ -219,7 +220,28 @@ def _cap_message(text, header):
     return text[:cutoff].rsplit("\n", 1)[0] + "\n\n..." + header
 
 
-def format_telegram_message(result):
+def _make_table(headers, rows):
+    """Build a fixed-width text table. Returns list of lines."""
+    cols = len(headers)
+    widths = [len(h) for h in headers]
+    for row in rows:
+        for i, cell in enumerate(row):
+            if i < cols:
+                widths[i] = max(widths[i], len(cell))
+    def fmt_row(cells):
+        parts = []
+        for i, cell in enumerate(cells):
+            if i < cols:
+                parts.append(cell.ljust(widths[i]))
+        return "  ".join(parts).rstrip()
+    lines = [fmt_row(headers)]
+    lines.append("  ".join("-" * w for w in widths))
+    for row in rows:
+        lines.append(fmt_row(row))
+    return lines
+
+
+def format_telegram_message(result, current=None):
     lines = []
 
     if result["type"] == "first-run":
@@ -232,7 +254,6 @@ def format_telegram_message(result):
             lines.append("No critical or high severity vulnerabilities found.")
             return "\n".join(lines)
 
-        # Compact table: NS | crit | high | top CVE
         ns_width = max(len(ns) for ns in result["namespaces"])
         ns_width = max(ns_width, 4)
         lines.append(f"{'NS':<{ns_width}}  C  H  TOP CVE")
@@ -254,29 +275,60 @@ def format_telegram_message(result):
         lines.append(f"<b>Trivy scan - {result['total_changed']} workload(s) changed</b>")
         lines.append("")
 
+        # Changes table
+        rows = []
         for ns in sorted(result["namespaces"]):
             info = result["namespaces"][ns]
-            lines.append(f"<b>{html.escape(ns)}</b>")
             for w in info["workloads"]:
-                crit_part = f"{w['crit']} crit"
-                high_part = f"{w['high']} high"
+                change_parts = []
                 if w.get("prev_crit") is not None:
                     if w["prev_crit"] != w["crit"]:
-                        crit_part = f"{w['crit']} crit (was {w['prev_crit']})"
+                        change_parts.append(f"crit {w['prev_crit']}->{w['crit']}")
                     if w["prev_high"] != w["high"]:
-                        high_part = f"{w['high']} high (was {w['prev_high']})"
-                lines.append(f"  {html.escape(w['repo'])}: {crit_part} / {high_part}")
-                for v in w["top3"]:
-                    lines.append(f"    {html.escape(v['id'])}  {html.escape(v['pkg'])}  {v['score']}")
-            if info["severe"]:
-                lines.append("  <b>New high-severity CVEs:</b>")
-                seen = set()
-                for v in sorted(info["severe"], key=lambda x: x["score"], reverse=True):
-                    if v["id"] in seen:
+                        change_parts.append(f"high {w['prev_high']}->{w['high']}")
+                elif w["type"] == "new":
+                    change_parts.append("NEW")
+                else:
+                    change_parts.append("changed")
+                rows.append([
+                    html.escape(w["repo"]),
+                    str(w["crit"]),
+                    str(w["high"]),
+                    ", ".join(change_parts),
+                ])
+        lines.append("<pre>")
+        lines.extend(_make_table(["Workload", "Crit", "High", "Change"], rows))
+        lines.append("</pre>")
+
+        # Persistent CVE table: all CVEs >= threshold across all workloads
+        if current:
+            all_severe = []
+            seen = set()
+            for key, rep in current.items():
+                for v in rep["severe"]:
+                    ident = (v["id"], rep["repo"], rep["tag"])
+                    if ident in seen:
                         continue
-                    seen.add(v["id"])
-                    lines.append(f"    {html.escape(v['id'])}  {html.escape(v['pkg'])}  score={v['score']}  fixed={html.escape(str(v.get('fixed', 'N/A')))}")
-            lines.append("")
+                    seen.add(ident)
+                    all_severe.append({
+                        "id": v["id"],
+                        "workload": f"{rep['repo']}:{rep['tag']}",
+                        "score": v["score"],
+                        "pkg": v["pkg"],
+                    })
+            all_severe.sort(key=lambda x: x["score"], reverse=True)
+            all_severe = all_severe[:20]
+
+            if all_severe:
+                lines.append("")
+                lines.append("<b>High-severity CVEs (score >= threshold):</b>")
+                lines.append("<pre>")
+                sev_rows = [
+                    [html.escape(s["id"]), html.escape(s["workload"]), str(s["score"]), html.escape(s["pkg"])]
+                    for s in all_severe
+                ]
+                lines.extend(_make_table(["CVE", "Workload", "Score", "Package"], sev_rows))
+                lines.append("</pre>")
 
         return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
@@ -352,7 +404,7 @@ def main():
         result = diff_reports(current, previous)
         print(f"Diff type: {result['type']}, changed: {result.get('total_changed', 'N/A')}")
 
-        msg = format_telegram_message(result)
+        msg = format_telegram_message(result, current=current)
         if msg:
             print(f"Sending Telegram message ({len(msg)} chars)...")
             send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
