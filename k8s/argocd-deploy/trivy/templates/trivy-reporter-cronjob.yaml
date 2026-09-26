@@ -15,6 +15,8 @@ spec:
         spec:
           serviceAccountName: trivy-reporter
           restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: dhi-io-image-pull
           containers:
             - name: reporter
               image: dhi.io/python:3.14
@@ -36,11 +38,6 @@ spec:
                     secretKeyRef:
                       name: trivy-telegram
                       key: TELEGRAM_CHAT_ID
-                - name: DOCKER_PAT
-                  valueFrom:
-                    secretKeyRef:
-                      name: trivy-docker-pat
-                      key: pat
               volumeMounts:
                 - name: scripts
                   mountPath: /scripts

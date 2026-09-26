@@ -9,7 +9,6 @@ summary when something changed.
 Uses only the Python standard library (urllib, json, os, sys).
 """
 
-import base64
 import html
 import json
 import os
@@ -23,27 +22,10 @@ STATE_FILE = os.environ.get("STATE_FILE", "/state/state.json")
 SEVERITY_THRESHOLD = float(os.environ.get("SEVERITY_THRESHOLD", "7"))
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
-DOCKER_PAT = os.environ.get("DOCKER_PAT", "")
 
 TRIVY_GROUP = "aquasecurity.github.io"
 TRIVY_VERSION = "v1alpha1"
 VULN_REPORTS_PLURAL = "vulnerabilityreports"
-
-
-def setup_docker_auth():
-    if not DOCKER_PAT:
-        print("WARNING: DOCKER_PAT not set, skipping docker auth", file=sys.stderr)
-        return
-    config = {
-        "auths": {
-            "dhi.io": {
-                "auth": base64.b64encode(f"{DOCKER_PAT}:".encode()).decode()
-            }
-        }
-    }
-    os.makedirs("/var/run/docker", exist_ok=True)
-    with open("/var/run/docker/config.json", "w") as f:
-        json.dump(config, f)
 
 
 def k8s_token():
@@ -331,8 +313,6 @@ def send_telegram(token, chat_id, text, max_retries=3):
 
 
 def main():
-    setup_docker_auth()
-
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
         print("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set", file=sys.stderr)
         sys.exit(1)
