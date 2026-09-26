@@ -406,6 +406,9 @@ def main():
 
         msg = format_telegram_message(result, current=current)
         if msg:
+            print("--- Telegram message ---")
+            print(m.strip_html(msg))
+            print("--- End message ---")
             print(f"Sending Telegram message ({len(msg)} chars)...")
             send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
             print("Message sent.")
