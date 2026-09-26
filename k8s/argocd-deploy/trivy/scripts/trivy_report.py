@@ -12,12 +12,14 @@ Uses only the Python standard library (urllib, json, os, sys).
 import html
 import json
 import os
+import ssl
 import sys
 import urllib.request
 import urllib.error
 
 API = os.environ.get("KUBERNETES_SERVICE_HOST", "")
 API_PORT = os.environ.get("KUBERNETES_SERVICE_PORT", "443")
+CA_CERT = os.environ.get("KUBERNETES_CA_CERT", "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt")
 STATE_FILE = os.environ.get("STATE_FILE", "/state/state.json")
 SEVERITY_THRESHOLD = float(os.environ.get("SEVERITY_THRESHOLD", "7"))
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
@@ -33,13 +35,18 @@ def k8s_token():
         return f.read().strip()
 
 
+def k8s_ssl_context():
+    ctx = ssl.create_default_context(cafile=CA_CERT)
+    return ctx
+
+
 def k8s_api(path):
     url = f"https://{API}:{API_PORT}{path}"
     req = urllib.request.Request(url)
     req.add_header("Authorization", f"Bearer {k8s_token()}")
     req.add_header("Accept", "application/json")
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=30, context=k8s_ssl_context()) as resp:
             return json.loads(resp.read())
     except urllib.error.HTTPError as e:
         body = e.read().decode()
@@ -202,30 +209,43 @@ def diff_reports(current, previous):
     }
 
 
+TELEGRAM_MAX_LEN = 4000
+
+
+def _cap_message(text, header):
+    if len(text) <= TELEGRAM_MAX_LEN:
+        return text
+    cutoff = TELEGRAM_MAX_LEN - len(header) - 50
+    return text[:cutoff].rsplit("\n", 1)[0] + "\n\n..." + header
+
+
 def format_telegram_message(result):
     lines = []
 
     if result["type"] == "first-run":
+        total_crit = sum(i["crit"] for i in result["namespaces"].values())
+        total_high = sum(i["high"] for i in result["namespaces"].values())
         lines.append("<b>Trivy scan - initial report</b>")
-        lines.append(f"Total workloads scanned: {result['total_workloads']}")
+        lines.append(f"{result['total_workloads']} workloads | {total_crit} crit | {total_high} high")
         lines.append("")
         if not result["namespaces"]:
             lines.append("No critical or high severity vulnerabilities found.")
             return "\n".join(lines)
 
-        for ns in sorted(result["namespaces"]):
+        # Compact table: NS | crit | high | top CVE
+        ns_width = max(len(ns) for ns in result["namespaces"])
+        ns_width = max(ns_width, 4)
+        lines.append(f"{'NS':<{ns_width}}  C  H  TOP CVE")
+        lines.append("-" * (ns_width + 22))
+        for ns in sorted(result["namespaces"], key=lambda n: (-result["namespaces"][n]["crit"], -result["namespaces"][n]["high"], n)):
             info = result["namespaces"][ns]
-            lines.append(f"<b>{html.escape(ns)}</b>  [{info['crit']} crit / {info['high']} high]")
-            seen = set()
-            shown = 0
-            for v in sorted(info["severe"], key=lambda x: x["score"], reverse=True):
-                if v["id"] in seen or shown >= 5:
-                    continue
-                seen.add(v["id"])
-                lines.append(f"  {html.escape(v['id'])}  {html.escape(v['pkg'])}  score={v['score']}  fixed={html.escape(str(v.get('fixed', 'N/A')))}")
-                shown += 1
-            lines.append("")
-        return "\n".join(lines)
+            top = ""
+            if info["severe"]:
+                top_v = max(info["severe"], key=lambda x: x["score"])
+                top = f"{top_v['id']} ({top_v['score']})"
+            lines.append(f"{html.escape(ns):<{ns_width}}  {info['crit']:<2} {info['high']:<2} {html.escape(top)}")
+        lines.append("")
+        return _cap_message("\n".join(lines), "(truncated)")
 
     elif result["type"] == "changes":
         if not result["namespaces"]:
@@ -258,7 +278,7 @@ def format_telegram_message(result):
                     lines.append(f"    {html.escape(v['id'])}  {html.escape(v['pkg'])}  score={v['score']}  fixed={html.escape(str(v.get('fixed', 'N/A')))}")
             lines.append("")
 
-        return "\n".join(lines)
+        return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
     return None
 
@@ -291,7 +311,7 @@ def send_telegram(token, chat_id, text, max_retries=3):
         req = urllib.request.Request(url, data=body, method="POST")
         req.add_header("Content-Type", "application/json")
         try:
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as resp:
                 result = json.loads(resp.read())
                 if not result.get("ok"):
                     desc = result.get("description", "")
