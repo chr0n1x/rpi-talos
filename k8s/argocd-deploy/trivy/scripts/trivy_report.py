@@ -63,16 +63,21 @@ def list_vuln_reports():
 def load_state():
     try:
         with open(STATE_FILE) as f:
-            return json.load(f)
+            data = json.load(f)
+        # Backward compat: old format is a flat {key: report} dict
+        if "reports" in data:
+            return data["reports"], data.get("telegram_message_id")
+        return data, None
     except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+        return {}, None
 
 
-def save_state(state):
+def save_state(state, telegram_message_id=None):
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    data = {"reports": state, "telegram_message_id": telegram_message_id}
     tmp = STATE_FILE + ".tmp"
     with open(tmp, "w") as f:
-        json.dump(state, f)
+        json.dump(data, f)
     os.rename(tmp, STATE_FILE)
 
 
@@ -349,6 +354,21 @@ def strip_html(s):
     return ''.join(out)
 
 
+def delete_telegram(token, chat_id, message_id):
+    url = f"https://api.telegram.org/bot{token}/deleteMessage"
+    payload = {"chat_id": chat_id, "message_id": message_id}
+    body = json.dumps(payload).encode()
+    req = urllib.request.Request(url, data=body, method="POST")
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as resp:
+            return json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode()
+        print(f"deleteMessage HTTP {e.code}: {err_body[:300]}", file=sys.stderr)
+        return {"ok": False, "description": err_body[:300]}
+
+
 def send_telegram(token, chat_id, text, max_retries=3):
     url = f"https://api.telegram.org/bot{token}/sendMessage"
 
@@ -399,23 +419,33 @@ def main():
             key = report_key(item)
             current[key] = extract_report(item)
 
-        previous = load_state()
+        previous, old_msg_id = load_state()
 
         result = diff_reports(current, previous)
         print(f"Diff type: {result['type']}, changed: {result.get('total_changed', 'N/A')}")
 
         msg = format_telegram_message(result, current=current)
+        new_msg_id = old_msg_id
         if msg:
+            if old_msg_id:
+                print(f"Deleting old Telegram message {old_msg_id}...")
+                del_result = delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, old_msg_id)
+                if not del_result.get("ok"):
+                    print(f"Warning: failed to delete old message: {del_result.get('description', 'unknown')}", file=sys.stderr)
             print("--- Telegram message ---")
             print(strip_html(msg))
             print("--- End message ---")
             print(f"Sending Telegram message ({len(msg)} chars)...")
-            send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
-            print("Message sent.")
+            send_result = send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
+            if send_result and send_result.get("ok"):
+                new_msg_id = send_result.get("result", {}).get("message_id")
+                print(f"Message sent (id={new_msg_id}).")
+            else:
+                print(f"Telegram send failed: {send_result}", file=sys.stderr)
         else:
             print("No changes to report. Skipping Telegram message.")
 
-        save_state(current)
+        save_state(current, new_msg_id)
         print("State saved.")
     except Exception as e:
         print(f"Error: {type(e).__name__}: {e}", file=sys.stderr)
