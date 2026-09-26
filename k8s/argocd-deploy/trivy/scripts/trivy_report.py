@@ -285,9 +285,10 @@ def format_telegram_message(result, current=None):
                     if ident in seen:
                         continue
                     seen.add(ident)
+                    image_slug = rep["repo"].rsplit("/", 1)[-1]
                     all_severe.append({
                         "id": v["id"],
-                        "workload": f"{rep['repo']}:{rep['tag']}",
+                        "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
                         "score": v["score"],
                         "pkg": v["pkg"],
                     })
@@ -337,7 +338,7 @@ def format_telegram_message(result, current=None):
             grouped = {}
             for s in all_severe:
                 grouped.setdefault(s["workload"], []).append(s)
-            for workload in sorted(grouped):
+            for workload in sorted(grouped, key=lambda w: max(s["score"] for s in grouped[w]), reverse=True):
                 lines.append(f"<pre>{html.escape(workload)}</pre>")
                 for s in grouped[workload]:
                     cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
