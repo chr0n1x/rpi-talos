@@ -17,9 +17,21 @@ spec:
           restartPolicy: OnFailure
           imagePullSecrets:
             - name: dhi-io-image-pull
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
           containers:
             - name: reporter
               image: dhi.io/python:3.14
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
               command:
                 - python3
                 - /scripts/trivy_report.py
