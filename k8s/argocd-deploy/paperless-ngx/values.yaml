@@ -60,12 +60,12 @@ paperless-ngx:
     PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
 
     TZ: UTC
-    # v3: required; reuses CNPG auto-generated postgres password as the signing key.
+    # v3: required; reuses the CNPG superuser password (same as PAPERLESS_DBPASS).
     # note: if CNPG ever rotates this password, all paperless sessions are invalidated.
     PAPERLESS_SECRET_KEY:
       valueFrom:
         secretKeyRef:
-          name: paperless-postgres-user
+          name: paperless-ngx-superuser
           key: password
 
     PAPERLESS_DBENGINE: postgresql
