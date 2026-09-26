@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: trivy-reporter
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: "0 6 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: trivy-reporter
+          restartPolicy: OnFailure
+          containers:
+            - name: reporter
+              image: dhi.io/python:3.14
+              command:
+                - python3
+                - /scripts/trivy_report.py
+              env:
+                - name: STATE_FILE
+                  value: /state/state.json
+                - name: SEVERITY_THRESHOLD
+                  value: "7"
+                - name: TELEGRAM_BOT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: trivy-telegram
+                      key: TELEGRAM_BOT_TOKEN
+                - name: TELEGRAM_CHAT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: trivy-telegram
+                      key: TELEGRAM_CHAT_ID
+                - name: DOCKER_PAT
+                  valueFrom:
+                    secretKeyRef:
+                      name: trivy-docker-pat
+                      key: pat
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: state
+                  mountPath: /state
+          volumes:
+            - name: scripts
+              configMap:
+                name: trivy-reporter-script
+                defaultMode: 0555
+            - name: state
+              persistentVolumeClaim:
+                claimName: trivy-reporter-state

@@ -14,3 +14,16 @@ trivy-operator:
 
   operator:
     builtInTrivyServer: true
+
+vault-auth:
+  vaultConnectionName: vault-secrets-operator/default
+  authMethods:
+    - name: trivy-reporter
+      vaultAuthName: trivy-reporter-vault-auth
+      method: kubernetes
+      mount: in-cluster
+      config:
+        role: trivy
+        serviceAccount: trivy-trivy-operator
+        audiences:
+          - vault

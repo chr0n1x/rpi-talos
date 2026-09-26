@@ -1,0 +1,14 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: trivy-docker-pat
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: kv-v2
+  mount: in-cluster
+  path: trivy/docker
+  destination:
+    name: trivy-docker-pat
+    create: true
+  refreshAfter: 30s
+  vaultAuthRef: {{ .Release.Namespace }}/trivy-reporter-vault-auth

@@ -8,3 +8,7 @@ dependencies:
   - name: trivy-operator
     version: 0.36.0
     repository: https://aquasecurity.github.io/helm-charts/
+
+  - name: vault-auth
+    version: ~1
+    repository: file://../../helm/vault-auth

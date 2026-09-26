@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trivy-reporter-script
+  namespace: {{ .Release.Namespace }}
+data:
+  trivy_report.py: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/trivy_report.py") }}
+    {{ $line }}
+    {{- end }}
