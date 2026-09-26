@@ -100,6 +100,36 @@ account is disabled. If no token is available, the user must sync via the UI.
 Images pulled at runtime should reference `mirror.gcr.io`, not
 `registry-1.docker.io`. This is already configured in most app values.
 
+### DHI imagePullSecrets (dhi.io)
+
+Docker Hardened Images (`dhi.io/*`) require authentication. To create a
+working `imagePullSecret` for k8s:
+
+- `--docker-server` must be `dhi.io`
+- `--docker-username` must be the **Docker Hub username**,
+  NOT `dhi.io` or the registry hostname. Using `dhi.io` as the username
+  causes 401 on the token endpoint even with a valid PAT.
+- `--docker-password` is a Docker PAT (read-only on DHI repos)
+
+When building the dockerconfigjson manually (e.g. via VSO +
+SecretTransformation), the `auth` field must be
+`base64("<docker-hub-username>:<PAT>")`.
+
+VSO (vault-secrets-operator) quirks for dockerconfigjson secrets:
+- VSO strips leading dots from Vault key names, so a Vault key
+  `.dockerconfigjson` becomes `dockerconfigjson` in the k8s secret.
+  Use a `SecretTransformation` with a template + `keyOverride` to rename
+  it back to `.dockerconfigjson`.
+- The Vault value must be the **decoded JSON string**, not the
+  base64-encoded version. K8s base64-encodes secret data automatically;
+  storing a pre-encoded value results in double-encoding and
+  `invalid character 'e' looking for beginning of value`.
+- VSO `destination.type: kubernetes.io/dockerconfigjson` works, but extra
+  keys (e.g. `_raw`, `pat`) in the same secret are harmless - kubelet only
+  reads `.dockerconfigjson`.
+
+Reference: https://docs.docker.com/dhi/how-to/use#create-an-image-pull-secret
+
 ### `prune: true` is inconsistent across apps
 
 17 of ~34 Application CRDs in `k8s/helm/cluster-apps/templates/` are
