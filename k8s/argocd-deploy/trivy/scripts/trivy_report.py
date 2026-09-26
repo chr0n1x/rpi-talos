@@ -349,6 +349,14 @@ def format_telegram_message(result, current=None):
     return None
 
 
+# Telegram Bot API quirks:
+# - No editMessageText for private chats (DMs). To "replace" a message,
+#   use deleteMessage + sendMessage. We store the message_id in the state
+#   file and delete the previous message before sending a new one.
+# - HTML <a href> links do NOT render inside <pre> blocks. The CVE list
+#   uses plain text with links (no <pre>) so they are clickable.
+#   The changes table stays in <pre> for monospace alignment.
+
 def strip_html(s):
     """Strip HTML tags from a string (fallback when parse errors occur)."""
     start = -1
