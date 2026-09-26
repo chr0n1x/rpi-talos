@@ -269,40 +269,9 @@ def format_telegram_message(result, current=None):
         return _cap_message("\n".join(lines), "(truncated)")
 
     elif result["type"] == "changes":
-        if not result["namespaces"]:
-            return None
-
-        lines.append(f"<b>Trivy scan - {result['total_changed']} workload(s) changed</b>")
-        lines.append("")
-
-        # Changes table
-        rows = []
-        for ns in sorted(result["namespaces"]):
-            info = result["namespaces"][ns]
-            for w in info["workloads"]:
-                change_parts = []
-                if w.get("prev_crit") is not None:
-                    if w["prev_crit"] != w["crit"]:
-                        change_parts.append(f"crit {w['prev_crit']}->{w['crit']}")
-                    if w["prev_high"] != w["high"]:
-                        change_parts.append(f"high {w['prev_high']}->{w['high']}")
-                elif w["type"] == "new":
-                    change_parts.append("NEW")
-                else:
-                    change_parts.append("changed")
-                rows.append([
-                    html.escape(w["repo"]),
-                    str(w["crit"]),
-                    str(w["high"]),
-                    ", ".join(change_parts),
-                ])
-        lines.append("<pre>")
-        lines.extend(_make_table(["Workload", "Crit", "High", "Change"], rows))
-        lines.append("</pre>")
-
-        # Persistent CVE table: all CVEs >= threshold across all workloads
+        # Build persistent CVE list first to decide whether to send at all
+        all_severe = []
         if current:
-            all_severe = []
             seen = set()
             for key, rep in current.items():
                 for v in rep["severe"]:
@@ -319,16 +288,51 @@ def format_telegram_message(result, current=None):
             all_severe.sort(key=lambda x: x["score"], reverse=True)
             all_severe = all_severe[:20]
 
-            if all_severe:
-                lines.append("")
-                lines.append("<b>High-severity CVEs (score >= threshold):</b>")
-                lines.append("<pre>")
-                sev_rows = [
-                    [html.escape(s["id"]), html.escape(s["workload"]), str(s["score"]), html.escape(s["pkg"])]
-                    for s in all_severe
-                ]
-                lines.extend(_make_table(["CVE", "Workload", "Score", "Package"], sev_rows))
-                lines.append("</pre>")
+        no_changes = not result["namespaces"]
+        if no_changes and not all_severe:
+            return None
+
+        if no_changes:
+            lines.append("<b>Trivy scan - no changes</b>")
+        else:
+            lines.append(f"<b>Trivy scan - {result['total_changed']} workload(s) changed</b>")
+        lines.append("")
+
+        if not no_changes:
+            rows = []
+            for ns in sorted(result["namespaces"]):
+                info = result["namespaces"][ns]
+                for w in info["workloads"]:
+                    change_parts = []
+                    if w.get("prev_crit") is not None:
+                        if w["prev_crit"] != w["crit"]:
+                            change_parts.append(f"crit {w['prev_crit']}->{w['crit']}")
+                        if w["prev_high"] != w["high"]:
+                            change_parts.append(f"high {w['prev_high']}->{w['high']}")
+                    elif w["type"] == "new":
+                        change_parts.append("NEW")
+                    else:
+                        change_parts.append("changed")
+                    rows.append([
+                        html.escape(w["repo"]),
+                        str(w["crit"]),
+                        str(w["high"]),
+                        ", ".join(change_parts),
+                    ])
+            lines.append("<pre>")
+            lines.extend(_make_table(["Workload", "Crit", "High", "Change"], rows))
+            lines.append("</pre>")
+
+        if all_severe:
+            lines.append("")
+            lines.append(f"<b>High-severity CVEs (score >= {SEVERITY_THRESHOLD}):</b>")
+            lines.append("<pre>")
+            sev_rows = [
+                [html.escape(s["id"]), html.escape(s["workload"]), str(s["score"]), html.escape(s["pkg"])]
+                for s in all_severe
+            ]
+            lines.extend(_make_table(["CVE", "Workload", "Score", "Package"], sev_rows))
+            lines.append("</pre>")
 
         return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
@@ -407,7 +411,7 @@ def main():
         msg = format_telegram_message(result, current=current)
         if msg:
             print("--- Telegram message ---")
-            print(m.strip_html(msg))
+            print(strip_html(msg))
             print("--- End message ---")
             print(f"Sending Telegram message ({len(msg)} chars)...")
             send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
