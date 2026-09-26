@@ -252,7 +252,8 @@ def format_telegram_message(result, current=None):
     if result["type"] == "first-run":
         total_crit = sum(i["crit"] for i in result["namespaces"].values())
         total_high = sum(i["high"] for i in result["namespaces"].values())
-        lines.append("<b>Trivy scan - initial report</b>")
+        lines.append("<b>\U0001F6A8 RanNet K8s Security Report \U0001F9EB</b>")
+        lines.append(f"<i>initial report</i>")
         lines.append(f"{result['total_workloads']} workloads | {total_crit} crit | {total_high} high")
         lines.append("")
         if not result["namespaces"]:
@@ -298,9 +299,11 @@ def format_telegram_message(result, current=None):
             return None
 
         if no_changes:
-            lines.append("<b>Trivy scan - no changes</b>")
+            lines.append("<b>\U0001F6A8 RanNet K8s Security Report \U0001F9EB</b>")
+            lines.append("<i>no changes</i>")
         else:
-            lines.append(f"<b>Trivy scan - {result['total_changed']} workload(s) changed</b>")
+            lines.append(f"<b>\U0001F6A8 RanNet K8s Security Report \U0001F9EB</b>")
+            lines.append(f"<i>{result['total_changed']} workload(s) changed</i>")
         lines.append("")
 
         if not no_changes:
