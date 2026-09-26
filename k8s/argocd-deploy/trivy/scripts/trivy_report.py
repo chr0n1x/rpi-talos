@@ -286,7 +286,7 @@ def format_telegram_message(result, current=None):
                         "pkg": v["pkg"],
                     })
             all_severe.sort(key=lambda x: x["score"], reverse=True)
-            all_severe = all_severe[:20]
+            all_severe = all_severe[:5]
 
         no_changes = not result["namespaces"]
         if no_changes and not all_severe:
