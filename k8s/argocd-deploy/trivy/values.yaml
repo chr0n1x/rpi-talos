@@ -10,7 +10,7 @@ trivy-operator:
       tag: "0.74.0"
     storageClassEnabled: true
     storageClassName: longhorn
-    storageSize: "1Gi"
+    storageSize: "4Gi"
 
   operator:
     builtInTrivyServer: true
