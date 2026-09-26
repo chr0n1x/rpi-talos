@@ -21,7 +21,12 @@ and hand off. The user commits and syncs (or runs manual commands).
    - `k8s/argocd-deploy/<app>/` - per-app Helm value overrides (synced by ArgoCD)
    - `k8s/argocd-deploy/values.yaml` - shared values
    - `k8s/helm/<chart>/` - chart sources rendered by helmfile for bootstrapping
-2. **Never** commit or push. Prepare the diff and present it. The user commits.
+2. **Never** commit or push. Prepare the diff and present it. The user
+   commits and pushes. **Never auto-commit or auto-push** - always ask
+   the user to confirm before any `git commit` or `git push`. If the
+   user has asked you to commit on their behalf, show the full commit
+   message and wait for explicit approval before committing, then ask
+   again before pushing.
 3. **Never** force-push, delete releases/namespaces, or modify
    `argocd-deploy/distribution`.
 4. **Never apply changes to the cluster.** No `kubectl apply`, no `kubectl
