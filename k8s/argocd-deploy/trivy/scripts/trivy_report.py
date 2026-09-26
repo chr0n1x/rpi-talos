@@ -246,6 +246,44 @@ def _make_table(headers, rows):
     return lines
 
 
+def _top_severe_cves(current, limit=5):
+    """Top N severe CVEs across all reports, grouped by workload."""
+    all_severe = []
+    if current:
+        seen = set()
+        for key, rep in current.items():
+            for v in rep["severe"]:
+                ident = (v["id"], rep["repo"], rep["tag"])
+                if ident in seen:
+                    continue
+                seen.add(ident)
+                image_slug = rep["repo"].rsplit("/", 1)[-1]
+                all_severe.append({
+                    "id": v["id"],
+                    "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
+                    "score": v["score"],
+                    "pkg": v["pkg"],
+                })
+    all_severe.sort(key=lambda x: x["score"], reverse=True)
+    return all_severe[:limit]
+
+
+def _format_cve_section(lines, cves):
+    """Append the High-severity CVEs section (shared by all report types)."""
+    if not cves:
+        return
+    lines.append("")
+    lines.append(f"<b>High-severity CVEs (score >= {SEVERITY_THRESHOLD}):</b>")
+    grouped = {}
+    for s in cves:
+        grouped.setdefault(s["workload"], []).append(s)
+    for workload in sorted(grouped, key=lambda w: max(s["score"] for s in grouped[w]), reverse=True):
+        lines.append(f"<pre>{html.escape(workload)}</pre>")
+        for s in grouped[workload]:
+            cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
+            lines.append(f"  \u2022 {cve_link} <b>{s['score']}</b>")
+
+
 def format_telegram_message(result, current=None):
     lines = []
 
@@ -260,40 +298,12 @@ def format_telegram_message(result, current=None):
             lines.append("No critical or high severity vulnerabilities found.")
             return "\n".join(lines)
 
-        ns_width = max(len(ns) for ns in result["namespaces"])
-        ns_width = max(ns_width, 4)
-        lines.append(f"{'NS':<{ns_width}}  C  H  TOP CVE")
-        lines.append("-" * (ns_width + 22))
-        for ns in sorted(result["namespaces"], key=lambda n: (-result["namespaces"][n]["crit"], -result["namespaces"][n]["high"], n)):
-            info = result["namespaces"][ns]
-            top = ""
-            if info["severe"]:
-                top_v = max(info["severe"], key=lambda x: x["score"])
-                top = f"{top_v['id']} ({top_v['score']})"
-            lines.append(f"{html.escape(ns):<{ns_width}}  {info['crit']:<2} {info['high']:<2} {html.escape(top)}")
-        lines.append("")
+        _format_cve_section(lines, _top_severe_cves(current))
         return _cap_message("\n".join(lines), "(truncated)")
 
     elif result["type"] == "changes":
-        # Build persistent CVE list first to decide whether to send at all
-        all_severe = []
-        if current:
-            seen = set()
-            for key, rep in current.items():
-                for v in rep["severe"]:
-                    ident = (v["id"], rep["repo"], rep["tag"])
-                    if ident in seen:
-                        continue
-                    seen.add(ident)
-                    image_slug = rep["repo"].rsplit("/", 1)[-1]
-                    all_severe.append({
-                        "id": v["id"],
-                        "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
-                        "score": v["score"],
-                        "pkg": v["pkg"],
-                    })
-            all_severe.sort(key=lambda x: x["score"], reverse=True)
-            all_severe = all_severe[:5]
+        # Persistent CVE list decides whether to send at all on a no-change run
+        all_severe = _top_severe_cves(current)
 
         no_changes = not result["namespaces"]
         if no_changes and not all_severe:
@@ -332,17 +342,7 @@ def format_telegram_message(result, current=None):
             lines.extend(_make_table(["Workload", "Crit", "High", "Change"], rows))
             lines.append("</pre>")
 
-        if all_severe:
-            lines.append("")
-            lines.append(f"<b>High-severity CVEs (score >= {SEVERITY_THRESHOLD}):</b>")
-            grouped = {}
-            for s in all_severe:
-                grouped.setdefault(s["workload"], []).append(s)
-            for workload in sorted(grouped, key=lambda w: max(s["score"] for s in grouped[w]), reverse=True):
-                lines.append(f"<pre>{html.escape(workload)}</pre>")
-                for s in grouped[workload]:
-                    cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
-                    lines.append(f"  • {cve_link} <b>{s['score']}</b>")
+        _format_cve_section(lines, all_severe)
 
         return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
