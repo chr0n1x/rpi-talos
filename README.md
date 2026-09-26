@@ -8,8 +8,8 @@ _Historical setup notes from the original build are archived in [docs/initial-jo
 
 ## Hardware
 
-- RPi5 control plane node(s)
-- Worker nodes (RPi bare metal, some with NVIDIA GPU, zimaboard)
+- 3x RPi5 control plane nodes
+- 6x worker nodes (RPi5, RPi4, zimaboard, one with NVIDIA GPU)
 - Longhorn block storage on worker disks
 - Host-level + Misc: NUT UPS, PiSugar, Jellyfin, nginx-proxy-manager, WoLweb
 - External: CachyOS llama.cpp LLM (accessible via edge proxy, config not in this repo), Jellyfin, OMV, pi.hole
