@@ -29,7 +29,7 @@ vault-auth:
 paperless-ngx:
   image:
     repository: ghcr.io/paperless-ngx/paperless-ngx
-    tag: "2.20.15"
+    tag: "3.2.1"
 
   serviceAccount:
     create: true
@@ -44,8 +44,13 @@ paperless-ngx:
     # OIDC
     #   https://integrations.goauthentik.io/documentation/paperless-ngx/
     #
-    # when configurating the social account provider config in the secret
+    # when configuring the social account provider config in the secret
     # below, omit "openid_connect.APPS[].settings.claims"
+    #
+    # v3: if OIDC login fails with "invalid_client" at the callback, add
+    # "token_auth_method": "client_secret_basic" to the provider settings
+    # in the PAPERLESS_SOCIALACCOUNT_PROVIDERS JSON (Vault path paperless-ngx/env)
+    #   https://github.com/paperless-ngx/paperless-ngx/blob/dev/docs/migration-v3.md
     PAPERLESS_SOCIALACCOUNT_PROVIDERS:
       valueFrom:
         secretKeyRef:
@@ -55,6 +60,14 @@ paperless-ngx:
     PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
 
     TZ: UTC
+    # v3: required; reuses CNPG auto-generated postgres password as the signing key.
+    # note: if CNPG ever rotates this password, all paperless sessions are invalidated.
+    PAPERLESS_SECRET_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: paperless-postgres-user
+          key: password
+
     PAPERLESS_DBENGINE: postgresql
     PAPERLESS_DBHOST: paperless-ngx-rw
     PAPERLESS_DBNAME: paperless_ngx
@@ -83,6 +96,13 @@ paperless-ngx:
     # omfg
     PAPERLESS_CSRF_TRUSTED_ORIGINS: https://paperless-ngx.rannet.duckdns.org
     PAPERLESS_URL: https://paperless-ngx.rannet.duckdns.org
+    # v3: duplicate documents are allowed by default; reject like v2
+    PAPERLESS_CONSUMER_DELETE_DUPLICATES: "true"
+    # v3: if login returns 403 Forbidden, add trusted proxy settings
+    #   PAPERLESS_TRUSTED_PROXIES
+    #   PAPERLESS_ALLAUTH_TRUSTED_PROXY_COUNT
+    #   PAPERLESS_ALLAUTH_TRUSTED_CLIENT_IP_HEADER
+    #   https://github.com/paperless-ngx/paperless-ngx/blob/dev/docs/migration-v3.md
 
   ingress:
     main:
