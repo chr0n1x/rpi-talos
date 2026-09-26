@@ -334,9 +334,14 @@ def format_telegram_message(result, current=None):
         if all_severe:
             lines.append("")
             lines.append(f"<b>High-severity CVEs (score >= {SEVERITY_THRESHOLD}):</b>")
+            grouped = {}
             for s in all_severe:
-                cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
-                lines.append(f"  • {cve_link}  {html.escape(s['workload'])}  {s['score']}  {html.escape(s['pkg'])}")
+                grouped.setdefault(s["workload"], []).append(s)
+            for workload in sorted(grouped):
+                lines.append(f"<pre>{html.escape(workload)}</pre>")
+                for s in grouped[workload]:
+                    cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
+                    lines.append(f"  • {cve_link} <b>{s['score']}</b>")
 
         return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
