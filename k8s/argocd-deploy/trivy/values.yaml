@@ -1,16 +1,16 @@
-trivy:
-  operator:
-    builtInTrivyServer: false
-    builtInServerRegistryInsecure: false
+trivy-operator:
+  image:
+    registry: mirror.gcr.io
+    repository: aquasec/trivy-operator
 
   trivy:
-    mode: Standalone
+    image:
+      registry: mirror.gcr.io
+      repository: aquasec/trivy
+      tag: "0.74.0"
+    storageClassEnabled: true
+    storageClassName: longhorn
+    storageSize: "1Gi"
 
-  trivyOperator:
-    scanJobPodTemplateContainerSecurityContext:
-      allowPrivilegeEscalation: true
-      capabilities:
-        drop:
-          - ALL
-      privileged: true
-      readOnlyRootFilesystem: true
+  operator:
+    builtInTrivyServer: true
