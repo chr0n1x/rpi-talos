@@ -6,6 +6,8 @@ secrets/
 talos/
 *.tgz
 requirements.lock
+__pycache__/
+*.pyc
 
 # git update-index --no-assume-unchanged ${file}
 # git update-index --assume-unchanged ${file}  # ignore further changes to a file
