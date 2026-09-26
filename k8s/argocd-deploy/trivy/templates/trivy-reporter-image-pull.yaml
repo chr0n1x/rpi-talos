@@ -24,7 +24,8 @@ spec:
     name: dhi-io-image-pull
     create: true
     type: kubernetes.io/dockerconfigjson
-    transformationRefs:
-      - name: dhi-io-image-pull-transform
+    transformation:
+      transformationRefs:
+        - name: dhi-io-image-pull-transform
   refreshAfter: 30s
   vaultAuthRef: {{ .Release.Namespace }}/trivy-reporter-vault-auth
