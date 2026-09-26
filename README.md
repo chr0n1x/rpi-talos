@@ -19,7 +19,7 @@ _Historical setup notes from the original build are archived in [docs/initial-jo
 | Category | Services |
 |---|---|
 | Identity | Authentik (SSO), Vault (secrets), Twingate (remote access) |
-| Infra | Traefik ingress, cert-manager, Longhorn, SMB CSI, Trivy |
+| Infra | Traefik ingress, cert-manager, Longhorn, SMB CSI, Trivy + Reporter (daily CVE scan → Telegram) |
 | Media | Immich, Jellyfin, Pinchflat |
 | Productivity | Paperless-ngx, Tandoor, BentoPDF |
 | AI | CachyOS + llama.cpp + Open WebUI |
