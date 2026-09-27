@@ -185,33 +185,38 @@ def diff_reports(current, previous):
                 "new_severe": new_severe,
             })
 
-    ns_changes = {}
+    workloads = {}
     for ch in changes:
         if ch["type"] not in ("new", "increased"):
             continue
         rep = ch["report"]
-        ns = rep["namespace"]
-        if ns not in ns_changes:
-            ns_changes[ns] = {"workloads": [], "severe": []}
-        ns_changes[ns]["workloads"].append({
-            "name": rep["name"],
+        key = f"{rep['namespace']}/{rep['name']}"
+        image_slug = rep["repo"].rsplit("/", 1)[-1]
+        top3 = rep["top3"]
+        if top3:
+            worst = top3[0]
+            entry = {
+                "id": worst["id"],
+                "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
+                "score": worst["score"],
+                "pkg": worst["pkg"],
+            }
+        else:
+            entry = None
+        workloads[key] = {
             "repo": f"{rep['repo']}:{rep['tag']}",
             "crit": rep["counts"]["CRITICAL"],
             "high": rep["counts"]["HIGH"],
             "type": ch["type"],
             "prev_crit": ch.get("prev_counts", {}).get("CRITICAL", 0) if ch["type"] == "increased" else None,
             "prev_high": ch.get("prev_counts", {}).get("HIGH", 0) if ch["type"] == "increased" else None,
-            "top3": rep["top3"],
-        })
-        if ch["type"] == "increased":
-            ns_changes[ns]["severe"].extend(ch.get("new_severe", []))
-        elif ch["type"] == "new":
-            ns_changes[ns]["severe"].extend(rep["severe"])
+            "top_cve": entry,
+        }
 
     return {
         "type": "changes",
-        "namespaces": ns_changes,
-        "total_changed": len([c for c in changes if c["type"] in ("new", "increased")]),
+        "workloads": workloads,
+        "total_changed": len(workloads),
     }
 
 
@@ -247,41 +252,31 @@ def _make_table(headers, rows):
 
 
 def _top_severe_cves(current, limit=5):
-    """Top N severe CVEs across all reports, grouped by workload."""
-    all_severe = []
-    if current:
-        seen = set()
-        for key, rep in current.items():
-            for v in rep["severe"]:
-                ident = (v["id"], rep["repo"], rep["tag"])
-                if ident in seen:
-                    continue
-                seen.add(ident)
-                image_slug = rep["repo"].rsplit("/", 1)[-1]
-                all_severe.append({
-                    "id": v["id"],
-                    "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
-                    "score": v["score"],
-                    "pkg": v["pkg"],
-                })
-    all_severe.sort(key=lambda x: x["score"], reverse=True)
-    return all_severe[:limit]
+    """Top N workloads by highest-severity CVE, one entry per workload."""
+    if not current:
+        return []
+    best = {}
+    for key, rep in current.items():
+        if not rep["severe"]:
+            continue
+        worst = max(rep["severe"], key=lambda v: v["score"])
+        image_slug = rep["repo"].rsplit("/", 1)[-1]
+        best[key] = {
+            "id": worst["id"],
+            "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
+            "score": worst["score"],
+            "pkg": worst["pkg"],
+        }
+    return sorted(best.values(), key=lambda x: x["score"], reverse=True)[:limit]
 
 
-def _format_cve_section(lines, cves):
-    """Append the High-severity CVEs section (shared by all report types)."""
+def _format_cve_bullets(lines, cves):
+    """Append CVE bullets in the shared format: workload | CVE link | score | pkg."""
     if not cves:
         return
-    lines.append("")
-    lines.append(f"<b>High-severity CVEs (score >= {SEVERITY_THRESHOLD}):</b>")
-    grouped = {}
     for s in cves:
-        grouped.setdefault(s["workload"], []).append(s)
-    for workload in sorted(grouped, key=lambda w: max(s["score"] for s in grouped[w]), reverse=True):
-        lines.append(f"<pre>{html.escape(workload)}</pre>")
-        for s in grouped[workload]:
-            cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
-            lines.append(f"  \u2022 {cve_link} <b>{s['score']}</b>")
+        cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
+        lines.append(f"  \u2022 {html.escape(s['workload'])}  {cve_link}  {s['score']}  {html.escape(s['pkg'])}")
 
 
 def format_telegram_message(result, current=None):
@@ -292,20 +287,24 @@ def format_telegram_message(result, current=None):
         total_high = sum(i["high"] for i in result["namespaces"].values())
         lines.append("<b>\U0001F6A8 RanNet K8s Security Report \U0001FAE0</b>")
         lines.append(f"<i>initial report</i>")
-        lines.append(f"{result['total_workloads']} workloads | {total_crit} crit | {total_high} high")
+        lines.append(f"{result['total_workloads']} workloads scanned | {total_crit} crit | {total_high} high")
         lines.append("")
         if not result["namespaces"]:
             lines.append("No critical or high severity vulnerabilities found.")
             return "\n".join(lines)
 
-        _format_cve_section(lines, _top_severe_cves(current))
+        top5 = _top_severe_cves(current)
+        if top5:
+            lines.append("")
+            lines.append(f"<b>Top 5 offenders (score >= {SEVERITY_THRESHOLD}):</b>")
+            _format_cve_bullets(lines, top5)
         return _cap_message("\n".join(lines), "(truncated)")
 
     elif result["type"] == "changes":
         # Persistent CVE list decides whether to send at all on a no-change run
         all_severe = _top_severe_cves(current)
 
-        no_changes = not result["namespaces"]
+        no_changes = not result["workloads"]
         if no_changes and not all_severe:
             return None
 
@@ -318,31 +317,17 @@ def format_telegram_message(result, current=None):
         lines.append("")
 
         if not no_changes:
-            rows = []
-            for ns in sorted(result["namespaces"]):
-                info = result["namespaces"][ns]
-                for w in info["workloads"]:
-                    change_parts = []
-                    if w.get("prev_crit") is not None:
-                        if w["prev_crit"] != w["crit"]:
-                            change_parts.append(f"crit {w['prev_crit']}->{w['crit']}")
-                        if w["prev_high"] != w["high"]:
-                            change_parts.append(f"high {w['prev_high']}->{w['high']}")
-                    elif w["type"] == "new":
-                        change_parts.append("NEW")
-                    else:
-                        change_parts.append("changed")
-                    rows.append([
-                        html.escape(w["repo"]),
-                        str(w["crit"]),
-                        str(w["high"]),
-                        ", ".join(change_parts),
-                    ])
-            lines.append("<pre>")
-            lines.extend(_make_table(["Workload", "Crit", "High", "Change"], rows))
-            lines.append("</pre>")
+            changed = result["workloads"]
+            change_cves = [w["top_cve"] for w in changed.values() if w["top_cve"]]
+            if change_cves:
+                lines.append("")
+                lines.append(f"<b>Changed workloads ({len(change_cves)}):</b>")
+                _format_cve_bullets(lines, change_cves)
 
-        _format_cve_section(lines, all_severe)
+        if all_severe:
+            lines.append("")
+            lines.append(f"<b>Top 5 offenders (score >= {SEVERITY_THRESHOLD}):</b>")
+            _format_cve_bullets(lines, all_severe)
 
         return _cap_message("\n".join(lines), "(truncated - too many entries)")
 
@@ -355,7 +340,6 @@ def format_telegram_message(result, current=None):
 #   file and delete the previous message before sending a new one.
 # - HTML <a href> links do NOT render inside <pre> blocks. The CVE list
 #   uses plain text with links (no <pre>) so they are clickable.
-#   The changes table stays in <pre> for monospace alignment.
 
 def strip_html(s):
     """Strip HTML tags from a string (fallback when parse errors occur)."""
