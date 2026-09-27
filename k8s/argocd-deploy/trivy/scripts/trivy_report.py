@@ -190,20 +190,26 @@ def diff_reports(current, previous):
         if ch["type"] not in ("new", "increased"):
             continue
         rep = ch["report"]
-        key = f"{rep['namespace']}/{rep['name']}"
         image_slug = rep["repo"].rsplit("/", 1)[-1]
+        image_key = f"{rep['namespace']}/{image_slug}:{rep['tag']}"
         top3 = rep["top3"]
         if top3:
             worst = top3[0]
             entry = {
                 "id": worst["id"],
-                "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
+                "workload": image_key,
                 "score": worst["score"],
                 "pkg": worst["pkg"],
             }
         else:
             entry = None
-        workloads[key] = {
+        # Dedupe by image: keep highest score if same image changed in multiple workloads
+        if image_key in workloads:
+            existing = workloads[image_key]
+            if entry and existing["top_cve"] and entry["score"] > existing["top_cve"]["score"]:
+                existing["top_cve"] = entry
+            continue
+        workloads[image_key] = {
             "repo": f"{rep['repo']}:{rep['tag']}",
             "crit": rep["counts"]["CRITICAL"],
             "high": rep["counts"]["HIGH"],
@@ -252,7 +258,7 @@ def _make_table(headers, rows):
 
 
 def _top_severe_cves(current, limit=5):
-    """Top N workloads by highest-severity CVE, one entry per workload."""
+    """Top N images by highest-severity CVE, one entry per unique image."""
     if not current:
         return []
     best = {}
@@ -261,9 +267,13 @@ def _top_severe_cves(current, limit=5):
             continue
         worst = max(rep["severe"], key=lambda v: v["score"])
         image_slug = rep["repo"].rsplit("/", 1)[-1]
-        best[key] = {
+        image_key = f"{rep['namespace']}/{image_slug}:{rep['tag']}"
+        # Keep the highest score if the same image appears in multiple workloads
+        if image_key in best and best[image_key]["score"] >= worst["score"]:
+            continue
+        best[image_key] = {
             "id": worst["id"],
-            "workload": f"{rep['namespace']}/{image_slug}:{rep['tag']}",
+            "workload": image_key,
             "score": worst["score"],
             "pkg": worst["pkg"],
         }
