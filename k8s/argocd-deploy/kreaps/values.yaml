@@ -22,6 +22,9 @@ kreaps:
             repository: registry.rannet.duckdns.org/kran/kreaps/web
             tag: latest
             pullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
           probes:
             readiness:
               enabled: true
@@ -45,6 +48,9 @@ kreaps:
             repository: registry.rannet.duckdns.org/kran/kreaps/api
             tag: latest
             pullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
           env:
             DATA_DIR: /data
             CHROMA_URL: http://kreaps-chroma:8000
@@ -74,6 +80,9 @@ kreaps:
             repository: registry.rannet.duckdns.org/kran/kreaps/chroma
             tag: latest
             pullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
           env:
             CHROMA_SETTINGS: '{"persist_directory": "/data"}'
           probes:
@@ -116,6 +125,9 @@ kreaps:
             repository: registry.rannet.duckdns.org/kran/kreaps/evaluator
             tag: latest
             pullPolicy: Always
+          ports:
+            - containerPort: 9500
+              name: http
           probes:
             readiness:
               enabled: true
