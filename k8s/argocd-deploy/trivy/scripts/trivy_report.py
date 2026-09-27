@@ -275,7 +275,7 @@ def _format_cve_bullets(lines, cves):
     if not cves:
         return
     for s in cves:
-        cve_link = f'<a href="https://osv.dev/vulnerability/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
+        cve_link = f'<a href="https://nvd.nist.gov/vuln/detail/{html.escape(s["id"])}">{html.escape(s["id"])}</a>'
         lines.append(f"  \u2022 {html.escape(s['workload'])}  {cve_link}  {s['score']}  {html.escape(s['pkg'])}")
 
 
