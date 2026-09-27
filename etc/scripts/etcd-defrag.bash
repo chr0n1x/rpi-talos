@@ -1,48 +1,48 @@
 #!/bin/bash -e
 
-# utility script to
-# 1. fetch the etcd cluster status based on all kubectl nodes
-# 2. defrag each node using talosctl
+# etcd defrag for Talos control-plane nodes.
+# Run via systemd timer (etc/systemd/etcd-defrag.timer).
 #
-# writes results into /tmp/etcd-defrag.log
-#
-# personally install this via crontab, e.g.:
-# 1. crontab -e
-# 2. add the following:
-#
-#   @daily <user> TALOSCONFIG=<path to config> /bin/bash ~/Code/chr0n1x/rpi-talos/etc/scripts/etcd-defrag.bash 
-# 3. or use the systemctl service/timer in ../systemd
+# Requires: TALOSCONFIG, KUBECONFIG in env.
 
-PATH=$PATH:/usr/local/bin
-NODES=$(kubectl get nodes -o=wide | grep control | awk '{ print $1 }')
-# LOG_FILE=/tmp/etcd-defrag.log
+export PATH="/usr/local/bin:$PATH"
 
-started=false
-info() {
-  if [ $started = false ]; then
-    echo -e "[$(date)] $@" # > $LOG_FILE
-    started=true
-    return
-  fi
-  echo -e "[$(date)] $@" # >> $LOG_FILE
-}
+info() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
-info "Found control nodes:\n\n$NODES\n"
-info
-info "----------------------------"
-info "ETCD STATUS OF CONTROL PLANE"
-info "----------------------------"
-info
-info "Starting defrag run..."
+# Discover control-plane nodes from the Talos cluster member list.
+NODES=$(talosctl get members -o yaml 2>/dev/null \
+  | awk '/machineType: controlplane/{cp=1} /hostname:/{h=$2} /^---$/{if(cp)print h; cp=0; h=""}')
 
-talosctl \
-  -n "$(echo $NODES | tr ' ' ',' | sed 's/,$//g')" etcd status # >> $LOG_FILE
+if [ -z "$NODES" ]; then
+  info "ERROR: no control-plane nodes found"
+  exit 1
+fi
+
+NODES_CSV=$(echo $NODES | tr ' ' ',' | sed 's/,$//g')
+
+info "Control-plane nodes: $NODES"
+info "---"
+info "etcd status:"
+
+# Capture status output once. Used for both display and leader detection.
+# Table: NODE MEMBER DB_SIZE UNIT IN_USE UNIT (PCT) LEADER RAFT_INDEX ...
+# Leader is the row where MEMBER ($2) == LEADER ($8).
+STATUS=$(talosctl etcd status -n "$NODES_CSV")
+echo "$STATUS"
+
+LEADER=$(echo "$STATUS" | awk 'NR>1 && $2==$8 {print $1; exit}')
+[ -z "$LEADER" ] && LEADER=$(echo "$NODES" | tail -1)
+
+info "---"
+info "Defrag order: non-leaders first, leader ($LEADER) last"
 
 for cnode in $NODES; do
-  info
-  info "- defragging control-node $cnode..."
-  talosctl -n $cnode etcd defrag # >> $LOG_FILE
-done 
+  [ "$cnode" = "$LEADER" ] && continue
+  info "Defragging $cnode..."
+  talosctl -n "$cnode" etcd defrag
+done
 
-info
+info "Defragging leader $LEADER last..."
+talosctl -n "$LEADER" etcd defrag
+
 info "--- DONE"

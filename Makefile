@@ -62,6 +62,39 @@ install-kustomize:
 	wget https://github.com/helmfile/helmfile/releases/download/v1.0.0-rc.2/helmfile_1.0.0-rc.2_linux_amd64.tar.gz
 
 
+REPO_DIR=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+ETCD_DEFRAG_ENV := $(REPO_DIR)/etc/systemd/etcd-defrag.env
+ETCD_DEFRAG_UNITS := $(REPO_DIR)/etc/systemd/etcd-defrag.service $(REPO_DIR)/etc/systemd/etcd-defrag.timer
+
+etcd-defrag-env:
+	@TALOS_CONFIG=$${TALOSCONFIG:-$$HOME/.talos/config} ; \
+	KUBE_CONFIG=$${KUBECONFIG:-$$HOME/.kube/config} ; \
+	if [ ! -f "$$TALOS_CONFIG" ]; then \
+	  echo "ERROR: talosconfig not found at $$TALOS_CONFIG" >&2 ; \
+	  echo "Set TALOSCONFIG=/path/to/config or create the default" >&2 ; \
+	  exit 1 ; \
+	fi ; \
+	if [ ! -f "$$KUBE_CONFIG" ]; then \
+	  echo "ERROR: kubeconfig not found at $$KUBE_CONFIG" >&2 ; \
+	  echo "Set KUBECONFIG=/path/to/config or create the default" >&2 ; \
+	  exit 1 ; \
+	fi ; \
+	printf 'HOME=%s\nREPO_PATH=%s\nTALOSCONFIG=%s\nKUBECONFIG=%s\n' \
+	  "$$HOME" "$(REPO_DIR)" "$$TALOS_CONFIG" "$$KUBE_CONFIG" > $(ETCD_DEFRAG_ENV) ; \
+	echo "Wrote $(ETCD_DEFRAG_ENV) with:" ; \
+	cat $(ETCD_DEFRAG_ENV)
+
+install-etcd-defrag: etcd-defrag-env
+	sudo ln -sf $(ETCD_DEFRAG_ENV) /etc/systemd/system/etcd-defrag.env
+	sudo cp $(ETCD_DEFRAG_UNITS) /etc/systemd/system/
+	sudo systemctl daemon-reload
+	sudo systemctl enable etcd-defrag.timer
+	@echo "" ; \
+	echo "Installed etcd-defrag timer. To verify:" ; \
+	echo "  systemctl status etcd-defrag.timer" ; \
+	echo "  systemctl list-timers | grep etcd" ; \
+	echo "  journalctl -u etcd-defrag.service -f  # watch a test run"
+
 sync:
 	helmfile --file k8s/helmfile.yaml sync
 

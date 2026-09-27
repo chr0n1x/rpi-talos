@@ -1,10 +1,11 @@
-# systemctl enable etcd-defrag.*
 [Unit]
-Description=Timer for etcd-defrag
+Description=Weekly etcd defrag timer
 
 [Timer]
+OnBootSec=7d
 OnUnitActiveSec=7d
-Unit=etcd-defrag.service
+Persistent=true
+AccuracySec=1h
 
 [Install]
 WantedBy=timers.target
