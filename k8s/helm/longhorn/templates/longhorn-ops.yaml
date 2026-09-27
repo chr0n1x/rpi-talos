@@ -23,7 +23,7 @@ spec:
   concurrency: 1
   groups:
     - {{ .Values.longhorn.ops.recurringJobGroup }}
-
+---
 # filesystem-trim: run fstrim to punch holes and free blocks after cleanup.
 # Requires remove-snapshots-during-filesystem-trim=true to reclaim the
 # snapshot chain, not just the volume head.
@@ -40,7 +40,7 @@ spec:
   concurrency: 1
   groups:
     - {{ .Values.longhorn.ops.recurringJobGroup }}
-
+---
 # Cluster-wide: allow trim to reclaim the continuous snapshot chain, not just
 # the head. Without this, filesystem-trim is "not very effective" (Longhorn
 # docs) when space is held by snapshots.
