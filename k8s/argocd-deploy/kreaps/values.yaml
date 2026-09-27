@@ -7,6 +7,9 @@ traefik-ingress:
           port: http
 
 kreaps:
+  defaultPodOptions:
+    nodeSelector:
+      kubernetes.io/arch: arm64
   controllers:
     web:
       type: deployment
