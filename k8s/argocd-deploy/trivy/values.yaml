@@ -14,6 +14,7 @@ trivy-operator:
 
   operator:
     builtInTrivyServer: true
+    infraAssessmentScannerEnabled: false
 
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
