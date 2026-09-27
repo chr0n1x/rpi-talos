@@ -139,12 +139,6 @@ kreaps:
               port: http
 
   persistence:
-    chroma-data:
-      type: emptyDir
-      advancedMounts:
-        chroma:
-          main:
-            - path: /data
     api-data:
       type: emptyDir
       advancedMounts:
