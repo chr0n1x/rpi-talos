@@ -1,0 +1,164 @@
+traefik-ingress:
+  dnsNames:
+    - dns: kreaps.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: kreaps-frontend
+          port: http
+
+kreaps:
+  controllers:
+    web:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            repository: registry.rannet.duckdns.org/kran/kreaps/web
+            tag: latest
+            pullPolicy: Always
+          probes:
+            readiness:
+              enabled: true
+              type: HTTP
+              path: /
+              port: http
+            liveness:
+              enabled: true
+              type: HTTP
+              path: /
+              port: http
+
+    api:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            repository: registry.rannet.duckdns.org/kran/kreaps/api
+            tag: latest
+            pullPolicy: Always
+          env:
+            DATA_DIR: /data
+            CHROMA_URL: http://kreaps-chroma:8000
+            EVALUATOR_URL: http://kreaps-evaluator:9500
+            LLM_BASE_URL: https://llm.rannet-edge.duckdns.org
+            LLM_MODEL: unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL
+            LLM_API_KEY: ""
+            DOCS_DIR: /app/docs/strudel-references
+          probes:
+            readiness:
+              enabled: true
+              type: TCP
+              port: http
+            liveness:
+              enabled: true
+              type: TCP
+              port: http
+
+    chroma:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            repository: registry.rannet.duckdns.org/kran/kreaps/chroma
+            tag: latest
+            pullPolicy: Always
+          env:
+            CHROMA_SETTINGS: '{"persist_directory": "/data"}'
+          probes:
+            readiness:
+              enabled: true
+              type: TCP
+              port: http
+            liveness:
+              enabled: true
+              type: TCP
+              port: http
+
+    ingest:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            repository: registry.rannet.duckdns.org/kran/kreaps/api
+            tag: latest
+            pullPolicy: Always
+          command: ["python", "ingest.py"]
+          env:
+            DOCS_DIR: /app/docs/strudel-references
+            CHROMA_URL: http://kreaps-chroma:8000
+            LLM_BASE_URL: https://llm.rannet-edge.duckdns.org
+            LLM_MODEL: unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL
+            LLM_API_KEY: ""
+
+    evaluator:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      containers:
+        main:
+          image:
+            repository: registry.rannet.duckdns.org/kran/kreaps/evaluator
+            tag: latest
+            pullPolicy: Always
+          probes:
+            readiness:
+              enabled: true
+              type: TCP
+              port: http
+            liveness:
+              enabled: true
+              type: TCP
+              port: http
+
+  persistence:
+    chroma-data:
+      type: emptyDir
+      advancedMounts:
+        chroma:
+          main:
+            - path: /data
+    api-data:
+      type: emptyDir
+      advancedMounts:
+        api:
+          main:
+            - path: /data
+
+  service:
+    frontend:
+      controller: web
+      type: ClusterIP
+      ports:
+        http:
+          port: 80
+    api:
+      controller: api
+      type: ClusterIP
+      ports:
+        http:
+          port: 8000
+    chroma:
+      controller: chroma
+      type: ClusterIP
+      ports:
+        http:
+          port: 8000
+    evaluator:
+      controller: evaluator
+      type: ClusterIP
+      ports:
+        http:
+          port: 9500

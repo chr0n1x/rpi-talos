@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+name: kreaps
+version: 0.0.1
+description: live-coding music instrument
+type: application
+
+dependencies:
+  - name: app-template
+    alias: kreaps
+    version: 5.2.1
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
+  - name: traefik-ingress
+    version: ~1
+    repository: file://../../helm/traefik-ingress
