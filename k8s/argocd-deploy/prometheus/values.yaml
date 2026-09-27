@@ -33,6 +33,12 @@ prometheus:
     # seems to be just about enough for the default 15 day retention window
     persistentVolume:
       size: 180Gi
+      # Longhorn: mark this PVC as the source of truth for recurring job labels.
+      # Longhorn syncs these to the Volume every ~30s, binding the volume to
+      # the lh-ops recurring job group (snapshot-cleanup + fs-trim).
+      labels:
+        recurring-job.longhorn.io/source: "enabled"
+        recurring-job-group.longhorn.io/lh-ops: "enabled"
     retentionSize: 90GB # iunno give it some wiggle room
     retention: 30d # not sure if this will work
     ingress:

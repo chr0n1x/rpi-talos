@@ -1,0 +1,52 @@
+---
+# Recurring jobs + setting for reclaiming Longhorn volume space over time.
+#
+# Volumes opt in by being labeled:
+#   kubectl label volume -n longhorn-system <vol> \
+#     recurring-job-group.longhorn.io/{{ .Values.longhorn.ops.recurringJobGroup }}=enabled
+#
+# Only labeled volumes are touched; unlabeled volumes are ignored.
+# All fields under .Values.longhorn.ops in values.yaml.
+
+# snapshot-cleanup: purge removable + system-generated snapshots (rebuilds,
+# expansion) on a schedule. retain=0 is mutated by Longhorn for this task.
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: lh-snapshot-cleanup
+  namespace: longhorn-system
+spec:
+  name: lh-snapshot-cleanup
+  task: snapshot-cleanup
+  cron: {{ .Values.longhorn.ops.snapshotCleanup.cron | quote }}
+  retain: 0
+  concurrency: 1
+  groups:
+    - {{ .Values.longhorn.ops.recurringJobGroup }}
+
+# filesystem-trim: run fstrim to punch holes and free blocks after cleanup.
+# Requires remove-snapshots-during-filesystem-trim=true to reclaim the
+# snapshot chain, not just the volume head.
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: lh-fs-trim
+  namespace: longhorn-system
+spec:
+  name: lh-fs-trim
+  task: filesystem-trim
+  cron: {{ .Values.longhorn.ops.fsTrim.cron | quote }}
+  retain: 0
+  concurrency: 1
+  groups:
+    - {{ .Values.longhorn.ops.recurringJobGroup }}
+
+# Cluster-wide: allow trim to reclaim the continuous snapshot chain, not just
+# the head. Without this, filesystem-trim is "not very effective" (Longhorn
+# docs) when space is held by snapshots.
+apiVersion: longhorn.io/v1beta2
+kind: Setting
+metadata:
+  name: remove-snapshots-during-filesystem-trim
+  namespace: longhorn-system
+value: {{ .Values.longhorn.ops.removeSnapshotsDuringTrim | quote }}

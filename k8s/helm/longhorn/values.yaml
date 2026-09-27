@@ -31,3 +31,17 @@ longhorn:
     # https://longhorn.io/docs/1.6.2/deploy/important-notes/#pod-security-policies-disabled--pod-security-admission-introduction
   ingress:
     enabled: false
+
+  # Longhorn space-reclaim ops (RecurringJobs + Setting)
+  # Volumes opt in by labeling:
+  #   kubectl label volume -n longhorn-system <vol> \
+  #     recurring-job-group.longhorn.io/<recurringJobGroup>=enabled
+  ops:
+    recurringJobGroup: lh-ops
+    removeSnapshotsDuringTrim: "true"
+    # weekly: cleanup Sun 03:00, trim Sun 04:00 (trim after cleanup frees
+    # more, since the chain is already purged)
+    snapshotCleanup:
+      cron: "0 3 * * 0"
+    fsTrim:
+      cron: "0 4 * * 0"
