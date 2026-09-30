@@ -326,13 +326,19 @@ def format_telegram_message(result, current=None):
             lines.append(f"<i>{result['total_changed']} workload(s) changed</i>")
         lines.append("")
 
+        MAX_CHANGED_SHOWN = 10
         if not no_changes:
             changed = result["workloads"]
             change_cves = [w["top_cve"] for w in changed.values() if w["top_cve"]]
+            change_cves.sort(key=lambda s: s["score"], reverse=True)
             if change_cves:
+                shown = change_cves[:MAX_CHANGED_SHOWN]
+                header = f"<b>Changed workloads ({len(change_cves)}):</b>"
+                if len(change_cves) > MAX_CHANGED_SHOWN:
+                    header += f" <i>showing top {MAX_CHANGED_SHOWN}</i>"
                 lines.append("")
-                lines.append(f"<b>Changed workloads ({len(change_cves)}):</b>")
-                _format_cve_bullets(lines, change_cves)
+                lines.append(header)
+                _format_cve_bullets(lines, shown)
 
         if all_severe:
             lines.append("")
