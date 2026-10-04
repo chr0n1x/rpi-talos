@@ -39,10 +39,16 @@ spec:
             - python3
             - /scripts/argocd_watch.py
           env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
             - name: POLL_INTERVAL
               value: {{ .Values.argocdWatch.pollInterval | quote }}
             - name: SETTLE_POLLS
               value: {{ .Values.argocdWatch.settlePolls | quote }}
+            - name: HEALTHY_CLEAR_SECONDS
+              value: {{ .Values.argocdWatch.healthyClearSeconds | quote }}
+            - name: REBAD_REFRESH_SECONDS
+              value: {{ .Values.argocdWatch.rebadRefreshSeconds | quote }}
             - name: ARGOCD_API_URL
               value: {{ .Values.argocdWatch.argocdApiUrl | quote }}
             - name: ARGOCD_UI_URL

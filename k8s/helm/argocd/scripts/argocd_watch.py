@@ -30,7 +30,14 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 ARGOCD_UI_URL = os.environ.get("ARGOCD_UI_URL", "https://argocd.rannet.duckdns.org")
 POLL_INTERVAL = int(os.environ.get("POLL_INTERVAL", "60"))
 SETTLE_POLLS = int(os.environ.get("SETTLE_POLLS", "3"))
+HEALTHY_CLEAR_SECONDS = int(os.environ.get("HEALTHY_CLEAR_SECONDS", "1800"))
+REBAD_REFRESH_SECONDS = int(os.environ.get("REBAD_REFRESH_SECONDS", "300"))
 TELEGRAM_MAX_LEN = 4000
+
+
+def is_good(status):
+    """An app is 'good' when Synced and Healthy."""
+    return status == ("Synced", "Healthy")
 
 
 def argocd_ssl_context():
@@ -64,34 +71,38 @@ def app_status(app):
     return (sync, health)
 
 
-def format_transition(app_name, old, new, app, settle_seconds):
-    """Format a single confirmed app transition as a list of lines."""
+def build_app_message(app_name, old, new, app, settle_seconds):
+    """Build a Telegram HTML message for a single app transition."""
     ns = app.get("metadata", {}).get("namespace", "argocd")
-    lines = [f"\u2022 {html.escape(app_name)}"]
     old_sync, old_health = old
     new_sync, new_health = new
+    lines = [f"<b>\U0001F514 ArgoCD: {html.escape(app_name)}</b>", ""]
     if old_sync != new_sync:
-        lines.append(f"  Sync: {html.escape(old_sync)} \u2192 {html.escape(new_sync)}")
+        lines.append(f"Sync: {html.escape(old_sync)} \u2192 {html.escape(new_sync)}")
     if old_health != new_health:
-        lines.append(f"  Health: {html.escape(old_health)} \u2192 {html.escape(new_health)}")
-    lines.append(f"  stable for ~{settle_seconds // 60}m")
-    lines.append(f"  <a href=\"{html.escape(ARGOCD_UI_URL)}/applications/{html.escape(ns)}/{html.escape(app_name)}\">open</a>")
-    return lines
-
-
-def build_message(transitions, settle_seconds):
-    """Build a Telegram HTML message from a list of (name, old, new, app) tuples."""
-    lines = []
-    lines.append("<b>\U0001F514 ArgoCD: {} app(s) changed</b>".format(len(transitions)))
-    lines.append("")
-    for app_name, old, new, app in transitions:
-        lines.extend(format_transition(app_name, old, new, app, settle_seconds))
-        lines.append("")
+        lines.append(f"Health: {html.escape(old_health)} \u2192 {html.escape(new_health)}")
+    lines.append(f"stable for ~{settle_seconds // 60}m")
+    lines.append(f"<a href=\"{html.escape(ARGOCD_UI_URL)}/applications/{html.escape(ns)}/{html.escape(app_name)}\">open</a>")
     text = "\n".join(lines)
     if len(text) > TELEGRAM_MAX_LEN:
         cutoff = TELEGRAM_MAX_LEN - 50
         text = text[:cutoff].rsplit("\n", 1)[0] + "\n\n...(truncated)"
     return text
+
+
+def delete_telegram(token, chat_id, message_id):
+    url = f"https://api.telegram.org/bot{token}/deleteMessage"
+    payload = {"chat_id": chat_id, "message_id": message_id}
+    body = json.dumps(payload).encode()
+    req = urllib.request.Request(url, data=body, method="POST")
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as resp:
+            return json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode()
+        print(f"deleteMessage HTTP {e.code}: {err_body[:300]}", file=sys.stderr)
+        return {"ok": False, "description": err_body[:300]}
 
 
 def send_telegram(token, chat_id, text, max_retries=3):
@@ -135,6 +146,118 @@ def strip_html(s):
     return "".join(out)
 
 
+def new_state():
+    """Create a fresh watcher state dict. See keys in process_poll."""
+    return {
+        "baseline": {},
+        "candidate": {},
+        "candidate_count": {},
+        "message_ids": {},
+        "healthy_since": {},
+        "last_bad_msg_at": {},
+        "started": False,
+    }
+
+
+def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_refresh_seconds):
+    """Run one poll of the state machine. Mutates state, returns a list of actions.
+
+    Each action is a tuple: ("send", name, old, new, app) or ("delete", name, reason).
+    The caller is responsible for actually calling Telegram.
+    """
+    actions = []
+
+    current = {}
+    for app in apps:
+        name = app.get("metadata", {}).get("name", "")
+        if not name:
+            continue
+        current[name] = (app_status(app), app)
+
+    baseline = state["baseline"]
+    candidate = state["candidate"]
+    candidate_count = state["candidate_count"]
+    message_ids = state["message_ids"]
+    healthy_since = state["healthy_since"]
+    last_bad_msg_at = state["last_bad_msg_at"]
+
+    if not state["started"]:
+        for name in current:
+            status = current[name][0]
+            baseline[name] = status
+            candidate[name] = status
+            candidate_count[name] = 1
+            healthy_since[name] = now if is_good(status) else None
+        state["started"] = True
+        return actions
+
+    transitions = []
+
+    for name, (status, app) in current.items():
+        old = baseline.get(name)
+        if old is None:
+            baseline[name] = status
+            candidate[name] = status
+            candidate_count[name] = 1
+            continue
+
+        if status == old:
+            candidate[name] = status
+            candidate_count[name] = 1
+            continue
+
+        if candidate.get(name) == status:
+            candidate_count[name] = candidate_count.get(name, 0) + 1
+        else:
+            candidate[name] = status
+            candidate_count[name] = 1
+
+        if candidate_count[name] >= settle_polls:
+            transitions.append((name, old, status, app))
+            baseline[name] = status
+            candidate[name] = status
+            candidate_count[name] = 1
+        # else: not yet settled, keep counting
+
+    for name in list(baseline.keys()):
+        if name not in current:
+            transitions.append((name, baseline[name], ("Removed", "Removed"), {}))
+            del baseline[name]
+            candidate.pop(name, None)
+            candidate_count.pop(name, None)
+            message_ids.pop(name, None)
+
+    for name, old, new, app in transitions:
+        if is_good(new):
+            actions.append(("send", name, old, new, app, "recovery"))
+            healthy_since[name] = now
+            last_bad_msg_at.pop(name, None)
+        else:
+            actions.append(("send", name, old, new, app, "alert"))
+            healthy_since[name] = None
+            last_bad_msg_at[name] = now
+
+    settled_names = {t[0] for t in transitions}
+    for name, (status, app) in current.items():
+        if name not in baseline or name in settled_names:
+            continue
+        if is_good(status):
+            continue
+        if name in last_bad_msg_at and (now - last_bad_msg_at[name]) >= rebad_refresh_seconds:
+            actions.append(("send", name, status, status, app, "refresh"))
+            last_bad_msg_at[name] = now
+
+    for name in list(message_ids.keys()):
+        if name not in current:
+            continue
+        status = current[name][0]
+        if is_good(status) and healthy_since.get(name) and (now - healthy_since[name]) >= healthy_clear_seconds:
+            actions.append(("delete", name, None, None, None, f"healthy for {int((now - healthy_since[name]) // 60)}m"))
+            healthy_since[name] = None
+
+    return actions
+
+
 def main():
     if not ARGOCD_API_TOKEN:
         print("ARGOCD_API_TOKEN must be set", file=sys.stderr)
@@ -146,14 +269,40 @@ def main():
     settle_seconds = SETTLE_POLLS * POLL_INTERVAL
     print(f"ArgoCD watcher starting (poll={POLL_INTERVAL}s, settle={SETTLE_POLLS} polls / ~{settle_seconds // 60}m, API={ARGOCD_API_URL})")
 
-    # Per-app tracking:
-    #   baseline[name] = (sync, health)  -- the last CONFIRMED status
-    #   candidate[name] = (sync, health) -- the status we're currently observing
-    #   candidate_count[name] = int      -- consecutive polls at candidate status
-    baseline = {}
-    candidate = {}
-    candidate_count = {}
-    started = False
+    state = new_state()
+
+    def do_send(name, old, new, app, kind):
+        msg = build_app_message(name, old, new, app, settle_seconds)
+        print(f"{kind} for {name}: {old} -> {new}")
+        print("--- Telegram message ---")
+        print(strip_html(msg))
+        print("--- End message ---")
+        try:
+            if name in state["message_ids"]:
+                print(f"Deleting old Telegram message for {name} (id={state['message_ids'][name]})...")
+                del_result = delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, state["message_ids"][name])
+                if not del_result.get("ok"):
+                    print(f"Warning: failed to delete old message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
+            send_result = send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
+            if send_result and send_result.get("ok"):
+                state["message_ids"][name] = send_result.get("result", {}).get("message_id")
+                print(f"Telegram message sent for {name} (id={state['message_ids'][name]}).")
+            else:
+                print(f"Telegram send failed for {name}: {send_result}", file=sys.stderr)
+        except Exception as e:
+            print(f"Telegram send failed for {name}: {e}", file=sys.stderr)
+
+    def do_delete(name, reason):
+        if name not in state["message_ids"]:
+            return
+        print(f"Deleting Telegram message for {name} (id={state['message_ids'][name]}): {reason}")
+        try:
+            del_result = delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, state["message_ids"][name])
+            if not del_result.get("ok"):
+                print(f"Warning: failed to delete message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
+        except Exception as e:
+            print(f"Telegram delete failed for {name}: {e}", file=sys.stderr)
+        state["message_ids"].pop(name, None)
 
     while True:
         try:
@@ -163,85 +312,25 @@ def main():
             time.sleep(POLL_INTERVAL)
             continue
 
-        current_names = set()
-        current = {}
-        for app in apps:
-            name = app.get("metadata", {}).get("name", "")
-            if not name:
-                continue
-            current_names.add(name)
-            current[name] = (app_status(app), app)
+        now = time.time()
+        actions = process_poll(state, apps, now, SETTLE_POLLS, HEALTHY_CLEAR_SECONDS, REBAD_REFRESH_SECONDS)
 
-        if not started:
-            for name in current_names:
-                status = current[name][0]
-                baseline[name] = status
-                candidate[name] = status
-                candidate_count[name] = 1
-            started = True
-            print(f"Baseline recorded: {len(baseline)} apps (settle window: {SETTLE_POLLS} polls)")
-            for name, (s, h) in sorted((n, current[n][0]) for n in current_names):
+        if not state["started"]:
+            print(f"Baseline recorded: {len(state['baseline'])} apps (settle window: {SETTLE_POLLS} polls)")
+            for name, (s, h) in sorted((n, state['baseline'][n]) for n in state['baseline']):
                 print(f"  {name}: sync={s} health={h}")
             time.sleep(POLL_INTERVAL)
             continue
 
-        transitions = []
-
-        for name, (status, app) in current.items():
-            old = baseline.get(name)
-            if old is None:
-                # Brand-new app: record silently, start settle counting
-                baseline[name] = status
-                candidate[name] = status
-                candidate_count[name] = 1
-                print(f"New app {name}: sync={status[0]} health={status[1]} (baseline set, no message)")
-                continue
-
-            if status == old:
-                # Back to confirmed status: reset candidate tracking
-                candidate[name] = status
-                candidate_count[name] = 1
-                continue
-
-            # Status differs from confirmed baseline
-            if candidate.get(name) == status:
-                candidate_count[name] = candidate_count.get(name, 0) + 1
-            else:
-                candidate[name] = status
-                candidate_count[name] = 1
-
-            if candidate_count[name] >= SETTLE_POLLS:
-                # Settled: confirm the transition
-                transitions.append((name, old, status, app))
-                baseline[name] = status
-                candidate[name] = status
-                candidate_count[name] = 1
-                print(f"CONFIRMED {name}: {old} -> {status} (stable for {SETTLE_POLLS} polls)")
-            else:
-                print(f"Observed {name}: {old} -> {status} ({candidate_count[name]}/{SETTLE_POLLS} polls, not yet confirmed)")
-
-        # Apps removed: confirm immediately (removal is not flappy)
-        for name in list(baseline.keys()):
-            if name not in current_names:
-                transitions.append((name, baseline[name], ("Removed", "Removed"), {}))
-                print(f"CONFIRMED {name}: removed")
-                del baseline[name]
-                candidate.pop(name, None)
-                candidate_count.pop(name, None)
-
-        if transitions:
-            msg = build_message(transitions, settle_seconds)
-            print(f"Detected {len(transitions)} confirmed transition(s):")
-            for name, old, new, _ in transitions:
-                print(f"  {name}: {old} -> {new}")
-            print("--- Telegram message ---")
-            print(strip_html(msg))
-            print("--- End message ---")
-            try:
-                send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
-                print("Telegram message sent.")
-            except Exception as e:
-                print(f"Telegram send failed: {e}", file=sys.stderr)
+        for action in actions:
+            kind = action[0]
+            name = action[1]
+            if kind == "send":
+                _, name, old, new, app, send_kind = action
+                do_send(name, old, new, app, send_kind)
+            elif kind == "delete":
+                _, name, _, _, _, reason = action
+                do_delete(name, reason)
 
         time.sleep(POLL_INTERVAL)
 
