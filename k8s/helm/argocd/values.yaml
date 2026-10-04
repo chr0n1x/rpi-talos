@@ -137,7 +137,7 @@ argocdWatch:
     tag: "3.14"
   pollInterval: 60
   settlePolls: 3
-  argocdApiUrl: http://argocd-server:80
+  argocdApiUrl: http://argo-cd-argocd-server:80
   argocdUiUrl: https://argocd.rannet.duckdns.org
   vault:
     mount: in-cluster

@@ -23,7 +23,7 @@ import time
 import urllib.request
 import urllib.error
 
-ARGOCD_API_URL = os.environ.get("ARGOCD_API_URL", "http://argocd-server:80")
+ARGOCD_API_URL = os.environ.get("ARGOCD_API_URL", "http://argo-cd-argocd-server:80")
 ARGOCD_API_TOKEN = os.environ.get("ARGOCD_API_TOKEN", "")
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
