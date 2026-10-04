@@ -258,5 +258,93 @@ class TestProcessPoll(unittest.TestCase):
         self.assertFalse(aw.is_good(("Unknown", "Healthy")))
 
 
+class TestExecuteActions(unittest.TestCase):
+    def setUp(self):
+        self.state = aw.new_state()
+        self.state["started"] = True
+        self.calls = {"send": [], "delete": []}
+        self._next_id = 100
+
+    def mock_send(self, text):
+        self._next_id += 1
+        self.calls["send"].append(text)
+        return {"ok": True, "result": {"message_id": self._next_id}}
+
+    def mock_delete(self, message_id):
+        self.calls["delete"].append(message_id)
+        return {"ok": True}
+
+    def exec(self, actions):
+        aw.execute_actions(self.state, actions, 300, self.mock_send, self.mock_delete)
+
+    def test_send_stores_message_id(self):
+        actions = [("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")]
+        self.exec(actions)
+        self.assertEqual(len(self.calls["send"]), 1)
+        self.assertEqual(self.calls["delete"], [])
+        self.assertEqual(self.state["message_ids"]["a"], 101)
+
+    def test_refresh_deletes_old_then_sends_new(self):
+        # First: alert stores id=101
+        self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
+        first_id = self.state["message_ids"]["a"]
+        # Then: refresh should delete old and send new
+        self.exec([("send", "a", BAD_SYNC, BAD_SYNC, {"metadata": {"name": "a"}}, "refresh", 900)])
+        self.assertEqual(self.calls["delete"], [first_id])
+        self.assertEqual(len(self.calls["send"]), 2)
+        self.assertNotEqual(self.state["message_ids"]["a"], first_id)
+
+    def test_recovery_replaces_alert(self):
+        self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
+        first_id = self.state["message_ids"]["a"]
+        self.exec([("send", "a", BAD_SYNC, GOOD, {"metadata": {"name": "a"}}, "recovery")])
+        self.assertEqual(self.calls["delete"], [first_id])
+        self.assertEqual(len(self.calls["send"]), 2)
+        self.assertNotEqual(self.state["message_ids"]["a"], first_id)
+
+    def test_delete_removes_message_id(self):
+        self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
+        stored_id = self.state["message_ids"]["a"]
+        self.exec([("delete", "a", None, None, None, "healthy for 30m")])
+        self.assertEqual(self.calls["delete"], [stored_id])
+        self.assertNotIn("a", self.state["message_ids"])
+
+    def test_delete_without_message_is_noop(self):
+        self.exec([("delete", "a", None, None, None, "healthy for 30m")])
+        self.assertEqual(self.calls["delete"], [])
+        self.assertEqual(self.calls["send"], [])
+        self.assertNotIn("a", self.state["message_ids"])
+
+    def test_send_failure_does_not_store_id(self):
+        def failing_send(text):
+            self.calls["send"].append(text)
+            return {"ok": False, "description": "rate limited"}
+        aw.execute_actions(self.state,
+            [("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")],
+            300, failing_send, self.mock_delete)
+        self.assertNotIn("a", self.state["message_ids"])
+
+    def test_delete_failure_still_removes_from_state(self):
+        self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
+        stored_id = self.state["message_ids"]["a"]
+
+        def failing_delete(message_id):
+            self.calls["delete"].append(message_id)
+            return {"ok": False, "description": "message not found"}
+        aw.execute_actions(self.state,
+            [("delete", "a", None, None, None, "healthy for 30m")],
+            300, self.mock_send, failing_delete)
+        self.assertEqual(self.calls["delete"], [stored_id])
+        self.assertNotIn("a", self.state["message_ids"])
+
+    def test_independent_apps_separate_messages(self):
+        self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
+        self.exec([("send", "b", GOOD, BAD_HEALTH, {"metadata": {"name": "b"}}, "alert")])
+        self.assertIn("a", self.state["message_ids"])
+        self.assertIn("b", self.state["message_ids"])
+        self.assertNotEqual(self.state["message_ids"]["a"], self.state["message_ids"]["b"])
+        self.assertEqual(self.calls["delete"], [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

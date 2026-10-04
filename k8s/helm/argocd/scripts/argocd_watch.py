@@ -71,19 +71,22 @@ def app_status(app):
     return (sync, health)
 
 
-def build_app_message(app_name, old, new, app, settle_seconds):
+def build_app_message(app_name, old, new, app, settle_seconds, kind="alert", elapsed_seconds=None):
     """Build a Telegram HTML message for a single app transition."""
-    ns = app.get("metadata", {}).get("namespace", "argocd")
-    old_sync, old_health = old
-    new_sync, new_health = new
-    lines = [f"<b>\U0001F514 ArgoCD: {html.escape(app_name)}</b>", ""]
-    if old_sync != new_sync:
-        lines.append(f"Sync: {html.escape(old_sync)} \u2192 {html.escape(new_sync)}")
-    if old_health != new_health:
-        lines.append(f"Health: {html.escape(old_health)} \u2192 {html.escape(new_health)}")
-    lines.append(f"stable for ~{settle_seconds // 60}m")
-    lines.append(f"<a href=\"{html.escape(ARGOCD_UI_URL)}/applications/{html.escape(ns)}/{html.escape(app_name)}\">open</a>")
-    text = "\n".join(lines)
+    emoji = "\U0001F7E2" if kind == "recovery" else "\U0001F534"
+    if kind == "refresh":
+        mins = elapsed_seconds // 60 if elapsed_seconds is not None else 0
+        text = f"{emoji} <b>{html.escape(app_name)}</b>\nstill {html.escape(new[1])} ~{mins}m"
+    else:
+        old_sync, old_health = old
+        new_sync, new_health = new
+        lines = [f"{emoji} <b>{html.escape(app_name)}</b>", ""]
+        if old_sync != new_sync:
+            lines.append(f"Sync: {html.escape(old_sync)} \u2192 {html.escape(new_sync)}")
+        if old_health != new_health:
+            lines.append(f"Health: {html.escape(old_health)} \u2192 {html.escape(new_health)}")
+        lines.append(f"stable for ~{settle_seconds // 60}m")
+        text = "\n".join(lines)
     if len(text) > TELEGRAM_MAX_LEN:
         cutoff = TELEGRAM_MAX_LEN - 50
         text = text[:cutoff].rsplit("\n", 1)[0] + "\n\n...(truncated)"
@@ -146,6 +149,45 @@ def strip_html(s):
     return "".join(out)
 
 
+def execute_actions(state, actions, settle_seconds, send_fn, delete_fn):
+    """Execute a list of actions from process_poll. Mutates state.
+
+    send_fn(text) -> dict with 'ok' and 'result.message_id'
+    delete_fn(message_id) -> dict with 'ok'
+    """
+    for action in actions:
+        kind = action[0]
+        name = action[1]
+        if kind == "send":
+            elapsed = action[6] if len(action) > 6 else None
+            _, name, old, new, app, send_kind = action[:6]
+            msg = build_app_message(name, old, new, app, settle_seconds, send_kind, elapsed)
+            print(f"{send_kind} for {name}: {old} -> {new}")
+            print("--- Telegram message ---")
+            print(strip_html(msg))
+            print("--- End message ---")
+            if name in state["message_ids"]:
+                print(f"Deleting old Telegram message for {name} (id={state['message_ids'][name]})...")
+                del_result = delete_fn(state["message_ids"][name])
+                if not del_result.get("ok"):
+                    print(f"Warning: failed to delete old message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
+            send_result = send_fn(msg)
+            if send_result and send_result.get("ok"):
+                state["message_ids"][name] = send_result.get("result", {}).get("message_id")
+                print(f"Telegram message sent for {name} (id={state['message_ids'][name]}).")
+            else:
+                print(f"Telegram send failed for {name}: {send_result}", file=sys.stderr)
+        elif kind == "delete":
+            reason = action[5]
+            if name not in state["message_ids"]:
+                continue
+            print(f"Deleting Telegram message for {name} (id={state['message_ids'][name]}): {reason}")
+            del_result = delete_fn(state["message_ids"][name])
+            if not del_result.get("ok"):
+                print(f"Warning: failed to delete message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
+            state["message_ids"].pop(name, None)
+
+
 def new_state():
     """Create a fresh watcher state dict. See keys in process_poll."""
     return {
@@ -155,6 +197,7 @@ def new_state():
         "message_ids": {},
         "healthy_since": {},
         "last_bad_msg_at": {},
+        "bad_since": {},
         "started": False,
     }
 
@@ -180,6 +223,7 @@ def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_re
     message_ids = state["message_ids"]
     healthy_since = state["healthy_since"]
     last_bad_msg_at = state["last_bad_msg_at"]
+    bad_since = state["bad_since"]
 
     if not state["started"]:
         for name in current:
@@ -232,10 +276,12 @@ def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_re
             actions.append(("send", name, old, new, app, "recovery"))
             healthy_since[name] = now
             last_bad_msg_at.pop(name, None)
+            bad_since.pop(name, None)
         else:
             actions.append(("send", name, old, new, app, "alert"))
             healthy_since[name] = None
             last_bad_msg_at[name] = now
+            bad_since[name] = now
 
     settled_names = {t[0] for t in transitions}
     for name, (status, app) in current.items():
@@ -244,7 +290,8 @@ def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_re
         if is_good(status):
             continue
         if name in last_bad_msg_at and (now - last_bad_msg_at[name]) >= rebad_refresh_seconds:
-            actions.append(("send", name, status, status, app, "refresh"))
+            elapsed = now - bad_since[name] if bad_since.get(name) else 0
+            actions.append(("send", name, status, status, app, "refresh", elapsed))
             last_bad_msg_at[name] = now
 
     for name in list(message_ids.keys()):
@@ -271,38 +318,11 @@ def main():
 
     state = new_state()
 
-    def do_send(name, old, new, app, kind):
-        msg = build_app_message(name, old, new, app, settle_seconds)
-        print(f"{kind} for {name}: {old} -> {new}")
-        print("--- Telegram message ---")
-        print(strip_html(msg))
-        print("--- End message ---")
-        try:
-            if name in state["message_ids"]:
-                print(f"Deleting old Telegram message for {name} (id={state['message_ids'][name]})...")
-                del_result = delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, state["message_ids"][name])
-                if not del_result.get("ok"):
-                    print(f"Warning: failed to delete old message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
-            send_result = send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
-            if send_result and send_result.get("ok"):
-                state["message_ids"][name] = send_result.get("result", {}).get("message_id")
-                print(f"Telegram message sent for {name} (id={state['message_ids'][name]}).")
-            else:
-                print(f"Telegram send failed for {name}: {send_result}", file=sys.stderr)
-        except Exception as e:
-            print(f"Telegram send failed for {name}: {e}", file=sys.stderr)
+    def _send(text):
+        return send_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, text)
 
-    def do_delete(name, reason):
-        if name not in state["message_ids"]:
-            return
-        print(f"Deleting Telegram message for {name} (id={state['message_ids'][name]}): {reason}")
-        try:
-            del_result = delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, state["message_ids"][name])
-            if not del_result.get("ok"):
-                print(f"Warning: failed to delete message for {name}: {del_result.get('description', 'unknown')}", file=sys.stderr)
-        except Exception as e:
-            print(f"Telegram delete failed for {name}: {e}", file=sys.stderr)
-        state["message_ids"].pop(name, None)
+    def _delete(message_id):
+        return delete_telegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, message_id)
 
     while True:
         try:
@@ -323,15 +343,10 @@ def main():
             time.sleep(POLL_INTERVAL)
             continue
 
-        for action in actions:
-            kind = action[0]
-            name = action[1]
-            if kind == "send":
-                _, name, old, new, app, send_kind = action
-                do_send(name, old, new, app, send_kind)
-            elif kind == "delete":
-                _, name, _, _, _, reason = action
-                do_delete(name, reason)
+        try:
+            execute_actions(state, actions, settle_seconds, _send, _delete)
+        except Exception as e:
+            print(f"Action execution failed: {e}", file=sys.stderr)
 
         time.sleep(POLL_INTERVAL)
 
