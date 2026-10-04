@@ -313,9 +313,10 @@ def main():
             continue
 
         now = time.time()
+        was_started = state["started"]
         actions = process_poll(state, apps, now, SETTLE_POLLS, HEALTHY_CLEAR_SECONDS, REBAD_REFRESH_SECONDS)
 
-        if not state["started"]:
+        if not was_started and state["started"]:
             print(f"Baseline recorded: {len(state['baseline'])} apps (settle window: {SETTLE_POLLS} polls)")
             for name, (s, h) in sorted((n, state['baseline'][n]) for n in state['baseline']):
                 print(f"  {name}: sync={s} health={h}")
