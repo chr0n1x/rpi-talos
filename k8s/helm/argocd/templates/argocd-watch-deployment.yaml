@@ -16,6 +16,8 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: argocd-watch
+      annotations:
+        checksum/script: {{ include "argocd-watch.scriptChecksum" . | quote }}
     spec:
       restartPolicy: Always
       imagePullSecrets:
