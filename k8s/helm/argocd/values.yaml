@@ -121,3 +121,27 @@ argo-cd:
 
   controller:
     replicas: 2
+
+# ArgoCD application status watcher: long-running Deployment that polls the
+# ArgoCD REST API and sends a Telegram message when an app's sync/health
+# status has been stable for settlePolls consecutive polls (flap protection).
+#
+# Requires a Vault path with keys:
+#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, ARGOCD_API_TOKEN
+# (configured via argocdWatch.vault.path)
+argocdWatch:
+  enabled: true
+  image:
+    registry: dhi.io
+    repository: python
+    tag: "3.14"
+  pollInterval: 60
+  settlePolls: 3
+  argocdApiUrl: http://argocd-server:80
+  argocdUiUrl: https://argocd.rannet.duckdns.org
+  vault:
+    mount: in-cluster
+    path: argocd/watcher
+  imagePull:
+    mount: in-cluster
+    path: argocd/docker

@@ -1,0 +1,81 @@
+{{- if .Values.argocdWatch.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-watch
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: argocd-watch
+    app.kubernetes.io/component: status-watcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-watch
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: argocd-watch
+    spec:
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: argocd-watch-image-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: watcher
+          image: "{{ .Values.argocdWatch.image.registry }}/{{ .Values.argocdWatch.image.repository }}:{{ .Values.argocdWatch.image.tag }}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - python3
+            - /scripts/argocd_watch.py
+          env:
+            - name: POLL_INTERVAL
+              value: {{ .Values.argocdWatch.pollInterval | quote }}
+            - name: SETTLE_POLLS
+              value: {{ .Values.argocdWatch.settlePolls | quote }}
+            - name: ARGOCD_API_URL
+              value: {{ .Values.argocdWatch.argocdApiUrl | quote }}
+            - name: ARGOCD_UI_URL
+              value: {{ .Values.argocdWatch.argocdUiUrl | quote }}
+            - name: ARGOCD_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-watch
+                  key: ARGOCD_API_TOKEN
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-watch
+                  key: TELEGRAM_BOT_TOKEN
+            - name: TELEGRAM_CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-watch
+                  key: TELEGRAM_CHAT_ID
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+      volumes:
+        - name: scripts
+          configMap:
+            name: argocd-watch-script
+            defaultMode: 0555
+{{- end }}

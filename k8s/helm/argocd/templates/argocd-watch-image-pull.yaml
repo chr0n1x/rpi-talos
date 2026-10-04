@@ -1,0 +1,35 @@
+{{- if .Values.argocdWatch.enabled }}
+{{- with .Values.argocdWatch.imagePull }}
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: SecretTransformation
+metadata:
+  name: argocd-watch-image-pull-transform
+  namespace: {{ $.Release.Namespace }}
+spec:
+  excludes:
+    - ".*"
+  templates:
+    .dockerconfigjson:
+      name: dockerconfigjson
+      text: "{{`{{ .dockerconfigjson }}`}}"
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: argocd-watch-image-pull
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: kv-v2
+  mount: {{ .mount }}
+  path: {{ .path }}
+  destination:
+    name: argocd-watch-image-pull
+    create: true
+    type: kubernetes.io/dockerconfigjson
+    transformation:
+      transformationRefs:
+        - name: argocd-watch-image-pull-transform
+  refreshAfter: 30s
+  vaultAuthRef: {{ $.Release.Namespace }}/argocd-vso-connection-auth
+{{- end }}
+{{- end }}

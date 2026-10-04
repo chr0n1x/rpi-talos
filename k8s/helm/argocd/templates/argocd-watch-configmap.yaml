@@ -1,0 +1,12 @@
+{{- if .Values.argocdWatch.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-watch-script
+  namespace: {{ .Release.Namespace }}
+data:
+  argocd_watch.py: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/argocd_watch.py") }}
+    {{ $line }}
+    {{- end }}
+{{- end }}
