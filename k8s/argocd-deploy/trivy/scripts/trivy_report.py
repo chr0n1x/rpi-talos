@@ -326,7 +326,7 @@ def format_telegram_message(result, current=None):
             lines.append(f"<i>{result['total_changed']} workload(s) changed</i>")
         lines.append("")
 
-        MAX_CHANGED_SHOWN = 10
+        MAX_CHANGED_SHOWN = 5
         if not no_changes:
             changed = result["workloads"]
             change_cves = [w["top_cve"] for w in changed.values() if w["top_cve"]]
