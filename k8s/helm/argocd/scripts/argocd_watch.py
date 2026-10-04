@@ -50,7 +50,11 @@ def fetch_applications():
     if ctx:
         kwargs["context"] = ctx
     with urllib.request.urlopen(req, **kwargs) as resp:
-        return json.loads(resp.read())
+        data = json.loads(resp.read())
+    # ArgoCD REST API returns {"metadata": ..., "items": [...]}
+    if isinstance(data, dict):
+        return data.get("items", [])
+    return data
 
 
 def app_status(app):
