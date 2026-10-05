@@ -9,7 +9,7 @@ spec:
   templates:
     .dockerconfigjson:
       name: dockerconfigjson
-      text: "{{`{{ .dockerconfigjson }}`}}"
+      text: "{{`{{ .Secrets.dockerconfigjson }}`}}"
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
