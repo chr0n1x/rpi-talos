@@ -38,7 +38,7 @@ def apps(*specs):
 class TestProcessPoll(unittest.TestCase):
     def setUp(self):
         self.settle = 3
-        self.healthy_clear = 1800
+        self.healthy_clear = 900
         self.rebad_refresh = 300
         self.t = 1000.0  # starting clock
 
@@ -112,18 +112,21 @@ class TestProcessPoll(unittest.TestCase):
         self.assertIsNone(state["healthy_since"]["a"])
         self.assertIn("a", state["last_bad_msg_at"])
 
-    def test_recovery_sends_recovery_and_starts_healthy_timer(self):
+    def test_recovery_sends_message_and_starts_timer(self):
         state = aw.new_state()
         good = apps(("a", "Synced", "Healthy"))
         bad = apps(("a", "OutOfSync", "Healthy"))
         self.poll(state, good)
 
-        # Drive to bad (settled)
+        # Drive to bad (settled) - alert fires
         for _ in range(self.settle):
             self.advance()
             self.poll(state, bad)
         self.assertEqual(state["baseline"]["a"], BAD_SYNC)
         self.assertIn("a", state["last_bad_msg_at"])
+
+        # Simulate the alert message being sent and stored
+        state["message_ids"]["a"] = 12345
 
         # Now recover to good for settle polls
         recovery_actions = []
@@ -131,17 +134,109 @@ class TestProcessPoll(unittest.TestCase):
             self.advance()
             actions = self.poll(state, good)
             recovery_actions.extend(actions)
-        # Exactly one recovery action on the settle-th poll
+        # Exactly one send action on the settle-th poll
         sends = [a for a in recovery_actions if a[0] == "send"]
         self.assertEqual(len(sends), 1)
-        kind, name, old, new, app, send_kind = sends[0]
-        self.assertEqual(name, "a")
-        self.assertEqual(old, BAD_SYNC)
-        self.assertEqual(new, GOOD)
-        self.assertEqual(send_kind, "recovery")
+        self.assertEqual(sends[0][5], "recovery")
+        self.assertEqual(sends[0][1], "a")
         self.assertEqual(state["baseline"]["a"], GOOD)
         self.assertIsNotNone(state["healthy_since"]["a"])
         self.assertNotIn("a", state["last_bad_msg_at"])
+
+    def test_healthy_15m_deletes_message(self):
+        state = aw.new_state()
+        good = apps(("a", "Synced", "Healthy"))
+        bad = apps(("a", "OutOfSync", "Healthy"))
+        self.poll(state, good)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, bad)
+        # Simulate the alert message being sent and stored
+        state["message_ids"]["a"] = 12345
+
+        # Recover to good (settled) - recovery message sent
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, good)
+        # Simulate the recovery message being stored
+        state["message_ids"]["a"] = 99999
+
+        # Advance past healthy_clear: delete action should be returned
+        self.advance(dt=self.healthy_clear + 1)
+        actions = self.poll(state, good)
+        deletes = [a for a in actions if a[0] == "delete"]
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0][1], "a")
+        self.assertIsNone(state["healthy_since"]["a"])
+
+    def test_no_delete_before_healthy_clear(self):
+        state = aw.new_state()
+        good = apps(("a", "Synced", "Healthy"))
+        bad = apps(("a", "OutOfSync", "Healthy"))
+        self.poll(state, good)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, bad)
+        state["message_ids"]["a"] = 12345
+
+        # Recover to good (settled)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, good)
+        state["message_ids"]["a"] = 99999
+
+        # Advance less than healthy_clear: no delete
+        self.advance(dt=self.healthy_clear - 1)
+        actions = self.poll(state, good)
+        self.assertEqual([a for a in actions if a[0] == "delete"], [])
+
+    def test_recovery_without_message_no_delete(self):
+        state = aw.new_state()
+        good = apps(("a", "Synced", "Healthy"))
+        bad = apps(("a", "OutOfSync", "Healthy"))
+        self.poll(state, good)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, bad)
+        # No message stored (simulating a failed send)
+        # Recover to good (settled), then advance past healthy_clear
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, good)
+        # No message_id stored (send failed), so no delete after healthy_clear
+        self.advance(dt=self.healthy_clear + 1)
+        actions = self.poll(state, good)
+        self.assertEqual([a for a in actions if a[0] == "delete"], [])
+        self.assertIn("a", state["message_ids"])
+
+        # Advance past healthy_clear: delete action should be returned
+        self.advance(dt=self.healthy_clear + 1)
+        actions = self.poll(state, good)
+        deletes = [a for a in actions if a[0] == "delete"]
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0][1], "a")
+        # healthy_since is cleared so the delete won't re-fire on next poll
+        self.assertIsNone(state["healthy_since"]["a"])
+
+    def test_no_delete_before_healthy_clear(self):
+        state = aw.new_state()
+        good = apps(("a", "Synced", "Healthy"))
+        bad = apps(("a", "OutOfSync", "Healthy"))
+        self.poll(state, good)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, bad)
+        state["message_ids"]["a"] = 12345
+
+        # Recover to good (settled)
+        for _ in range(self.settle):
+            self.advance()
+            self.poll(state, good)
+
+        # Advance less than healthy_clear: no delete
+        self.advance(dt=self.healthy_clear - 1)
+        actions = self.poll(state, good)
+        self.assertEqual([a for a in actions if a[0] == "delete"], [])
 
     def test_stays_bad_refreshes_every_rebad_window(self):
         state = aw.new_state()
@@ -173,7 +268,7 @@ class TestProcessPoll(unittest.TestCase):
         actions = self.poll(state, bad)
         self.assertEqual([a for a in actions if a[0] == "send"], [])
 
-    def test_good_30m_with_visible_message_deletes(self):
+    def test_recovery_without_message_no_delete(self):
         state = aw.new_state()
         good = apps(("a", "Synced", "Healthy"))
         bad = apps(("a", "OutOfSync", "Healthy"))
@@ -181,36 +276,14 @@ class TestProcessPoll(unittest.TestCase):
         for _ in range(self.settle):
             self.advance()
             self.poll(state, bad)
-        # Simulate a visible message for "a"
-        state["message_ids"]["a"] = 12345
-
-        # Recover to good (settled)
+        # No message stored (simulating a failed send)
+        # Recover to good (settled), then advance past healthy_clear
         for _ in range(self.settle):
             self.advance()
             self.poll(state, good)
-        self.assertIn("a", state["message_ids"])  # still visible after recovery
-
-        # Advance past healthy_clear: delete action should be returned
         self.advance(dt=self.healthy_clear + 1)
         actions = self.poll(state, good)
-        deletes = [a for a in actions if a[0] == "delete"]
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0][1], "a")
-        # healthy_since is cleared so the delete won't re-fire on next poll
-        self.assertIsNone(state["healthy_since"]["a"])
-        # Simulate the caller executing the delete
-        state["message_ids"].pop("a", None)
-        self.advance()
-        actions = self.poll(state, good)
-        self.assertEqual([a for a in actions if a[0] == "delete"], [])
-
-    def test_no_delete_without_visible_message(self):
-        state = aw.new_state()
-        good = apps(("a", "Synced", "Healthy"))
-        self.poll(state, good)
-        # No message was ever sent; advance past healthy_clear
-        self.advance(dt=self.healthy_clear + 1)
-        actions = self.poll(state, good)
+        # No delete since no message_id exists
         self.assertEqual([a for a in actions if a[0] == "delete"], [])
 
     def test_removed_app_sends_removal(self):
@@ -294,13 +367,13 @@ class TestExecuteActions(unittest.TestCase):
         self.assertEqual(len(self.calls["send"]), 2)
         self.assertNotEqual(self.state["message_ids"]["a"], first_id)
 
-    def test_recovery_replaces_alert(self):
+    def test_recovery_deletes_alert(self):
         self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])
         first_id = self.state["message_ids"]["a"]
-        self.exec([("send", "a", BAD_SYNC, GOOD, {"metadata": {"name": "a"}}, "recovery")])
+        self.exec([("delete", "a", None, None, None, "healthy for 15m")])
         self.assertEqual(self.calls["delete"], [first_id])
-        self.assertEqual(len(self.calls["send"]), 2)
-        self.assertNotEqual(self.state["message_ids"]["a"], first_id)
+        self.assertEqual(len(self.calls["send"]), 1)
+        self.assertNotIn("a", self.state["message_ids"])
 
     def test_delete_removes_message_id(self):
         self.exec([("send", "a", GOOD, BAD_SYNC, {"metadata": {"name": "a"}}, "alert")])

@@ -30,7 +30,7 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 ARGOCD_UI_URL = os.environ.get("ARGOCD_UI_URL", "https://argocd.rannet.duckdns.org")
 POLL_INTERVAL = int(os.environ.get("POLL_INTERVAL", "60"))
 SETTLE_POLLS = int(os.environ.get("SETTLE_POLLS", "3"))
-HEALTHY_CLEAR_SECONDS = int(os.environ.get("HEALTHY_CLEAR_SECONDS", "1800"))
+HEALTHY_CLEAR_SECONDS = int(os.environ.get("HEALTHY_CLEAR_SECONDS", "900"))
 REBAD_REFRESH_SECONDS = int(os.environ.get("REBAD_REFRESH_SECONDS", "300"))
 TELEGRAM_MAX_LEN = 4000
 
@@ -74,19 +74,14 @@ def app_status(app):
 def build_app_message(app_name, old, new, app, settle_seconds, kind="alert", elapsed_seconds=None):
     """Build a Telegram HTML message for a single app transition."""
     emoji = "\U0001F7E2" if kind == "recovery" else "\U0001F534"
+    name = html.escape(app_name)
     if kind == "refresh":
         mins = elapsed_seconds // 60 if elapsed_seconds is not None else 0
-        text = f"{emoji} <b>{html.escape(app_name)}</b>\nstill {html.escape(new[1])} ~{mins}m"
+        text = f"{emoji} <b>{name}</b>\nstill {html.escape(new[1])} ~{mins}m"
+    elif kind == "recovery":
+        text = f"{emoji} <b>{name}</b> recovered"
     else:
-        old_sync, old_health = old
-        new_sync, new_health = new
-        lines = [f"{emoji} <b>{html.escape(app_name)}</b>", ""]
-        if old_sync != new_sync:
-            lines.append(f"Sync: {html.escape(old_sync)} \u2192 {html.escape(new_sync)}")
-        if old_health != new_health:
-            lines.append(f"Health: {html.escape(old_health)} \u2192 {html.escape(new_health)}")
-        lines.append(f"stable for ~{settle_seconds // 60}m")
-        text = "\n".join(lines)
+        text = f"{emoji} <b>{name}</b> went {html.escape(new[1])}"
     if len(text) > TELEGRAM_MAX_LEN:
         cutoff = TELEGRAM_MAX_LEN - 50
         text = text[:cutoff].rsplit("\n", 1)[0] + "\n\n...(truncated)"
@@ -269,6 +264,9 @@ def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_re
             del baseline[name]
             candidate.pop(name, None)
             candidate_count.pop(name, None)
+            healthy_since.pop(name, None)
+            last_bad_msg_at.pop(name, None)
+            bad_since.pop(name, None)
             message_ids.pop(name, None)
 
     for name, old, new, app in transitions:
