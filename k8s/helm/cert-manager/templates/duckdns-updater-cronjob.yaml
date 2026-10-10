@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: duckdns-updater
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+spec:
+  schedule: "0 */6 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: dhi-io-image-pull
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: updater
+              image: dhi.io/python:3.14
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+              command:
+                - python3
+                - /scripts/duckdns_update.py
+              env:
+                - name: DUCKDNS_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: duckdns-updater-credentials
+                      key: token
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: creds
+                  mountPath: /creds
+                  readOnly: true
+          volumes:
+            - name: scripts
+              configMap:
+                name: duckdns-updater-script
+                defaultMode: 0555
+            - name: creds
+              secret:
+                secretName: duckdns-updater-credentials
+                defaultMode: 0444

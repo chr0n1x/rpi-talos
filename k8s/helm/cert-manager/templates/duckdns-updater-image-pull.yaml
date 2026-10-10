@@ -1,0 +1,31 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: SecretTransformation
+metadata:
+  name: dhi-io-image-pull-transform
+  namespace: {{ .Release.Namespace }}
+spec:
+  excludes:
+    - ".*"
+  templates:
+    .dockerconfigjson:
+      name: dockerconfigjson
+      text: '{{`{{ get .Secrets ".dockerconfigjson" }}`}}'
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: dhi-io-image-pull
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: kv-v2
+  mount: in-cluster
+  path: trivy/docker
+  destination:
+    name: dhi-io-image-pull
+    create: true
+    type: kubernetes.io/dockerconfigjson
+    transformation:
+      transformationRefs:
+        - name: dhi-io-image-pull-transform
+  refreshAfter: 30s
+  vaultAuthRef: {{ .Release.Namespace }}/cert-manager-vso-connection-auth

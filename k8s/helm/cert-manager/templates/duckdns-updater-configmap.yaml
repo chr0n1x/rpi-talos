@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: duckdns-updater-script
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+data:
+  duckdns_update.py: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/duckdns_update.py") }}
+    {{ $line }}
+    {{- end }}
