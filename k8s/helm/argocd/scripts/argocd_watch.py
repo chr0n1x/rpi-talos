@@ -4,11 +4,16 @@ ArgoCD application status watcher.
 
 Long-running poller that fetches all ArgoCD applications via the REST API,
 tracks per-app (sync.status, health.status), and sends a Telegram message
-when an app's status has been stable for a settle window.
+when an app's health has been stable for a settle window.
+
+Alerting is health-driven: Degraded health is the problem worth paging for.
+A sync mismatch with Healthy health (OutOfSync) is a config/drift condition,
+not an incident, and is intentionally not alerted on. App removals are
+reported.
 
 Flap protection: a status change is only reported after it has persisted
-for `settle_polls` consecutive polls. A transient OutOfSync that resolves
-within the settle window is silently absorbed.
+for `settle_polls` consecutive polls. Transient flaps within the settle
+window are silently absorbed.
 
 The first poll records the baseline silently. Uses only the Python
 standard library (urllib, json, os, sys, ssl, time).
@@ -36,8 +41,14 @@ TELEGRAM_MAX_LEN = 4000
 
 
 def is_good(status):
-    """An app is 'good' when Synced and Healthy."""
-    return status == ("Synced", "Healthy")
+    """An app is 'good' when its health is Healthy and it still exists.
+
+    Sync status is intentionally ignored: OutOfSync + Healthy is drift, not
+    an incident (it happens after out-of-band config changes), so it must
+    not produce an alert or a recovery.
+    """
+    sync, health = status
+    return health == "Healthy" and sync != "Removed"
 
 
 def argocd_ssl_context():
@@ -75,13 +86,17 @@ def build_app_message(app_name, old, new, app, settle_seconds, kind="alert", ela
     """Build a Telegram HTML message for a single app transition."""
     emoji = "\U0001F7E2" if kind == "recovery" else "\U0001F534"
     name = html.escape(app_name)
+    health = new[1]
     if kind == "refresh":
         mins = elapsed_seconds // 60 if elapsed_seconds is not None else 0
-        text = f"{emoji} <b>{name}</b>\nstill {html.escape(new[1])} ~{mins}m"
+        text = f"{emoji} <b>{name}</b>\nstill {html.escape(health)} ~{mins}m"
     elif kind == "recovery":
         text = f"{emoji} <b>{name}</b> recovered"
     else:
-        text = f"{emoji} <b>{name}</b> went {html.escape(new[1])}"
+        if health == "Removed":
+            text = f"{emoji} <b>{name}</b> was removed"
+        else:
+            text = f"{emoji} <b>{name}</b> went {html.escape(health)}"
     if len(text) > TELEGRAM_MAX_LEN:
         cutoff = TELEGRAM_MAX_LEN - 50
         text = text[:cutoff].rsplit("\n", 1)[0] + "\n\n...(truncated)"
@@ -270,6 +285,10 @@ def process_poll(state, apps, now, settle_polls, healthy_clear_seconds, rebad_re
             message_ids.pop(name, None)
 
     for name, old, new, app in transitions:
+        # Same good/bad classification as the baseline: no user-visible
+        # change (e.g. OutOfSync<->Synced with Healthy health).
+        if is_good(new) == is_good(old):
+            continue
         if is_good(new):
             actions.append(("send", name, old, new, app, "recovery"))
             healthy_since[name] = now
