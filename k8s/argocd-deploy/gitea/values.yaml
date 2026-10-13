@@ -36,11 +36,11 @@ gitea:
     type: Recreate
   # image:
   #   fullOverride: registry.rannet.duckdns.org/gitea/gitea:1.25-rootless
+  image:
+    repository: gitea/gitea
+    tag: 28.1.0-rootless
+    digest: sha256:b1a90409ae9afcd5a5725404c3639da7245248848b99e35332968891290b953e
   deployment:
-    image:
-      repository: gitea/gitea
-      tag: 28.1.0-rootless
-      digest: sha256:b1a90409ae9afcd5a5725404c3639da7245248848b99e35332968891290b953e
     env:
       - name: GITEA__server__DOMAIN
         value: gitea.rannet.duckdns.org
