@@ -178,21 +178,19 @@ gutendex:
             liveness:
               enabled: true
               type: HTTP
-              path: /books/?limit=1
+              path: /
               port: http
               spec:
-                initialDelaySeconds: 30
+                initialDelaySeconds: 15
                 periodSeconds: 30
-                timeoutSeconds: 10
             readiness:
               enabled: true
               type: HTTP
-              path: /books/?limit=1
+              path: /
               port: http
               spec:
-                initialDelaySeconds: 30
-                periodSeconds: 15
-                timeoutSeconds: 10
+                initialDelaySeconds: 15
+                periodSeconds: 10
   persistence:
     data:
       type: persistentVolumeClaim
