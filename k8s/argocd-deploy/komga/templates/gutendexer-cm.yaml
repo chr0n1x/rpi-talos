@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gutendexer-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: gutendexer
+data:
+  gutenberg.json: |
+{{ toPrettyJson .Values.gutendexer.config | indent 4 }}

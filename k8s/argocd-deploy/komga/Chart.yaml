@@ -11,6 +11,16 @@ dependencies:
     version: 5.2.1
     repository: https://bjw-s-labs.github.io/helm-charts/
 
+  - name: app-template
+    alias: gutendexer
+    version: 5.2.1
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
+  - name: app-template
+    alias: gutendex
+    version: 5.2.1
+    repository: https://bjw-s-labs.github.io/helm-charts/
+
   - name: traefik-ingress
     version: ~1
     repository: file://../../helm/traefik-ingress

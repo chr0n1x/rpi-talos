@@ -5,6 +5,11 @@ traefik-ingress:
         - kind: Service
           name: komga
           port: http
+    - dns: gutendex.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: gutendexer
+          port: http
 
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
@@ -18,6 +23,187 @@ vault-auth:
         serviceAccount: komga
         audiences:
           - vault
+
+gutendexer:
+  global:
+    fullnameOverride: gutendexer
+  controllers:
+    main:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      serviceAccount:
+        name: komga
+      pod:
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65532
+          runAsGroup: 65532
+          fsGroup: 65532
+          seccompProfile:
+            type: RuntimeDefault
+      containers:
+        main:
+          nameOverride: gutendexer
+          image:
+            repository: registry.rannet.duckdns.org/gutindexer/gutendexer
+            tag: latest
+            pullPolicy: Always
+          env:
+            TZ: America/New_York
+            PORT: "8080"
+            CFG_DEFAULT: /cfg/gutenberg.json
+            CFG_FILE: /state/gutenberg.json
+            DB_FILE: /state/gutenberg.db
+            STATIC_DIR: /static
+            GUTENDEX_BASE_URL: http://gutendex:8000/books
+          ports:
+            - name: http
+              containerPort: 8080
+          probes:
+            liveness:
+              enabled: true
+              type: HTTP
+              path: /healthz
+              port: http
+              spec:
+                initialDelaySeconds: 5
+                periodSeconds: 30
+            readiness:
+              enabled: true
+              type: HTTP
+              path: /healthz
+              port: http
+              spec:
+                initialDelaySeconds: 3
+                periodSeconds: 10
+  persistence:
+    cfg:
+      type: configMap
+      name: gutendexer-config
+      items:
+        - key: gutenberg.json
+          path: gutenberg.json
+      advancedMounts:
+        main:
+          main:
+            - path: /cfg
+              readOnly: true
+    data:
+      type: persistentVolumeClaim
+      existingClaim: komga-data
+      advancedMounts:
+        main:
+          main:
+            - path: /data
+    state:
+      type: persistentVolumeClaim
+      forceRename: gutendexer-state
+      accessMode: ReadWriteOnce
+      storageClass: smb
+      size: 5Mi
+      retain: true
+      advancedMounts:
+        main:
+          main:
+            - path: /state
+  service:
+    gutendexer:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 8080
+  # Initial seed only. On first boot this is copied to /state/gutenberg.json
+  # (state PVC). UI edits write to the PVC and survive ArgoCD syncs.
+  # This block is inert once the state PVC exists.
+  config:
+    topics: ["gothic"]
+    max_per_run: 10
+    sleep_between: 1800
+    languages: en
+    output_dir: /data/Gutenberg
+    schedule_hour: 2
+    scheduler_enabled: false
+    user_agent: "rpi-talos-gutendexer/1.0 (self-hosted; contact chr0n1x)"
+
+gutendex:
+  global:
+    fullnameOverride: gutendex
+  controllers:
+    main:
+      type: deployment
+      strategy: RollingUpdate
+      rollingUpdate:
+        unavailable: 1
+      serviceAccount:
+        name: komga
+      pod:
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65532
+          runAsGroup: 65532
+          fsGroup: 65532
+          seccompProfile:
+            type: RuntimeDefault
+      containers:
+        main:
+          nameOverride: gutendex
+          image:
+            repository: registry.rannet.duckdns.org/gutindexer/gutendex
+            tag: latest
+            pullPolicy: Always
+          env:
+            TZ: America/New_York
+            SECRET_KEY:
+              valueFrom:
+                secretKeyRef:
+                  name: gutendex-secrets
+                  key: SECRET_KEY
+            DATABASE_ENGINE: django.db.backends.sqlite3
+            DATABASE_NAME: /data/gutendex.sqlite3
+            ALLOWED_HOSTS: gutendex,localhost,127.0.0.1
+          ports:
+            - name: http
+              containerPort: 8000
+          probes:
+            liveness:
+              enabled: true
+              type: HTTP
+              path: /books/?limit=1
+              port: http
+              spec:
+                initialDelaySeconds: 10
+                periodSeconds: 30
+            readiness:
+              enabled: true
+              type: HTTP
+              path: /books/?limit=1
+              port: http
+              spec:
+                initialDelaySeconds: 5
+                periodSeconds: 10
+  persistence:
+    data:
+      type: persistentVolumeClaim
+      forceRename: gutendex-data
+      accessMode: ReadWriteOnce
+      storageClass: smb
+      size: 200Mi
+      retain: true
+      advancedMounts:
+        main:
+          main:
+            - path: /data
+  service:
+    gutendex:
+      controller: main
+      type: ClusterIP
+      ports:
+        http:
+          port: 8000
+
 
 komga:
   controllers:
