@@ -54,11 +54,6 @@ gutendexer:
             pullPolicy: Always
           env:
             TZ: America/New_York
-            PORT: "8080"
-            CFG_DEFAULT: /cfg/gutenberg.json
-            CFG_FILE: /state/gutenberg.json
-            DB_FILE: /state/gutenberg.db
-            STATIC_DIR: /static
             GUTENDEX_BASE_URL: http://gutendex:8000/books
           ports:
             - name: http
