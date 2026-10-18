@@ -184,13 +184,7 @@ gutendex:
                 initialDelaySeconds: 15
                 periodSeconds: 30
             readiness:
-              enabled: true
-              type: HTTP
-              path: /
-              port: http
-              spec:
-                initialDelaySeconds: 15
-                periodSeconds: 10
+              enabled: false
   persistence:
     data:
       type: persistentVolumeClaim
