@@ -164,6 +164,13 @@ gutendex:
             DATABASE_ENGINE: django.db.backends.sqlite3
             DATABASE_NAME: /data/gutendex.sqlite3
             ALLOWED_HOSTS: gutendex,localhost,127.0.0.1
+            STATIC_ROOT: /app/gutendex-src/staticfiles
+            MEDIA_ROOT: /app/gutendex-src/media
+            EMAIL_HOST: localhost
+            EMAIL_HOST_ADDRESS: localhost:25
+            EMAIL_HOST_PASSWORD: ""
+            EMAIL_HOST_USER: ""
+            DEBUG: "0"
           ports:
             - name: http
               containerPort: 8000
