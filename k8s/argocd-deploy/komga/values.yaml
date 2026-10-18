@@ -27,6 +27,7 @@ vault-auth:
 gutendexer:
   global:
     fullnameOverride: gutendexer
+  nameOverride: gutendexer
   controllers:
     main:
       type: deployment
@@ -128,6 +129,7 @@ gutendexer:
 gutendex:
   global:
     fullnameOverride: gutendex
+  nameOverride: gutendex
   controllers:
     main:
       type: deployment
