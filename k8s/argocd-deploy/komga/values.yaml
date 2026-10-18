@@ -36,6 +36,8 @@ gutendexer:
       serviceAccount:
         name: komga
       pod:
+        nodeSelector:
+          kubernetes.io/arch: arm64
         securityContext:
           runAsNonRoot: true
           runAsUser: 65532
@@ -140,6 +142,8 @@ gutendex:
       serviceAccount:
         name: komga
       pod:
+        nodeSelector:
+          kubernetes.io/arch: arm64
         securityContext:
           runAsNonRoot: true
           runAsUser: 65532
