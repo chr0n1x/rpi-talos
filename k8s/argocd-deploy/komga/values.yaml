@@ -171,6 +171,7 @@ gutendex:
             EMAIL_HOST_PASSWORD: ""
             EMAIL_HOST_USER: ""
             DEBUG: "0"
+            HOME: /tmp
           ports:
             - name: http
               containerPort: 8000
