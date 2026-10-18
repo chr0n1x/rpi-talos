@@ -184,13 +184,7 @@ gutendex:
               containerPort: 8000
           probes:
             liveness:
-              enabled: true
-              type: HTTP
-              path: /
-              port: http
-              spec:
-                initialDelaySeconds: 15
-                periodSeconds: 30
+              enabled: false
             readiness:
               enabled: false
   persistence:
