@@ -5,7 +5,7 @@ traefik-ingress:
         - kind: Service
           name: komga
           port: http
-    - dns: gutendex.rannet.duckdns.org
+    - dns: gutendexer.rannet.duckdns.org
       services:
         - kind: Service
           name: gutendexer
