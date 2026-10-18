@@ -186,16 +186,18 @@ gutendex:
               path: /books/?limit=1
               port: http
               spec:
-                initialDelaySeconds: 10
+                initialDelaySeconds: 30
                 periodSeconds: 30
+                timeoutSeconds: 10
             readiness:
               enabled: true
               type: HTTP
               path: /books/?limit=1
               port: http
               spec:
-                initialDelaySeconds: 5
-                periodSeconds: 10
+                initialDelaySeconds: 30
+                periodSeconds: 15
+                timeoutSeconds: 10
   persistence:
     data:
       type: persistentVolumeClaim
