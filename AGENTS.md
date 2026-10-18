@@ -85,6 +85,34 @@ Changing a PVC size in wrapper values does not patch an existing StatefulSet.
 ArgoCD cannot update `volumeClaimTemplates`. You must delete the StatefulSet
 and its PVC, then let ArgoCD recreate them with the new size.
 
+### Multiple app-template instances in one wrapper chart collide on labels
+
+app-template derives `app.kubernetes.io/name` and `app.kubernetes.io/instance`
+from the **release name**, not the sub-chart name. Every app-template instance
+in a wrapper chart gets the same labels, so Service selectors cross-match pods
+from different sub-charts. `nameOverride` and `fullnameOverride` only change
+resource names (Deployment, Service), not these labels.
+
+Fix: give each sub-chart a distinguishing pod label and match it in the Service
+selector:
+
+```yaml
+gutendexer:
+  controllers:
+    main:
+      pod:
+        labels:
+          app: gutendexer
+  service:
+    gutendexer:
+      extraSelectorLabels:
+        app: gutendexer
+```
+
+Without this, a Service for one sub-chart routes traffic to another sub-chart's
+pods (502s, stale endpoints). The komga chart (gutendex + gutendexer + komga)
+is the working example.
+
 ### `prune: true` is inconsistent across apps
 
 17 of ~34 Application CRDs in `k8s/helm/cluster-apps/templates/` are
