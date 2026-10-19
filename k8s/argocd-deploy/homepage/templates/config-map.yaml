@@ -127,7 +127,7 @@ data:
       - Komga:
           icon: 'https://komga.rannet.duckdns.org/assets/logo-DT2R4lJh.svg'
           description: eBook Library
-          href: "https://komga.rannet.duckdns.org/next"
+          href: "https://komga.rannet.duckdns.org"
           siteMonitor: "https://komga.rannet.duckdns.org/"
 
 
