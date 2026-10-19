@@ -39,6 +39,8 @@ gutendexer:
       pod:
         labels:
           app: gutendexer
+        annotations:
+          reloader.stakater.com/auto: "true"
         nodeSelector:
           kubernetes.io/arch: arm64
         securityContext:
