@@ -8,3 +8,5 @@ metadata:
 data:
   gutenberg.json: |
 {{ toPrettyJson .Values.gutendexer.config | indent 4 }}
+  standard-ebooks.json: |
+{{ toPrettyJson .Values.gutendexer.standard_ebooks_config | indent 4 }}

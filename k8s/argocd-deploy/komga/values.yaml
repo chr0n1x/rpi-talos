@@ -129,6 +129,18 @@ gutendexer:
     schedule_hour: 2
     scheduler_enabled: false
     user_agent: "rpi-talos-gutendexer/1.0 (self-hosted; contact chr0n1x)"
+  # SE seed only. On first SE boot this is copied to /state/standard-ebooks.json.
+  # UI edits write to the state PVC and survive ArgoCD syncs.
+  # Inert once the state PVC has standard-ebooks.json.
+  standard_ebooks_config:
+    se_enabled: false
+    se_authors: []
+    se_author_sleep: 3600
+    se_book_sleep: 15
+    se_download_epub: true
+    kepub_dir: /data/StandardEbooks_kepub
+    se_epub_dir: /data/StandardEbooks
+    user_agent: "rpi-talos-gutendexer/1.0 (self-hosted; contact chr0n1x)"
 
 gutendex:
   global:
