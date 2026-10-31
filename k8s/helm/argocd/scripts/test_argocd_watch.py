@@ -307,6 +307,37 @@ class TestProcessPoll(unittest.TestCase):
         self.assertFalse(aw.is_good(("Unknown", "Degraded")))
         self.assertFalse(aw.is_good(("Removed", "Removed")))
 
+    def test_suspended_does_not_alert(self):
+        """A Suspended app is intentionally offline, not an incident."""
+        state = aw.new_state()
+        good = apps(("a", "Synced", "Healthy"))
+        suspended = apps(("a", "OutOfSync", "Suspended"))
+        self.poll(state, good)
+
+        for _ in range(self.settle * 2):
+            self.advance()
+            actions = self.poll(state, suspended)
+            self.assertEqual(actions, [])
+        self.assertNotIn("a", state["message_ids"])
+        self.assertNotIn("a", state["last_bad_msg_at"])
+
+    def test_suspended_baseline_is_silent(self):
+        """An app already suspended at startup produces no alert."""
+        state = aw.new_state()
+        suspended = apps(("a", "OutOfSync", "Suspended"))
+        actions = self.poll(state, suspended)
+        self.assertEqual(actions, [])
+
+    def test_suspended_to_suspended_no_alert(self):
+        """Staying suspended does not refresh or alert."""
+        state = aw.new_state()
+        suspended = apps(("a", "OutOfSync", "Suspended"))
+        self.poll(state, suspended)
+        for _ in range(self.settle * 2):
+            self.advance()
+            actions = self.poll(state, suspended)
+            self.assertEqual(actions, [])
+
 
 class TestExecuteActions(unittest.TestCase):
     def setUp(self):

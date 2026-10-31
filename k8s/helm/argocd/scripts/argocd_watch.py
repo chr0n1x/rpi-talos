@@ -8,8 +8,8 @@ when an app's health has been stable for a settle window.
 
 Alerting is health-driven: Degraded health is the problem worth paging for.
 A sync mismatch with Healthy health (OutOfSync) is a config/drift condition,
-not an incident, and is intentionally not alerted on. App removals are
-reported.
+not an incident, and is intentionally not alerted on. Suspended apps are
+intentionally offline and are not alerted on. App removals are reported.
 
 Flap protection: a status change is only reported after it has persisted
 for `settle_polls` consecutive polls. Transient flaps within the settle
@@ -41,14 +41,15 @@ TELEGRAM_MAX_LEN = 4000
 
 
 def is_good(status):
-    """An app is 'good' when its health is Healthy and it still exists.
+    """An app is 'good' when its health is Healthy or Suspended and it still exists.
 
     Sync status is intentionally ignored: OutOfSync + Healthy is drift, not
     an incident (it happens after out-of-band config changes), so it must
-    not produce an alert or a recovery.
+    not produce an alert or a recovery. Suspended apps are intentionally
+    offline, so they are not an incident and must not alert.
     """
     sync, health = status
-    return health == "Healthy" and sync != "Removed"
+    return health in ("Healthy", "Suspended") and sync != "Removed"
 
 
 def argocd_ssl_context():
