@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sbom-exporter
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sbom-dashboard
+  namespace: {{ .Release.Namespace }}
+automountServiceAccountToken: false

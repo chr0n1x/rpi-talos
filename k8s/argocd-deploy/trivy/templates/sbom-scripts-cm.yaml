@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sbom-scripts
+  namespace: {{ .Release.Namespace }}
+data:
+  page.html: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_page.html") }}
+    {{ $line }}
+    {{- end }}
+  sbom_export.py: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_export.py") }}
+    {{ $line }}
+    {{- end }}
+  sbom_scan.sh: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_scan.sh") }}
+    {{ $line }}
+    {{- end }}
+  sbom_server.py: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_server.py") }}
+    {{ $line }}
+    {{- end }}

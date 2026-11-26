@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sbom-dashboard
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sbom-dashboard
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "sbom-scripts"
+      labels:
+        app: sbom-dashboard
+    spec:
+      serviceAccountName: sbom-dashboard
+      imagePullSecrets:
+        - name: dhi-io-image-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: dashboard
+          image: dhi.io/python:3.14
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - python3
+            - /scripts/sbom_server.py
+          env:
+            - name: SBOM_DIR
+              value: /data
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            - name: store
+              mountPath: /data
+              readOnly: true
+      volumes:
+        - name: scripts
+          configMap:
+            name: sbom-scripts
+            defaultMode: 0555
+        - name: store
+          persistentVolumeClaim:
+            claimName: sbom-store

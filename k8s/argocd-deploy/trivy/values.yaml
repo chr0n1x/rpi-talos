@@ -32,3 +32,11 @@ vault-auth:
         serviceAccount: trivy-trivy-operator
         audiences:
           - vault
+
+traefik-ingress:
+  dnsNames:
+    - dns: sbom.rannet.duckdns.org
+      services:
+        - kind: Service
+          name: sbom-dashboard
+          port: http

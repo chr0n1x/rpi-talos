@@ -1,0 +1,106 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sbom-exporter
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: "15 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      # A hung trivy pull must not hold concurrencyPolicy Forbid forever.
+      activeDeadlineSeconds: 3600
+      template:
+        spec:
+          serviceAccountName: sbom-exporter
+          # Kubelet mints the token at the standard path with an audience that
+          # always matches the apiserver's --api-audiences; a hand-written
+          # projection (audience kubernetes.default.svc) was rejected 401
+          # because Talos pins the audience to the control-plane endpoint.
+          automountServiceAccountToken: true
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: dhi-io-image-pull
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          initContainers:
+            - name: inventory
+              image: dhi.io/python:3.14
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+              command:
+                - python3
+                - /scripts/sbom_export.py
+              env:
+                - name: SBOM_DIR
+                  value: /data
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: store
+                  mountPath: /data
+          containers:
+            - name: scan
+              image: mirror.gcr.io/aquasec/trivy:0.74.0
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+              command:
+                - sh
+                - /scripts/sbom_scan.sh
+              env:
+                - name: SBOM_DIR
+                  value: /data
+                - name: TRIVY_CACHE_DIR
+                  value: /data/.trivycache
+                - name: TRIVY_SKIP_DB_DOWNLOAD
+                  value: "true"
+                - name: TRIVY_SKIP_JAVA_DB
+                  value: "true"
+                # imagePullSecrets only feed kubelet; trivy's own registry auth
+                # (dhi.io 401s without the Docker Hub PAT) needs a docker config.
+                - name: DOCKER_CONFIG
+                  value: /run/secrets/docker
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: store
+                  mountPath: /data
+                - name: docker-cfg
+                  mountPath: /run/secrets/docker
+                  readOnly: true
+                # Keep downloaded layer blobs off the 2Gi output PVC.
+                - name: trivy-cache
+                  mountPath: /data/.trivycache
+          volumes:
+            - name: docker-cfg
+              secret:
+                secretName: dhi-io-image-pull
+                items:
+                  - key: .dockerconfigjson
+                    path: config.json
+            - name: trivy-cache
+              emptyDir:
+                sizeLimit: 2Gi
+            - name: scripts
+              configMap:
+                name: sbom-scripts
+                defaultMode: 0555
+            - name: store
+              persistentVolumeClaim:
+                claimName: sbom-store

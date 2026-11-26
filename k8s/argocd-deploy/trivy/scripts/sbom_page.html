@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cluster SBOMs</title>
+<style>
+:root { color-scheme: light dark; }
+body { margin: 0; font: 14px/1.5 system-ui, sans-serif; color: CanvasText; background: Canvas; }
+header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+         padding: 10px 16px; border-bottom: 1px solid color-mix(in srgb, CanvasText 20%, transparent); }
+h1 { font-size: 16px; margin: 0 12px 0 0; }
+input, select { font: inherit; padding: 4px 6px; background: Field; color: FieldText;
+                border: 1px solid color-mix(in srgb, CanvasText 30%, transparent); border-radius: 4px; }
+#q { flex: 1 1 220px; min-width: 180px; }
+#meta { color: color-mix(in srgb, CanvasText 65%, transparent); }
+main { padding: 8px 16px 40px; max-width: 1100px; }
+.work { border-bottom: 1px solid color-mix(in srgb, CanvasText 12%, transparent); }
+.work > .title { display: flex; gap: 8px; padding: 6px 0; cursor: pointer; }
+.work > .title:hover { text-decoration: underline; }
+.ns { color: color-mix(in srgb, CanvasText 60%, transparent); }
+.kind { font-weight: 600; }
+.cnt { margin-left: auto; color: color-mix(in srgb, CanvasText 55%, transparent); }
+.cont { padding: 4px 0 4px 20px; cursor: pointer; display: flex; gap: 10px; flex-wrap: wrap; }
+.cont:hover, .cont.sel { color: Highlight; }
+.ref { font-family: ui-monospace, monospace; }
+.dig { color: color-mix(in srgb, CanvasText 55%, transparent); font-family: ui-monospace, monospace; }
+#detail { margin: 14px 0 24px; padding: 12px; border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+          border-radius: 6px; }
+#detail h2 { font-size: 14px; margin: 0 0 6px; }
+table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+th, td { text-align: left; padding: 3px 8px 3px 0; vertical-align: top;
+         border-bottom: 1px solid color-mix(in srgb, CanvasText 10%, transparent); }
+td.v, td.t { font-family: ui-monospace, monospace; white-space: nowrap; }
+.empty { color: color-mix(in srgb, CanvasText 60%, transparent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Cluster SBOMs</h1>
+  <select id="ns" aria-label="namespace"></select>
+  <input id="q" type="search" autocomplete="off" spellcheck="false"
+         placeholder="fuzzy search: namespace, workload, container, image">
+  <span id="meta"></span>
+</header>
+<main>
+  <div id="list"></div>
+  <div id="detail"></div>
+</main>
+<script>
+var DATA = null;
+var OPEN = {};
+var SELECTED = "";
+
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined && text !== null) n.textContent = text;
+  return n;
+}
+
+function fuzzy(text, q) {
+  if (!q) return 1;
+  text = String(text).toLowerCase();
+  var at = text.indexOf(q);
+  if (at >= 0) return 1000 - at;
+  var i = 0;
+  for (var j = 0; j < text.length; j++) {
+    if (text[j] === q[i]) { i++; if (i === q.length) return 100; }
+  }
+  return 0;
+}
+
+function score(w, q) {
+  var best = 0;
+  var fields = [w.namespace + "/" + w.kind + "/" + w.name];
+  (w.containers || []).forEach(function (c) {
+    fields.push(c.container, c.ref);
+  });
+  fields.forEach(function (f) {
+    var s = fuzzy(f, q);
+    if (s > best) best = s;
+  });
+  return best;
+}
+
+function meta(file) {
+  var out = null;
+  (DATA.sboms || []).forEach(function (s) { if (s.file === file) out = s; });
+  return out;
+}
+
+function shown() {
+  var q = document.getElementById("q").value.trim().toLowerCase();
+  var ns = document.getElementById("ns").value;
+  var rows = [];
+  (DATA.workloads || []).forEach(function (w) {
+    if (ns !== "All" && w.namespace !== ns) return;
+    var s = score(w, q);
+    if (s > 0) rows.push({ w: w, s: s });
+  });
+  rows.sort(function (a, b) {
+    if (b.s !== a.s) return b.s - a.s;
+    if (a.w.namespace !== b.w.namespace) return a.w.namespace < b.w.namespace ? -1 : 1;
+    return a.w.name < b.w.name ? -1 : (a.w.name > b.w.name ? 1 : 0);
+  });
+  return rows;
+}
+
+function key(w) { return w.namespace + "/" + w.kind + "/" + w.name; }
+
+function render() {
+  var list = document.getElementById("list");
+  list.textContent = "";
+  var rows = shown();
+  document.getElementById("meta").textContent =
+    rows.length + " workload(s), generated " + (DATA.generatedAt || "never");
+  if (!rows.length) { list.appendChild(el("div", "empty", "no workloads match")); return; }
+  rows.forEach(function (row) {
+    var w = row.w;
+    var box = el("div", "work");
+    var title = el("div", "title");
+    title.appendChild(el("span", "ns", w.namespace));
+    title.appendChild(el("span", "kind", w.kind));
+    title.appendChild(el("span", "name", w.name));
+    title.appendChild(el("span", "cnt", (w.containers || []).length + " container(s)"));
+    title.onclick = function () { OPEN[key(w)] = !OPEN[key(w)]; render(); };
+    box.appendChild(title);
+    if (OPEN[key(w)]) {
+      (w.containers || []).forEach(function (c) {
+        var line = el("div", "cont" + (SELECTED === c.file ? " sel" : ""));
+        line.appendChild(el("span", "cname", c.container));
+        line.appendChild(el("span", "ref", c.ref));
+        line.appendChild(el("span", "dig", (c.digest || "").replace("sha256:", "").slice(0, 12)));
+        var m = meta(c.file);
+        line.appendChild(el("span", "cnt", m ? m.components + " components" : "sbom missing"));
+        line.onclick = function () { SELECTED = c.file; showBom(c, m); render(); };
+        box.appendChild(line);
+      });
+    }
+    list.appendChild(box);
+  });
+}
+
+function showBom(c, m) {
+  var detail = document.getElementById("detail");
+  detail.textContent = "";
+  detail.appendChild(el("h2", "", c.container + " - " + c.ref));
+  if (!c.file) { detail.appendChild(el("div", "empty", "no sbom")); return; }
+  var head = el("div");
+  head.appendChild(el("span", "dig", (c.digest || "") + "  "));
+  if (m) {
+    head.appendChild(el("span", "", new Date(m.mtime * 1000).toISOString() + "  "));
+    head.appendChild(el("span", "", m.components + " components  "));
+  }
+  detail.appendChild(head);
+  var note = el("div", "empty", "loading...");
+  detail.appendChild(note);
+  fetch("/api/sbom?file=" + encodeURIComponent(c.file)).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function (bom) {
+    note.remove();
+    var comps = (bom.components || []).slice().sort(function (a, b) {
+      return String(a.name).localeCompare(String(b.name));
+    });
+    var table = el("table");
+    var hr = el("tr");
+    ["name", "version", "type"].forEach(function (h) { hr.appendChild(el("th", "", h)); });
+    table.appendChild(hr);
+    if (!comps.length) {
+      var er = el("tr"); var ed = el("td", "empty", "no components"); ed.colSpan = 3;
+      er.appendChild(ed); table.appendChild(er);
+    }
+    comps.forEach(function (comp) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "n", comp.name));
+      tr.appendChild(el("td", "v", comp.version));
+      tr.appendChild(el("td", "t", comp.type));
+      table.appendChild(tr);
+    });
+    detail.appendChild(table);
+  }).catch(function (e) { note.textContent = "could not load sbom: " + e.message; });
+}
+
+function fillNamespaces() {
+  var sel = document.getElementById("ns");
+  var keep = sel.value;
+  sel.textContent = "";
+  var names = [];
+  (DATA.workloads || []).forEach(function (w) {
+    if (names.indexOf(w.namespace) < 0) names.push(w.namespace);
+  });
+  names.sort();
+  names.unshift("All");
+  names.forEach(function (n) { sel.appendChild(el("option", "", n)); });
+  sel.value = names.indexOf(keep) >= 0 ? keep : "All";
+}
+
+function start() {
+  document.getElementById("q").addEventListener("input", render);
+  document.getElementById("ns").addEventListener("change", render);
+  reload();
+}
+
+function reload() {
+  fetch("/api/state").then(function (r) { return r.json(); }).then(function (d) {
+    DATA = d;
+    fillNamespaces();
+    render();
+    setTimeout(reload, 60000);
+  }).catch(function () { setTimeout(reload, 10000); });
+}
+
+start();
+</script>
+</body>
+</html>
