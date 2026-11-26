@@ -185,7 +185,7 @@ data:
             href: "https://downtify.rannet-edge.duckdns.org/monitor"
 
         - GutIndexer:
-            icon: 'https://www.gutenberg.org/gutenberg/favicon.ico'
+            icon: 'https://upload.wikimedia.org/wikipedia/en/f/fe/Project_Gutenberg_Logo.jpg'
             description: Cron gutenberg downloader. Komga picks these up via shared PVC.
             href: "https://gutendexer.rannet.duckdns.org/"
 
@@ -196,7 +196,7 @@ data:
             ping: https://wiki.rannet.duckdns.org
 
         - OpenMediaVault:
-            icon: 'https://forum.openmediavault.org/wsc/images/style-2/favicon.ico'
+            icon: 'https://nas-admin.rannet-edge.duckdns.org/favicon_180x180.png'
             description: NAS Management
             href: "https://nas-admin.rannet-edge.duckdns.org/"
             ping: "https://nas-admin.rannet-edge.duckdns.org/"
