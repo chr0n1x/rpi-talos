@@ -11,10 +11,14 @@ trivy-operator:
     storageClassEnabled: true
     storageClassName: longhorn
     storageSize: "4Gi"
+    # UNKNOWN+LOW were 81% of report rows (40k entries total).
+    severity: "MEDIUM,HIGH,CRITICAL"
 
   operator:
     builtInTrivyServer: true
     infraAssessmentScannerEnabled: false
+    # SBOM CRs are ~80 MB of etcd (~90% of the DB)
+    sbomGenerationEnabled: false
 
 vault-auth:
   vaultConnectionName: vault-secrets-operator/default
