@@ -17,7 +17,7 @@ type: application
 
 dependencies:
   - name: longhorn
-    version: 1.11.3
+    version: 1.13.0
     repository: https://charts.longhorn.io
 
   - name: traefik-ingress
