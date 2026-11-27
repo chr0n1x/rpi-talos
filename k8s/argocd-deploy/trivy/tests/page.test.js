@@ -293,4 +293,41 @@ eq("argoBase url", sandbox.argoUrl(w),
    "https://argo.test/applications/argocd/velero?view=tree&resource=");
 eq("no app -> no url", sandbox.argoUrl({ kind: "Pod", namespace: "n", name: "p" }), null);
 
+// uniqueComps: trivy writes one component per layer for a binary copied into
+// several layers; the table, kind chips and counts work off unique packages.
+// Purl qualifiers (e.g. apk distro) mark genuinely distinct packages.
+const dupIn = [
+  { name: "github.com/c9s/goprocinfo", version: "v1", purl: "pkg:golang/github.com/c9s/goprocinfo@v1", type: "library" },
+  { name: "musl", version: "1.2.5-r3", purl: "pkg:apk/alpine/musl@1.2.5-r3?distro=3.24", type: "package" },
+  { name: "github.com/c9s/goprocinfo", version: "v1", purl: "pkg:golang/github.com/c9s/goprocinfo@v1", type: "library" },
+  { name: "musl", version: "1.2.5-r3", purl: "pkg:apk/alpine/musl@1.2.5-r3?distro=3.22", type: "package" },
+  { name: "noPurl", version: "1", type: "file" },
+  { name: "noPurl", version: "1", type: "file" },
+];
+const uniq = sandbox.uniqueComps(dupIn);
+eq("layer duplicates collapse", uniq.length, 4);
+eq("first occurrence kept", uniq[0], dupIn[0]);
+eq("distinct purl qualifiers survive",
+   uniq.filter((c) => c.name === "musl").length, 2);
+eq("no-purl dupes collapse on name+version+type",
+   uniq.filter((c) => c.name === "noPurl").length, 1);
+eq("undefined input -> []", sandbox.uniqueComps(undefined).length, 0);
+// Same purl with different hashes is different content, not a layer repeat.
+eq("same purl different hashes stay separate",
+   sandbox.uniqueComps([
+     { name: "x", version: "1", purl: "pkg:apk/x@1", hashes: [{ alg: "SHA-256", value: "aa" }] },
+     { name: "x", version: "1", purl: "pkg:apk/x@1", hashes: [{ alg: "SHA-256", value: "bb" }] },
+     { name: "x", version: "1", purl: "pkg:apk/x@1", hashes: [{ alg: "SHA-256", value: "aa" }] },
+   ]).length, 2);
+
+// deriveComps: the cached per-file view showEntry paints (unique comps in
+// name order, raw layer counts, name+version ties among uniques).
+const dvc = sandbox.deriveComps({ components: dupIn });
+eq("deriveComps unique count", dvc.comps.length, 4);
+eq("deriveComps sorted by name", dvc.comps.map((c) => c.name),
+   ["github.com/c9s/goprocinfo", "musl", "musl", "noPurl"]);
+eq("deriveComps layer repeats counted", dvc.layers[sandbox.compKey(dupIn[0])], 2);
+eq("deriveComps name+version ties counted", dvc.sameName["musl\n1.2.5-r3"], 2);
+eq("deriveComps collapsed dupe is no tie", dvc.sameName["noPurl\n1"], 1);
+
 process.exit(fails ? 1 : 0);

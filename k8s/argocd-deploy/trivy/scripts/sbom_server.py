@@ -82,10 +82,14 @@ def asset_body(path):
 
 
 def components(path, st):
-    """(component count, lowercase "name version" strings), cached per mtime/size.
+    """(unique component count, lowercase "name version" strings), cached per mtime/size.
 
-    The name strings feed /api/index; one parses the whole file, the other
-    takes the first element, so /api/state and /api/index share a cache.
+    Trivy emits one component per layer for a binary copied across layers, so
+    entries dedupe by purl plus hashes (name+version+type without a purl),
+    matching the page's table; same coordinates with different hashes are
+    different content and stay separate. The name strings feed /api/index;
+    one caller parses the whole file, the other takes the first element, so
+    /api/state and /api/index share a cache.
     """
     cached = _components.get(path)
     if cached and cached[0] == st.st_mtime_ns and cached[1] == st.st_size:
@@ -95,12 +99,24 @@ def components(path, st):
             bom = json.load(f)
         comps = bom.get("components") or []
         names = []
+        seen = set()
+        named = set()
         for comp in comps:
+            coords = comp.get("purl") or "\n".join(
+                (comp.get("name") or "", comp.get("version") or "", comp.get("type") or "")
+            )
+            hashes = ",".join(sorted(h.get("value", "") for h in comp.get("hashes") or []))
+            key = coords + " " + hashes
+            if key in seen:
+                continue
+            seen.add(key)
             name = comp.get("name")
             if name:
                 entry = (name + " " + (comp.get("version") or "")).strip().lower()
-                names.append(entry)
-        result = (len(comps), names)
+                if entry not in named:
+                    named.add(entry)
+                    names.append(entry)
+        result = (len(seen), names)
     except (OSError, ValueError):
         result = (0, [])
     _components[path] = (st.st_mtime_ns, st.st_size, result)

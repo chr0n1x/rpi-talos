@@ -631,6 +631,50 @@ function componentLink(comp) {
   return null;
 }
 
+function compKey(c) {
+  // Identity of one component: purl is the package coordinates, hashes keep
+  // the same coordinates written with different content apart. Layer digests
+  // are deliberately out of the key, that is what makes per-layer repeats
+  // of one package collapse.
+  var hs = (c.hashes || []).map(function (h) { return h.value; }).sort().join(",");
+  var coords = c.purl || (String(c.name || "") + "\n" + (c.version || "") + "\n" + (c.type || ""));
+  return coords + " " + hs;
+}
+
+function uniqueComps(comps) {
+  // Trivy writes one component per layer for a binary that was copied into
+  // several layers, so longhorn-engine's SBOM lists the same goprocinfo
+  // twice. The table, kind chips and per-file counts show unique packages.
+  var seen = {}, out = [];
+  (comps || []).forEach(function (c) {
+    var k = compKey(c);
+    if (!seen[k]) { seen[k] = 1; out.push(c); }
+  });
+  return out;
+}
+
+var _comps = {};
+
+function deriveComps(bom) {
+  // Display view of one sbom: unique components in name order, how many
+  // layers each was reported from, and how often each name+version survives
+  // dedup (only genuinely distinct packages can tie for a row).
+  var all = bom.components || [];
+  var layers = {};
+  all.forEach(function (c) {
+    var k = compKey(c);
+    layers[k] = (layers[k] || 0) + 1;
+  });
+  var comps = uniqueComps(all);
+  comps.sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
+  var sameName = {};
+  comps.forEach(function (c) {
+    var k = String(c.name || "") + "\n" + (c.version || "");
+    sameName[k] = (sameName[k] || 0) + 1;
+  });
+  return { comps: comps, layers: layers, sameName: sameName };
+}
+
 function showEntry(e) {
   var users = document.getElementById("users");
   users.textContent = "";
@@ -683,17 +727,9 @@ function showEntry(e) {
     head.appendChild(el("span", "", m.components + " components  "));
   }
   sbom.appendChild(head);
-  var note = el("div", "empty", "loading...");
-  sbom.appendChild(note);
-  fetch("/api/sbom?file=" + encodeURIComponent(e.file)).then(function (r) {
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
-  }).then(function (bom) {
-    note.remove();
-    var vmap = vulnPkgMap(v);
-    var comps = (bom.components || []).slice().sort(function (a, b) {
-      return String(a.name).localeCompare(String(b.name));
-    });
+  var vmap = vulnPkgMap(v);
+  function paint(d) {
+    var comps = d.comps;
     var counts = {};
     comps.forEach(function (comp) {
       var k = purlKind(comp) || comp.type || "other";
@@ -738,7 +774,17 @@ function showEntry(e) {
         nameTd.appendChild(w);
       });
       tr.appendChild(nameTd);
-      tr.appendChild(el("td", "v", comp.version));
+      var vtd = el("td", "v", comp.version);
+      var tie = d.sameName[String(comp.name || "") + "\n" + (comp.version || "")];
+      if (tie > 1) {
+        // Genuinely distinct packages (different purl or hashes) that share
+        // a name and version; the tooltip says which one this row is.
+        vtd.setAttribute("data-tip", "distinct package " + (comp.purl || "without purl") +
+          " (" + tie + " share this name and version)");
+      } else if (d.layers[compKey(comp)] > 1) {
+        vtd.setAttribute("data-tip", "reported by " + d.layers[compKey(comp)] + " image layers, shown once");
+      }
+      tr.appendChild(vtd);
       var k = purlKind(comp);
       var kc = el("td", "t");
       if (k) kc.appendChild(kindText(k)); else kc.textContent = "-";
@@ -747,6 +793,19 @@ function showEntry(e) {
       table.appendChild(tr);
     });
     sbom.appendChild(table);
+  }
+  if (_comps[e.file]) { paint(_comps[e.file]); return; }
+  var note = el("div", "empty", "loading...");
+  sbom.appendChild(note);
+  fetch("/api/sbom?file=" + encodeURIComponent(e.file)).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function (bom) {
+    note.remove();
+    // The scanner names files by image digest and never rewrites them, so
+    // the derived view stays valid for the session.
+    _comps[e.file] = deriveComps(bom);
+    paint(_comps[e.file]);
   }).catch(function (er) { note.textContent = "could not load sbom: " + er.message; });
 }
 
