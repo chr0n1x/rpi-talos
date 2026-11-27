@@ -200,11 +200,6 @@ data:
             href: https://wiki.rannet.duckdns.org
             ping: https://wiki.rannet.duckdns.org
 
-        - OpenMediaVault:
-            icon: 'https://nas-admin.rannet-edge.duckdns.org/favicon_180x180.png'
-            description: NAS Management
-            href: "https://nas-admin.rannet-edge.duckdns.org/"
-            ping: "https://nas-admin.rannet-edge.duckdns.org/"
         - 'OpenMediaVault File Browser':
             icon: 'https://1513098801-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/spaces%2F-M8KDxOujDoPpJyJJ5_i%2Favatar-1590579241040.png?generation=1590579241552005&alt=media'
             description: 'OMV Web-based Browser'
@@ -231,6 +226,13 @@ data:
         #     description: PeaNUT NUT-Server UI
         #     href: "https://nut.rannet-edge.duckdns.org/"
         #     siteMonitor: "https://nut.rannet-edge.duckdns.org/api/v1/version"
+
+        - OpenMediaVault:
+            icon: 'https://nas-admin.rannet-edge.duckdns.org/favicon_180x180.png'
+            description: NAS Management
+            href: "https://nas-admin.rannet-edge.duckdns.org/"
+            ping: "https://nas-admin.rannet-edge.duckdns.org/"
+
         - Pi-Hole:
             icon: 'https://pi-hole.github.io/graphics/Vortex/Vortex_Vertical_wordmark_lightmode.png'
             description: Pi-Hole, LocalDNS
