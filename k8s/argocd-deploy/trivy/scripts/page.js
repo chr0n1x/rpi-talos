@@ -638,7 +638,7 @@ function compKey(c) {
   // of one package collapse.
   var hs = (c.hashes || []).map(function (h) { return h.value; }).sort().join(",");
   var coords = c.purl || (String(c.name || "") + "\n" + (c.version || "") + "\n" + (c.type || ""));
-  return coords + " " + hs;
+  return coords + " " + hs;
 }
 
 function uniqueComps(comps) {
