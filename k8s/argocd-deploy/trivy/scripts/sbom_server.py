@@ -3,9 +3,11 @@
 SBOM browser.
 
 Serves state/manifest.json and the CycloneDX files under sboms/ written by
-the exporter, plus the dashboard page from page.html mounted beside this
-script by the sbom-scripts ConfigMap. The page's assets are inline in that
-file because the cluster is LAN-only.
+the exporter, plus the dashboard page from page.html and its script from
+page.js, all mounted beside this script by the sbom-scripts ConfigMap.
+/api/index exposes every SBOM's component names and versions so the page can
+search packages without downloading each SBOM.
+Nothing loads from outside the cluster; the cluster is LAN-only.
 
 Uses only the Python standard library (json, os, http.server, urllib.parse).
 """
@@ -20,39 +22,58 @@ PORT = int(os.environ.get("SBOM_PORT", "8080"))
 SBOM_ROOT = os.path.realpath(os.path.join(SBOM_DIR, "sboms"))
 MANIFEST_PATH = os.path.join(SBOM_DIR, "state", "manifest.json")
 PAGE_PATH = os.environ.get("SBOM_PAGE", "/scripts/page.html")
+PAGE_JS_PATH = os.environ.get("SBOM_PAGE_JS", "/scripts/page.js")
+# ArgoCD base URL for the page's application deep links; empty disables them.
+ARGO_BASE = os.environ.get("ARGOCD_URL", "").rstrip("/")
 
-_counts = {}
-_page = {}
+_components = {}
+_assets = {}
 
 
-def page_body():
-    """Dashboard HTML as bytes, re-read when the mounted page file changes.
+def asset_body(path):
+    """File bytes, re-read when the mounted file changes.
 
     A ConfigMap edit lands in the mount without a pod restart, so the UI can
     be iterated on by editing the ConfigMap alone.
     """
-    st = os.stat(PAGE_PATH)
+    st = os.stat(path)
     key = (st.st_mtime_ns, st.st_size)
-    if _page.get("key") != key:
-        with open(PAGE_PATH, "rb") as f:
-            _page["body"] = f.read()
-        _page["key"] = key
-    return _page["body"]
+    ent = _assets.setdefault(path, {})
+    if ent.get("key") != key:
+        with open(path, "rb") as f:
+            ent["body"] = f.read()
+        ent["key"] = key
+    return ent["body"]
 
 
-def component_count(path, st):
-    """Number of CycloneDX components, cached against the file's mtime and size."""
-    cached = _counts.get(path)
+def components(path, st):
+    """(component count, lowercase "name version" strings), cached per mtime/size.
+
+    The name strings feed /api/index; one parses the whole file, the other
+    takes the first element, so /api/state and /api/index share a cache.
+    """
+    cached = _components.get(path)
     if cached and cached[0] == st.st_mtime_ns and cached[1] == st.st_size:
         return cached[2]
     try:
         with open(path, "rb") as f:
             bom = json.load(f)
-        count = len(bom.get("components") or [])
+        comps = bom.get("components") or []
+        names = []
+        for comp in comps:
+            name = comp.get("name")
+            if name:
+                entry = (name + " " + (comp.get("version") or "")).strip().lower()
+                names.append(entry)
+        result = (len(comps), names)
     except (OSError, ValueError):
-        count = 0
-    _counts[path] = (st.st_mtime_ns, st.st_size, count)
-    return count
+        result = (0, [])
+    _components[path] = (st.st_mtime_ns, st.st_size, result)
+    return result
+
+
+def component_count(path, st):
+    return components(path, st)[0]
 
 
 def load_manifest():
@@ -113,7 +134,27 @@ def state_doc():
             if meta:
                 sboms.append(meta)
     doc["sboms"] = sboms
+    doc["argoBase"] = ARGO_BASE
     return doc
+
+
+def index_doc():
+    doc = load_manifest()
+    files = {}
+    for workload in doc["workloads"]:
+        for container in workload.get("containers") or []:
+            rel = container.get("file") or ""
+            if rel in files:
+                continue
+            path = sbom_path(rel)
+            if path is None:
+                continue
+            try:
+                st = os.stat(path)
+            except OSError:
+                continue
+            files[rel] = components(path, st)[1]
+    return {"generatedAt": doc.get("generatedAt"), "files": files}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -147,9 +188,13 @@ class Handler(BaseHTTPRequestHandler):
         self._sent = False
         try:
             if request.path == "/":
-                self._send(200, page_body(), "text/html; charset=utf-8", head_only)
+                self._send(200, asset_body(PAGE_PATH), "text/html; charset=utf-8", head_only)
+            elif request.path == "/page.js":
+                self._send(200, asset_body(PAGE_JS_PATH), "text/javascript; charset=utf-8", head_only)
             elif request.path == "/api/state":
                 self._json(200, state_doc(), head_only)
+            elif request.path == "/api/index":
+                self._json(200, index_doc(), head_only)
             elif request.path == "/api/sbom":
                 self._sbom(request, head_only)
             else:

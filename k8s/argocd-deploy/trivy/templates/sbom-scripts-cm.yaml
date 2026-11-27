@@ -8,6 +8,10 @@ data:
     {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_page.html") }}
     {{ $line }}
     {{- end }}
+  page.js: |
+    {{- range $line := splitList "\n" (.Files.Get "scripts/page.js") }}
+    {{ $line }}
+    {{- end }}
   sbom_export.py: |
     {{- range $line := splitList "\n" (.Files.Get "scripts/sbom_export.py") }}
     {{ $line }}

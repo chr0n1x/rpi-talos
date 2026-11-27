@@ -1,3 +1,7 @@
+# Base URL of the ArgoCD UI, injected as ARGOCD_URL for the dashboard's
+# application deep links.
+argoBaseUrl: https://argocd.rannet.duckdns.org
+
 trivy-operator:
   image:
     registry: mirror.gcr.io

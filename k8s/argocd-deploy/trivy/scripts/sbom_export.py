@@ -23,6 +23,9 @@ CA_CERT = os.environ.get("KUBERNETES_CA_CERT", "/var/run/secrets/kubernetes.io/s
 SBOM_DIR = os.environ.get("SBOM_DIR", "/data")
 # Test entry point: treat this JSON pod list as the cluster's pods.
 PODS_FILE = os.environ.get("SBOM_PODS_FILE", "")
+# Test entry point: JSON object mapping the plural keys in WORKLOAD_APIS to
+# workload item lists instead of querying the API for them.
+TRACKING_FILE = os.environ.get("SBOM_TRACKING_FILE", "")
 
 STATE_DIR = os.path.join(SBOM_DIR, "state")
 SBOM_SUBDIR = "sboms"
@@ -32,6 +35,16 @@ KEEP_PER_REF = 2
 
 DIRECT_OWNER_KINDS = ("DaemonSet", "StatefulSet", "Job", "CronJob")
 UNSAFE = re.compile(r"[^A-Za-z0-9._-]")
+
+# Workload resources whose ArgoCD tracking annotations name the application,
+# as (plural key for the test file, owner kind, API path).
+WORKLOAD_APIS = (
+    ("deployments", "Deployment", "/apis/apps/v1/deployments"),
+    ("statefulsets", "StatefulSet", "/apis/apps/v1/statefulsets"),
+    ("daemonsets", "DaemonSet", "/apis/apps/v1/daemonsets"),
+    ("jobs", "Job", "/apis/batch/v1/jobs"),
+    ("cronjobs", "CronJob", "/apis/batch/v1/cronjobs"),
+)
 
 
 def k8s_token():
@@ -100,20 +113,90 @@ def image_pin(status):
     return ref, digest
 
 
+def image_tag(spec_image):
+    """Tag from the pod spec image string, for display only; None when the
+    spec pins by digest or carries no tag.
+
+    "docker.io/longhornio/longhorn-instance-manager:v1.11.3" -> "v1.11.3"
+    "quay.io/prometheus/node-exporter" -> None
+    """
+    if not spec_image or "@" in spec_image:
+        return None
+    tail = spec_image.rsplit("/", 1)[-1]
+    if ":" in tail:
+        return tail.split(":", 1)[1]
+    return None
+
+
 def sbom_file_name(ref, digest):
     """Path of the SBOM for one pinned image, relative to SBOM_DIR."""
     return f"{SBOM_SUBDIR}/{UNSAFE.sub('-', ref)}-{digest.split(':', 1)[1][:12]}.json"
 
 
-def collect(pods):
-    """Return (workloads, plan) where plan maps (ref, digest) to SBOM path."""
+TRACKING_ANN = "argocd.argoproj.io/tracking-id"
+
+
+def tracking_apps():
+    """Return {(namespace, kind, name): application} from tracking annotations.
+
+    "argo-cd:apps/Deployment:argocd/argocd-watch" -> "argo-cd" is the
+    annotation, the application being the text before the first colon. Jobs
+    spawned by a CronJob are created by the cluster and carry no annotation,
+    so they inherit the owning CronJob's application.
+    """
+    data = {}
+    if TRACKING_FILE:
+        with open(TRACKING_FILE) as f:
+            data = json.load(f)
+    apps = {}
+    items_by_kind = {}
+    for plural, kind, path in WORKLOAD_APIS:
+        if TRACKING_FILE:
+            items = data.get(plural, [])
+        elif PODS_FILE:
+            items = []
+        else:
+            try:
+                items = k8s_api(path).get("items", [])
+            except Exception as e:
+                print(f"tracking: {plural} list failed: {e}", file=sys.stderr)
+                items = []
+        items_by_kind[kind] = items
+        for item in items:
+            meta = item["metadata"]
+            ann = (meta.get("annotations") or {}).get(TRACKING_ANN, "")
+            if ":" in ann:
+                apps[(meta["namespace"], kind, meta["name"])] = ann.split(":", 1)[0]
+    for item in items_by_kind.get("Job", []):
+        meta = item["metadata"]
+        key = (meta["namespace"], "Job", meta["name"])
+        if key in apps:
+            continue
+        for ref in meta.get("ownerReferences") or []:
+            if ref.get("kind") == "CronJob":
+                owner = apps.get((meta["namespace"], "CronJob", ref["name"]))
+                if owner:
+                    apps[key] = owner
+    return apps
+
+
+def collect(pods, tracking):
+    """Return (workloads, plan, apps) where plan maps (ref, digest) to SBOM path
+    and apps maps a workload key to its ArgoCD application name.
+
+    The tracking annotation wins; the pod's Helm instance label is a fallback
+    for workloads the tracking map lacks (bare pods, RBAC not yet granted).
+    """
     workloads = {}
     plan = {}
+    apps = {}
     for pod in pods:
         ns = pod["metadata"]["namespace"]
         kind, name = owner_of(pod)
         key = (ns, kind, name)
         seen = workloads.setdefault(key, set())
+        if not apps.get(key):
+            apps[key] = tracking.get(key) or (pod["metadata"].get("labels") or {}).get("app.kubernetes.io/instance", "")
         for status in pod.get("status", {}).get("containerStatuses", []) or []:
             pin = image_pin(status)
             if not pin:
@@ -121,11 +204,11 @@ def collect(pods):
             ref, digest = pin
             out = sbom_file_name(ref, digest)
             plan[(ref, digest)] = out
-            seen.add((status.get("name", ""), ref, digest))
-    return workloads, plan
+            seen.add((status.get("name", ""), ref, digest, image_tag(status.get("image", ""))))
+    return workloads, plan, apps
 
 
-def manifest_doc(workloads):
+def manifest_doc(workloads, apps):
     doc = {"generatedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "workloads": []}
     for (ns, kind, name) in sorted(workloads):
         containers = sorted(workloads[(ns, kind, name)])
@@ -133,9 +216,10 @@ def manifest_doc(workloads):
             "namespace": ns,
             "kind": kind,
             "name": name,
+            "app": apps.get((ns, kind, name), ""),
             "containers": [
-                {"container": c, "ref": ref, "digest": digest, "file": sbom_file_name(ref, digest)}
-                for c, ref, digest in containers
+                {"container": c, "ref": ref, "digest": digest, "tag": tag, "file": sbom_file_name(ref, digest)}
+                for c, ref, digest, tag in containers
             ],
         })
     return doc
@@ -183,10 +267,10 @@ def main():
         if not pods and not PODS_FILE:
             raise RuntimeError("API listed no pods; refusing to write an empty plan")
 
-        workloads, plan = collect(pods)
+        workloads, plan, apps = collect(pods, tracking_apps())
         plan_lines = [f"{out}\t{ref}\t{ref}@{digest}\n" for (ref, digest), out in sorted(plan.items())]
         write_text(PLAN_PATH, "".join(plan_lines))
-        write_text(MANIFEST_PATH, json.dumps(manifest_doc(workloads), indent=2) + "\n")
+        write_text(MANIFEST_PATH, json.dumps(manifest_doc(workloads, apps), indent=2) + "\n")
         rotate(set(plan.values()))
         print(f"{len(plan)} unique image(s), {len(workloads)} workload(s) -> {STATE_DIR}")
     except Exception as e:

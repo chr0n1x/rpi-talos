@@ -39,6 +39,8 @@ spec:
           env:
             - name: SBOM_DIR
               value: /data
+            - name: ARGOCD_URL
+              value: {{ .Values.argoBaseUrl | quote }}
           ports:
             - name: http
               containerPort: 8080
