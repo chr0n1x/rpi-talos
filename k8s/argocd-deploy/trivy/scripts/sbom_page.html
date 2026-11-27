@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cluster SBOMs</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23101826'/%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4.6v3.6M9.9 6.4l2.1 2 2.1-2' stroke='%23f87171' stroke-width='1.9'/%3E%3Cpath d='M6.4 9.6h11.2l-4.3 5.2v3.4l-2.6 1.5v-4.9z' stroke='%2322d3ee' stroke-width='1.9'/%3E%3C/g%3E%3C/svg%3E">
 <style>
 :root { color-scheme: light dark; }
 html, body { height: 100%; }
@@ -12,10 +13,27 @@ body { margin: 0; overflow: hidden; display: flex; flex-direction: column;
        font: 14px/1.5 system-ui, sans-serif; color: CanvasText; background: Canvas; }
 header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
          padding: 10px 16px; border-bottom: 1px solid color-mix(in srgb, CanvasText 20%, transparent); }
-h1 { font-size: 16px; margin: 0 12px 0 0; }
+h1 { font-size: 16px; margin: 0 12px 0 0; display: flex; align-items: center; gap: 8px; }
+h1 svg { width: 18px; height: 18px; }
 input, select { font: inherit; padding: 4px 6px; background: Field; color: FieldText;
                 border: 1px solid color-mix(in srgb, CanvasText 30%, transparent); border-radius: 4px; }
-#q { flex: 1 1 220px; min-width: 180px; }
+#q { flex: 1 1 auto; min-width: 0; padding-right: 22px; }
+/* own x button instead of the native one, so both browsers look the same */
+#q::-webkit-search-cancel-button { -webkit-appearance: none; }
+.qpick { flex: 1 1 220px; min-width: 180px; }
+/* Same box as the inputs: 1.5em content + their 8px padding + 2px border */
+#rl { display: inline-grid; place-items: center; box-sizing: border-box;
+      min-height: calc(1.5em + 10px); padding: 4px 8px; font: inherit;
+      background: Field; color: color-mix(in srgb, CanvasText 60%, transparent);
+      border: 1px solid color-mix(in srgb, CanvasText 30%, transparent);
+      border-radius: 4px; cursor: pointer; }
+#rl:hover { color: CanvasText; }
+#rl > svg { grid-area: 1 / 1; transition: opacity 250ms ease; }
+#rl > svg.done { opacity: 0; color: #2f9e44; }
+#rl.ok > svg.done { opacity: 1; }
+#rl.ok > svg.glyph { opacity: 0; }
+#rl.spin svg { animation: rlspin 700ms linear infinite; }
+@keyframes rlspin { to { transform: rotate(360deg); } }
 #ns { width: 150px; padding-right: 22px; }
 .nspick { position: relative; display: inline-flex; align-items: center; }
 button.nsx { position: absolute; right: 6px; display: inline-flex; padding: 0;
@@ -31,10 +49,18 @@ button.nsx:hover { opacity: 1; }
 .nsmenu div.sel { font-weight: 600; }
 #meta { color: color-mix(in srgb, CanvasText 65%, transparent); }
 main { flex: 1 1 auto; min-height: 0; padding: 8px 16px 20px; display: grid;
-       grid-template-columns: 700px minmax(0, 1fr) 280px; grid-template-rows: minmax(0, 1fr); gap: 16px; }
+       grid-template-columns: var(--w1, 700px) 16px minmax(0, 1fr) 16px var(--w3, 280px);
+       grid-template-rows: minmax(0, 1fr); gap: 0; }
+/* Drag handles between the panes: the column itself is the gutter, the
+   line is decorative and brightens on hover and while dragging */
+.split { cursor: col-resize; position: relative; }
+.split::after { content: ""; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px;
+                background: color-mix(in srgb, CanvasText 12%, transparent); }
+.split:hover::after, .split.on::after { background: color-mix(in srgb, CanvasText 45%, transparent); }
 @media (max-width: 900px) {
   body { overflow: auto; }
-  main { grid-template-columns: 1fr; grid-template-rows: none; }
+  main { grid-template-columns: 1fr; grid-template-rows: none; gap: 16px; }
+  .split { display: none; }
   #list, #sbom, #users { overflow: visible; }
 }
 #list, #sbom, #users { overflow-y: auto; min-width: 0; }
@@ -61,6 +87,11 @@ button.cp.ok { color: #2f9e44; }
        color: color-mix(in srgb, CanvasText 70%, transparent);
        border: 1px solid color-mix(in srgb, CanvasText 25%, transparent); border-radius: 3px; }
 .reg img { display: block; width: 15px; height: 15px; }
+.vwarn { margin-left: 6px; align-self: center; font-size: 11px; font-weight: 700; }
+a.vwarn { text-decoration: none; }
+.vwarn.crit { color: #e5484d; }
+.vwarn.high { color: #ff9f2f; }
+.vwarn svg { display: inline-block; vertical-align: -2px; }
 /* Body-level hover label: in-pane tooltips get clipped by the pane's scroll
    overflow, and native title tooltips have a slow show delay */
 #tip { position: fixed; left: 0; top: 0; transform: translateY(-50%); z-index: 10;
@@ -92,7 +123,7 @@ a.ext:hover { color: CanvasText; }
 </head>
 <body>
 <header>
-  <h1>Cluster SBOMs</h1>
+  <h1><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#101826"/><path d="M12 4.6v3.6M9.9 6.4l2.1 2 2.1-2" fill="none" stroke="#f87171" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.4 9.6h11.2l-4.3 5.2v3.4l-2.6 1.5v-4.9z" fill="none" stroke="#22d3ee" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Cluster SBOMs</h1>
   <div class="nspick">
     <input id="ns" type="text" autocomplete="off" spellcheck="false"
            placeholder="namespace" aria-label="namespace" aria-haspopup="listbox"
@@ -100,13 +131,19 @@ a.ext:hover { color: CanvasText; }
     <button id="nsx" class="nsx" type="button" aria-label="clear namespace" hidden></button>
     <div id="nsmenu" class="nsmenu" role="listbox" hidden></div>
   </div>
-  <input id="q" type="search" autocomplete="off" spellcheck="false"
-         placeholder="fuzzy search: package, image or where it is used">
+  <div class="nspick qpick">
+    <input id="q" type="search" autocomplete="off" spellcheck="false"
+           placeholder="fuzzy search: package, image or where it is used">
+    <button id="qx" class="nsx" type="button" aria-label="clear search" hidden></button>
+  </div>
+  <button id="rl" type="button" aria-label="refresh cache" data-tip="refresh cache"></button>
   <span id="meta"></span>
 </header>
 <main>
   <div id="list"></div>
+  <div id="sp1" class="split" role="separator" aria-orientation="vertical"></div>
   <div id="sbom"><div class="empty">select a container to view its SBOM</div></div>
+  <div id="sp2" class="split" role="separator" aria-orientation="vertical"></div>
   <div id="users"></div>
 </main>
 <div id="tip" aria-hidden="true"></div>

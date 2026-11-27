@@ -190,6 +190,77 @@ eq("rpm suse -> no link",
 eq("no purl -> no link", cl(undefined), null);
 eq("bad purl -> no link", cl("not-a-purl"), null);
 
+// Vulnerability snapshot join: server merges the reporter's state.json into
+// /api/state as DATA.vulns (list, worst entry per repo:tag).
+sandbox.DATA.vulns = [
+  { repo: "quay.io/prometheus/node-exporter", tag: "v1", crit: 1, high: 2, med: 3, cves: [
+    { id: "CVE-1", pkg: "musl", score: 9.8, severity: "CRITICAL" },
+    { id: "CVE-2", pkg: "Musl", score: 8.1, severity: "HIGH" },
+    { id: "CVE-3", pkg: "wolfi-baselayout", score: 7.4, severity: "HIGH" },
+  ] },
+  { repo: "quay.io/velero/velero", tag: "v9", crit: 0, high: 4, med: 1, cves: [] },
+  { repo: "quay.io/velero/velero", tag: "v2", crit: 0, high: 1, med: 0, cves: [] },
+];
+sandbox.VULNS = sandbox.buildVulns();
+eq("exact repo+tag hit", sandbox.vulnFor({ ref: "quay.io/prometheus/node-exporter", tag: "v1" }).crit, 1);
+// Digest-pinned workloads have no (or stale) tag: fall back to the worst
+// entry recorded for the repo (v9 has 4 high, more than v2).
+eq("tag miss falls back to worst repo entry",
+   sandbox.vulnFor({ ref: "quay.io/velero/velero", tag: "" }).high, 4);
+eq("vulnless image -> null", sandbox.vulnFor({ ref: "docker.io/library/redis", tag: "7" }), null);
+const npm = sandbox.vulnPkgMap(sandbox.VULNS.img["quay.io/prometheus/node-exporter\nv1"]);
+eq("pkg map lowercases and groups", Object.keys(npm).sort(), ["musl", "wolfi-baselayout"]);
+eq("pkg map holds cves", npm.musl.map((c) => c.id), ["CVE-1", "CVE-2"]);
+eq("pkg map of empty entry", sandbox.vulnPkgMap(null), {});
+sandbox.DATA.vulns = null;
+sandbox.VULNS = sandbox.buildVulns();
+eq("no snapshot -> null", sandbox.vulnFor({ ref: "quay.io/velero/velero", tag: "v2" }), null);
+
+// rowScore covers advisory ids: "cve" lists every image with visible CVEs,
+// a full id finds its image, images without vulns stay unmatched.
+sandbox.DATA.vulns = [
+  { repo: "quay.io/prometheus/node-exporter", tag: "v1", crit: 1, high: 0, med: 0, cves: [
+    { id: "CVE-2025-0001", pkg: "musl", score: 9.8, severity: "CRITICAL" },
+  ] },
+];
+sandbox.VULNS = sandbox.buildVulns();
+const ve = { ref: "quay.io/prometheus/node-exporter", tag: "v1", file: "", users: [] };
+eq("cve query hits vulnerable image", sandbox.rowScore(ve, "cve") > 0, true);
+eq("full id hits its image", sandbox.rowScore(ve, "CVE-2025-0001".toLowerCase()) > 0, true);
+eq("id misses clean image", sandbox.rowScore({ ref: "x", tag: "", file: "", users: [] }, "cve"), 0);
+// cve- and ghsa-prefixed queries target advisories only: trivy-operator
+// matched "cve" as a c..v..e subsequence, which is not what was asked for.
+eq("cve query ignores ref subsequence",
+   sandbox.rowScore({ ref: "mirror.gcr.io/aquasec/trivy-operator", tag: "0.34.0", file: "", users: [] }, "cve"), 0);
+eq("cve id query on clean image",
+   sandbox.rowScore({ ref: "quay.io/valkey/valkey", tag: "9", file: "", users: [] }, "cve-2025-0001"), 0);
+eq("ghsa query is advisory-only", sandbox.vulnQuery("ghsa-4993-7g62-r423"), true);
+eq("plain word stays general", sandbox.vulnQuery("redis"), false);
+eq("cve inside a phrase stays general", sandbox.vulnQuery("cve scanner"), false);
+
+// cveUrl: trivy report ids are CVE-* or GHSA-*; other id spaces have no
+// stable advisory page, so they stay unlinked.
+eq("cveUrl CVE", sandbox.cveUrl("CVE-2025-0001"),
+   "https://nvd.nist.gov/vuln/detail/CVE-2025-0001");
+eq("cveUrl GHSA", sandbox.cveUrl("GHSA-4993-7g62-r423"),
+   "https://github.com/advisories/GHSA-4993-7g62-r423");
+eq("cveUrl other id", sandbox.cveUrl("RHSA-2025:1234"), null);
+eq("cveUrl empty", sandbox.cveUrl(""), null);
+
+// relTime: epoch-ms -> "5m ago" style, with a fixed `now` so the assertions
+// are absolute. Now = 2026-01-05T12:00:00Z.
+const NOW = Date.parse("2026-01-05T12:00:00Z");
+const MIN = 60000, HR = 3600000, DAY = 86400000;
+eq("relTime now", sandbox.relTime(NOW - 10000, NOW), "just now");
+eq("relTime seconds", sandbox.relTime(NOW - 45000, NOW), "45s ago");
+eq("relTime minutes", sandbox.relTime(NOW - 7 * MIN, NOW), "7m ago");
+eq("relTime hours", sandbox.relTime(NOW - 3 * HR - 30 * MIN, NOW), "3h ago");
+eq("relTime days", sandbox.relTime(NOW - 2 * DAY - 3600000, NOW), "2d ago");
+eq("relTime weeks", sandbox.relTime(NOW - 9 * DAY, NOW), "1w ago");
+eq("relTime month+ -> date", sandbox.relTime(NOW - 40 * DAY, NOW), "2025-11-26");
+eq("relTime future -> just now", sandbox.relTime(NOW + 60000, NOW), "just now");
+eq("relTime no ts -> empty", sandbox.relTime(null, NOW), "");
+
 // argoUrl: base comes from DATA.argoBase (server ARGOCD_URL env), no link without it
 const w = { app: "velero", kind: "Pod", namespace: "velero", name: "restic-abc" };
 eq("no argoBase -> no url", sandbox.argoUrl(w), null);

@@ -41,6 +41,8 @@ spec:
               value: /data
             - name: ARGOCD_URL
               value: {{ .Values.argoBaseUrl | quote }}
+            - name: TRIVY_STATE
+              value: /reporter/state.json
           ports:
             - name: http
               containerPort: 8080
@@ -51,6 +53,9 @@ spec:
             - name: store
               mountPath: /data
               readOnly: true
+            - name: reporter-state
+              mountPath: /reporter
+              readOnly: true
       volumes:
         - name: scripts
           configMap:
@@ -59,3 +64,6 @@ spec:
         - name: store
           persistentVolumeClaim:
             claimName: sbom-store
+        - name: reporter-state
+          persistentVolumeClaim:
+            claimName: trivy-reporter-state

@@ -1,5 +1,6 @@
 var DATA = null;
 var INDEX = null;
+var VULNS = null;
 var SELECTED = "";
 var NSEL = "All";
 var NS_NAMES = [];
@@ -74,20 +75,45 @@ function packageScore(e, q) {
   return s;
 }
 
+function vulnScore(e, q) {
+  // Fuzzy score over the advisory ids recorded for the image: "cve" lists
+  // every image with visible CVEs, a full id finds just its image.
+  var v = vulnFor(e);
+  if (!v) return 0;
+  var s = 0;
+  for (var i = 0; i < v.cves.length; i++) {
+    var t = fuzzy(v.cves[i].id, q);
+    if (t > s) s = t;
+  }
+  return s;
+}
+
+function vulnQuery(q) {
+  // A whole query that targets advisories: "cve" or a partial/complete
+  // CVE/GHSA id. Phrases merely containing cve stay ordinary fuzzy queries.
+  return /^cve(-[\d-]*)?$/.test(q) || /^ghsa(-[a-z0-9-]*)?$/.test(q);
+}
+
 function rowScore(e, q) {
   // Best fuzzy score over the image ref and every place the image is used,
   // so a query like a namespace or app name finds all SBOMs it covers.
-  // Package names and versions are the fallback: an image that matches on
+  // Package names, versions and advisory ids are the fallback: an image that
+  // matches on
   // both ranks by its usage, not by a package it happens to ship. The offset
   // keeps that true when the package substring starts earlier than the ref
   // one (package scores top out at 1000, below any offset ref match).
+  // cve/ghsa queries match advisory ids only, so a name that happens to
+  // contain the letters never shows up under them.
+  if (q && vulnQuery(q)) return vulnScore(e, q);
   var s = fuzzy(e.ref, q);
   for (var i = 0; q && i < e.users.length; i++) {
     var t = fuzzy(usageText(e.users[i]), q);
     if (t > s) s = t;
   }
   if (s > 0) return q ? s + 2000 : s;
-  return packageScore(e, q);
+  var p = packageScore(e, q);
+  var c = vulnScore(e, q);
+  return p > c ? p : c;
 }
 
 function shown() {
@@ -191,6 +217,12 @@ var GLYPH_EXT = [
   "M10 14 21 3",
   "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
 ];
+var GLYPH_WARN = [
+  "M10.29 3 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3a2 2 0 0 0-3.42 0Z",
+  "M12 9v4",
+  "M12 17h.01"
+];
+var GLYPH_RELOAD = ["M23 4v6h-6", "M20.49 15a9 9 0 1 1-2.12-9.36L23 10"];
 
 // Ecosystem brand marks from simple-icons (single path each, CC0 licensed).
 var KIND_ICONS = {
@@ -326,12 +358,81 @@ function extAnchor(target, tip) {
   return a;
 }
 
+function cveUrl(id) {
+  // Advisory page for a trivy vulnerability id (NVD for CVEs, GitHub for
+  // GHSAs); other id spaces (RHSA, OS-specific) have no stable URL.
+  var s = String(id || "");
+  if (/^CVE-\d{4}-\d+$/.test(s)) return "https://nvd.nist.gov/vuln/detail/" + s;
+  if (/^GHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}$/.test(s)) return "https://github.com/advisories/" + s;
+  return null;
+}
+
+function buildVulns() {
+  // Lookup over the reporter snapshot (DATA.vulns, merged into /api/state
+  // from the reporter CronJob's state file): exact repo+tag entries, plus a
+  // worst-severity entry per repo for digest-pinned images whose reports
+  // carry no tag or a stale one.
+  var v = { img: {}, repo: {} };
+  (DATA.vulns || []).forEach(function (x) {
+    v.img[x.repo + "\n" + (x.tag || "")] = x;
+    var cur = v.repo[x.repo];
+    if (!cur || x.crit + x.high > cur.crit + cur.high) v.repo[x.repo] = x;
+  });
+  return v;
+}
+
+function vulnFor(e) {
+  if (!VULNS) return null;
+  return VULNS.img[e.ref + "\n" + (e.tag || "")] || VULNS.repo[e.ref] || null;
+}
+
+function vulnPkgMap(v) {
+  // Vulnerable package names (lowercase) -> their CVE entries, used to
+  // mark SBOM component rows of one image.
+  var m = {};
+  ((v && v.cves) || []).forEach(function (c) {
+    var k = String(c.pkg || "").toLowerCase();
+    if (k) (m[k] = m[k] || []).push(c);
+  });
+  return m;
+}
+
+function vulnBadge(v) {
+  var t = [];
+  if (v.crit) t.push("C" + v.crit);
+  if (v.high) t.push("H" + v.high);
+  var b = el("span", "vwarn " + (v.crit ? "crit" : "high"));
+  b.setAttribute("data-tip",
+    v.crit + " critical, " + v.high + " high: " +
+    v.cves.slice(0, 4).map(function (c) { return c.id + " " + c.score + " (" + c.pkg + ")"; }).join(", ") +
+    (v.cves.length > 4 ? " +" + (v.cves.length - 4) + " more" : ""));
+  b.textContent = t.join(" ");
+  return b;
+}
+
+function relTime(ms, now) {
+  // Age of an epoch-ms timestamp as "45s ago" / "3h ago" / "1w ago"; past a
+  // month the absolute date reads better than a large week count.
+  if (ms == null || isNaN(ms)) return "";
+  var s = Math.floor((now - ms) / 1000);
+  if (s < 45) return "just now";
+  if (s < 60) return s + "s ago";
+  if (s < 3600) return Math.floor(s / 60) + "m ago";
+  if (s < 86400) return Math.floor(s / 3600) + "h ago";
+  if (s < 7 * 86400) return Math.floor(s / 86400) + "d ago";
+  if (s < 30 * 86400) return Math.floor(s / (7 * 86400)) + "w ago";
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
 function render() {
   var list = document.getElementById("list");
   list.textContent = "";
   var rows = shown();
-  document.getElementById("meta").textContent =
-    rows.length + " image(s), " + (DATA.workloads || []).length + " workloads, generated " + (DATA.generatedAt || "never");
+  var metaEl = document.getElementById("meta");
+  metaEl.textContent =
+    rows.length + " image(s), " + (DATA.workloads || []).length + " workloads, generated " +
+    (relTime(Date.parse(DATA.generatedAt || ""), Date.now()) || "never");
+  if (DATA.generatedAt) metaEl.setAttribute("data-tip", DATA.generatedAt);
   if (!rows.length) list.appendChild(el("div", "empty", "no containers match"));
   rows.forEach(function (e) {
     var line = el("div", "cont" + (SELECTED === e.key ? " sel" : ""));
@@ -342,6 +443,8 @@ function render() {
     if (rl) line.appendChild(extAnchor(rl.url, "Open on " + rl.label));
     line.appendChild(clip(s.rest, 30, "ref"));
     if (e.tag) line.appendChild(clip(e.tag, 12, "kind"));
+    var v = vulnFor(e);
+    if (v) line.appendChild(vulnBadge(v));
     if (e.digest) line.appendChild(el("span", "dig", e.digest.replace("sha256:", "").slice(0, 12)));
     var m = meta(e.file);
     line.appendChild(el("span", "cnt", e.users.length + " workload(s) - " + (m ? m.components + " components" : "sbom missing")));
@@ -543,13 +646,17 @@ function showEntry(e) {
   h2.appendChild(copyButton(full));
   var rl = registryLink(e.ref);
   if (rl) h2.appendChild(extAnchor(rl.url, "Open on " + rl.label));
+  var v = vulnFor(e);
+  if (v) h2.appendChild(vulnBadge(v));
   sbom.appendChild(h2);
   if (!e.file) { sbom.appendChild(el("div", "empty", "no sbom")); return; }
   var m = meta(e.file);
   var head = el("div");
   head.appendChild(el("span", "dig", (e.digest || "") + "  "));
   if (m) {
-    head.appendChild(el("span", "", new Date(m.mtime * 1000).toISOString() + "  "));
+    var ts = el("span", "", relTime(m.mtime * 1000, Date.now()) + "  ");
+    ts.setAttribute("data-tip", new Date(m.mtime * 1000).toISOString());
+    head.appendChild(ts);
     head.appendChild(el("span", "", m.components + " components  "));
   }
   sbom.appendChild(head);
@@ -560,6 +667,7 @@ function showEntry(e) {
     return r.json();
   }).then(function (bom) {
     note.remove();
+    var vmap = vulnPkgMap(v);
     var comps = (bom.components || []).slice().sort(function (a, b) {
       return String(a.name).localeCompare(String(b.name));
     });
@@ -590,6 +698,22 @@ function showEntry(e) {
       nameTd.appendChild(document.createTextNode(comp.name));
       var cl = componentLink(comp);
       if (cl) nameTd.appendChild(extAnchor(cl.url, "Open " + comp.name + " on " + cl.label));
+      var vc = vmap[String(comp.name || "").toLowerCase()] || [];
+      vc.forEach(function (c) {
+        // One triangle per CVE, each linking its advisory when the id is one
+        // we can resolve to a page.
+        var url = cveUrl(c.id);
+        var w = el(url ? "a" : "span", "vwarn " + (c.severity === "CRITICAL" ? "crit" : "high"));
+        if (url) {
+          w.href = url;
+          w.target = "_blank";
+          w.rel = "noopener";
+          w.onclick = function (ev) { ev.stopPropagation(); };
+        }
+        w.setAttribute("data-tip", c.id + " " + c.severity + " (score " + c.score + ")");
+        w.appendChild(svgLine(GLYPH_WARN));
+        nameTd.appendChild(w);
+      });
       tr.appendChild(nameTd);
       tr.appendChild(el("td", "v", comp.version));
       var k = purlKind(comp);
@@ -704,19 +828,118 @@ function startTips() {
   });
 }
 
+function initSplits() {
+  // Drag handles set the two side pane widths (--w1, --w3); the middle pane
+  // takes the rest. Widths persist in localStorage across reloads.
+  var main = document.querySelector && document.querySelector("main");
+  if (!main || !window.localStorage) return;
+  var W = {};
+  try { W = JSON.parse(localStorage.getItem("sbom-panes") || "null") || {}; } catch (e) { W = {}; }
+  if (typeof W.w1 !== "number") W.w1 = 700;
+  if (typeof W.w3 !== "number") W.w3 = 280;
+  function apply(which) {
+    W[which] = Math.max(240, Math.min(
+      main.clientWidth - (which === "w1" ? W.w3 : W.w1) - 380, W[which]));
+    main.style.setProperty("--" + which, W[which] + "px");
+  }
+  apply("w1");
+  apply("w3");
+  window.addEventListener("resize", function () { apply("w1"); apply("w3"); });
+  [["sp1", "w1", 1], ["sp2", "w3", -1]].forEach(function (p) {
+    var h = document.getElementById(p[0]);
+    if (!h) return;
+    h.onmousedown = function (ev) {
+      if (ev.button !== 0) return;
+      var x0 = ev.clientX, v0 = W[p[1]];
+      h.classList.add("on");
+      function move(mv) {
+        W[p[1]] = v0 + p[2] * (mv.clientX - x0);
+        apply(p[1]);
+      }
+      function up() {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+        h.classList.remove("on");
+        try { localStorage.setItem("sbom-panes", JSON.stringify(W)); } catch (e) {}
+      }
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+      ev.preventDefault();
+    };
+  });
+}
+
+function startReload() {
+  // The button holds both glyphs stacked; spin rotates the arrow, then the
+  // check cross-fades in and back out. Failure stops the spin with no check.
+  var b = document.getElementById("rl");
+  if (!b || !b.appendChild) return;
+  var arrow = svgLine(GLYPH_RELOAD);
+  arrow.setAttribute("class", "glyph");
+  var check = svgLine(GLYPH_CHECK);
+  check.setAttribute("class", "done");
+  b.appendChild(arrow);
+  b.appendChild(check);
+  b.addEventListener("click", function () {
+    b.classList.add("spin");
+    var t0 = Date.now();
+    reload(true, function (ok) {
+      // A cached rebuild lands in well under a second; hold the spin to a
+      // minimum so the click reads as something happening.
+      setTimeout(function () {
+        b.classList.remove("spin");
+        if (!ok) return;
+        b.classList.add("ok");
+        setTimeout(function () { b.classList.remove("ok"); }, 1200);
+      }, Math.max(0, 1500 - (Date.now() - t0)));
+    });
+  });
+}
+
+function startClear() {
+  // Search box clear: a right-aligned x that only shows while the box has
+  // text. Escape clears and keeps focus, or blurs when already empty.
+  var q = document.getElementById("q");
+  var x = document.getElementById("qx");
+  if (!x || !x.appendChild) return;
+  x.appendChild(svgLine(GLYPH_X));
+  function sync() { x.hidden = !q.value; }
+  q.addEventListener("input", sync);
+  q.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Escape") return;
+    if (q.value) {
+      q.value = "";
+      render();
+      sync();
+    } else {
+      q.blur();
+    }
+  });
+  x.addEventListener("click", function () {
+    q.value = "";
+    render();
+    sync();
+    q.focus();
+  });
+  sync();
+}
+
 function start() {
   document.getElementById("q").addEventListener("input", render);
   startNs();
+  startClear();
   startTips();
+  initSplits();
+  startReload();
   reload();
 }
 
-function loadIndex() {
+function loadIndex(force) {
   // One package-name snapshot per manifest generation; SBOM bodies are only
   // fetched when an image is selected. A failed load leaves the previous
   // snapshot (or no packages searchable) and is retried on the next reload.
-  if (INDEX && INDEX.generatedAt === DATA.generatedAt) return;
-  fetch("/api/index").then(function (r) {
+  if (INDEX && !force && INDEX.generatedAt === DATA.generatedAt) return;
+  fetch("/api/index" + (force ? "?fresh=1" : "")).then(function (r) {
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }).then(function (d) {
@@ -725,14 +948,20 @@ function loadIndex() {
   }).catch(function () {});
 }
 
-function reload() {
-  fetch("/api/state").then(function (r) { return r.json(); }).then(function (d) {
+function reload(force, done) {
+  // force bypasses the server's 5-minute response cache (the reload button).
+  fetch("/api/state" + (force ? "?fresh=1" : "")).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d;
+    VULNS = buildVulns();
     fillNamespaces();
     render();
-    loadIndex();
+    loadIndex(force);
     setTimeout(reload, 60000);
-  }).catch(function () { setTimeout(reload, 10000); });
+    if (done) done(true);
+  }).catch(function () {
+    setTimeout(function () { reload(); }, 10000);
+    if (done) done(false);
+  });
 }
 
 start();
