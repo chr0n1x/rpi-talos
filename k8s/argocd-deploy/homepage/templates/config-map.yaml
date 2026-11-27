@@ -153,6 +153,11 @@ data:
             description: Prometheus Dashboard
             href: "https://prometheus.rannet.duckdns.org"
             ping: "https://prometheus.rannet.duckdns.org"
+        - SBOM Dashboard:
+            icon: 'https://sbom.rannet.duckdns.org/icon.svg'
+            description: Cluster SBOM browser with vuln overlays
+            href: "https://sbom.rannet.duckdns.org"
+            siteMonitor: "https://sbom.rannet.duckdns.org"
         - Traefik:
             icon: 'https://raw.githubusercontent.com/traefik/traefik/refs/heads/master/docs/content/assets/img/traefik.logo.png'
             href: "https://traefik.rannet.duckdns.org/dashboard/"

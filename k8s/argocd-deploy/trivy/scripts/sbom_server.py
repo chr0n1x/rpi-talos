@@ -36,6 +36,17 @@ TRIVY_STATE_PATH = os.environ.get("TRIVY_STATE", "/reporter/state.json")
 _components = {}
 _assets = {}
 
+# The page favicon art as a standalone file, so other dashboards (the cluster
+# homepage) can link the icon by URL instead of duplicating the markup.
+ICON_SVG = (
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">'
+    '<rect width="24" height="24" rx="5" fill="#101826"/>'
+    '<g fill="none" stroke-linecap="round" stroke-linejoin="round">'
+    '<path d="M12 4.6v3.6M9.9 6.4l2.1 2 2.1-2" stroke="#f87171" stroke-width="1.9"/>'
+    '<path d="M6.4 9.6h11.2l-4.3 5.2v3.4l-2.6 1.5v-4.9z" stroke="#22d3ee" stroke-width="1.9"/>'
+    "</g></svg>"
+).encode()
+
 # How long a built /api/state or /api/index response stays valid; the page's
 # reload button sends ?fresh=1 to rebuild immediately. The exporters rewrite
 # the data daily, so a stale window costs little and the 60s page polls then
@@ -272,6 +283,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, asset_body(PAGE_PATH), "text/html; charset=utf-8", head_only)
             elif request.path == "/page.js":
                 self._send(200, asset_body(PAGE_JS_PATH), "text/javascript; charset=utf-8", head_only)
+            elif request.path == "/icon.svg":
+                self._send(200, ICON_SVG, "image/svg+xml", head_only)
             elif request.path == "/api/state":
                 self._json(200, cached("state", state_doc, fresh), head_only)
             elif request.path == "/api/index":
