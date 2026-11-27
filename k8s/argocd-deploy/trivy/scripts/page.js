@@ -367,23 +367,46 @@ function cveUrl(id) {
   return null;
 }
 
+function normRepo(r) {
+  // Common key for join image refs with the reporter's artifact.repository:
+  // strips leading registry hosts and docker.io's implicit library
+  // namespace. Hosts repeat because refs may carry the cluster pull-through
+  // prefix in front of the origin host. Same path under two registries
+  // collides by design; the reporter's own state already treats it as one
+  // repo.
+  var p = String(r || "").split("/");
+  while (p.length > 1 && (p[0].indexOf(".") >= 0 || p[0].indexOf(":") >= 0)) p = p.slice(1);
+  if (p.length > 1 && p[0] === "library") p = p.slice(1);
+  return p.join("/").toLowerCase();
+}
+
 function buildVulns() {
   // Lookup over the reporter snapshot (DATA.vulns, merged into /api/state
   // from the reporter CronJob's state file): exact repo+tag entries, plus a
   // worst-severity entry per repo for digest-pinned images whose reports
-  // carry no tag or a stale one.
-  var v = { img: {}, repo: {} };
+  // carry no tag or a stale one. The reporter records repos without the
+  // registry the workload refs keep, so every exact map has a normRepo
+  // mirror and exact hits win over normalized ones.
+  var v = { img: {}, repo: {}, nimg: {}, nrepo: {} };
   (DATA.vulns || []).forEach(function (x) {
     v.img[x.repo + "\n" + (x.tag || "")] = x;
+    var nr = normRepo(x.repo);
+    var nk = nr + "\n" + (x.tag || "");
+    var kcur = v.nimg[nk];
+    if (!kcur || x.crit + x.high > kcur.crit + kcur.high) v.nimg[nk] = x;
     var cur = v.repo[x.repo];
     if (!cur || x.crit + x.high > cur.crit + cur.high) v.repo[x.repo] = x;
+    var ncur = v.nrepo[nr];
+    if (!ncur || x.crit + x.high > ncur.crit + ncur.high) v.nrepo[nr] = x;
   });
   return v;
 }
 
 function vulnFor(e) {
   if (!VULNS) return null;
-  return VULNS.img[e.ref + "\n" + (e.tag || "")] || VULNS.repo[e.ref] || null;
+  var nr = normRepo(e.ref);
+  return VULNS.img[e.ref + "\n" + (e.tag || "")] || VULNS.repo[e.ref]
+    || VULNS.nimg[nr + "\n" + (e.tag || "")] || VULNS.nrepo[nr] || null;
 }
 
 function vulnPkgMap(v) {

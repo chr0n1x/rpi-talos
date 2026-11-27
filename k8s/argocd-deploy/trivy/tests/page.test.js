@@ -216,6 +216,30 @@ sandbox.DATA.vulns = null;
 sandbox.VULNS = sandbox.buildVulns();
 eq("no snapshot -> null", sandbox.vulnFor({ ref: "quay.io/velero/velero", tag: "v2" }), null);
 
+// The reporter state keys repos WITHOUT the registry the workload refs keep
+// (operator artifact.repository), and docker.io hides the library namespace.
+// Join must normalize both sides or live badges never match.
+sandbox.DATA.vulns = [
+  { repo: "dexidp/dex", tag: "v2.46.1", crit: 1, high: 0, med: 0, cves: [] },
+  { repo: "redis", tag: "8.6.4-alpine", crit: 0, high: 2, med: 0, cves: [] },
+  { repo: "quay.io/prometheus/node-exporter", tag: "v1", crit: 0, high: 1, med: 0, cves: [] },
+  { repo: "ghcr.io/kieraneglin/pinchflat", tag: "latest", crit: 2, high: 0, med: 0, cves: [] },
+];
+sandbox.VULNS = sandbox.buildVulns();
+// Workload refs can carry the cluster's pull-through prefix in front of the
+// origin host, so host stripping repeats.
+eq("pull-through prefix hits host-kept repo",
+   sandbox.vulnFor({ ref: "registry.rannet.duckdns.org/ghcr.io/kieraneglin/pinchflat", tag: "latest" }).crit, 2);
+eq("stripped repo hits qualified ref",
+   sandbox.vulnFor({ ref: "ghcr.io/dexidp/dex", tag: "v2.46.1" }).crit, 1);
+eq("library alias hits mirror ref",
+   sandbox.vulnFor({ ref: "mirror.gcr.io/library/redis", tag: "8.6.4-alpine" }).high, 2);
+eq("qualified repo hits bare ref",
+   sandbox.vulnFor({ ref: "prometheus/node-exporter", tag: "v1" }).high, 1);
+eq("normalized tag miss falls back to worst repo",
+   sandbox.vulnFor({ ref: "ghcr.io/dexidp/dex", tag: "zz" }).crit, 1);
+eq("normalized miss -> null", sandbox.vulnFor({ ref: "ghcr.io/other/dex", tag: "v1" }), null);
+
 // rowScore covers advisory ids: "cve" lists every image with visible CVEs,
 // a full id finds its image, images without vulns stay unmatched.
 sandbox.DATA.vulns = [
