@@ -39,7 +39,7 @@ shadowbroker:
             runAsGroup: 1001
           image:
             pullPolicy: Always
-            repository: registry.rannet.duckdns.org/shadowbroker/backend
+            repository: ghcr.io/bigbodycobain/shadowbroker-backend
             tag: latest
           env:
             AIS_API_KEY:
@@ -67,7 +67,7 @@ shadowbroker:
             runAsGroup: 1001
           image:
             pullPolicy: Always
-            repository: registry.rannet.duckdns.org/shadowbroker/frontend
+            repository: ghcr.io/bigbodycobain/shadowbroker-frontend
             tag: latest
 
           env:
